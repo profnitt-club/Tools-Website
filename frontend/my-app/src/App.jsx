@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route } from "react-router-dom"; // Import only Routes and Route
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar'
 import MainBody from './components/MainBody'
 import Strategies from './components/Strategies';
@@ -9,15 +9,14 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <Navbar />
+    <Router>
       <Routes>
-        <Route path="/" element={<MainBody />} />
+        <Route path="/" element={<><Navbar/> <MainBody /></>} />
         <Route path="/strategies" element={<Strategies />} />
         <Route path="/card-details" element={<CardDetails />} />
       </Routes>
-    </>
+    </Router>
   )
 }
 
-export default App;
+export default App
