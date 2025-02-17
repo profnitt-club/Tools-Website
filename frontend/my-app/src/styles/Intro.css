@@ -1,0 +1,133 @@
+/* ProfNITTIntro.css */
+.intro-container {
+  background-color: #343045;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+  background-image: url("../assets/vector2.png"), url("../assets/vector3.png");
+  background-size: contain;
+  background-position: top, center;
+  background-repeat: no-repeat;
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+  .content-wrapper {
+      grid-template-columns: 1fr; /* Stack elements vertically */
+      text-align: center;
+  }
+
+  .image-container {
+      order: -1; /* Move image above text on mobile */
+      display: flex;
+      justify-content: center;
+  }
+
+  .text-section {
+      text-align: center;
+  }
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.sub-title {
+  font-size: 1.8rem;
+  color: #c0c0df;
+  margin-top: 8px;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-top: 16px;
+}
+
+/* Image Responsiveness */
+.image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.phone-image {
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Responsive Card */
+.card {
+  background-color: #403f63;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjustments for Small Screens */
+@media (max-width: 768px) {
+  .main-title {
+      font-size: 2rem;
+  }
+
+  .sub-title {
+      font-size: 1.5rem;
+  }
+
+  .description {
+      font-size: 1rem;
+  }
+
+  .card {
+      padding: 16px;
+  }
+
+  .cta-button {
+      font-size: 1rem;
+      padding: 10px 16px;
+  }
+}
+
+/* Button Improvements */
+.cta-button {
+  padding: 10px 20px;
+  height: auto;
+  background: #45485f;
+  color: white;
+  font-weight: bold;
+  border: 2px solid rgb(166, 55, 180);
+  border-radius: 40px;
+  box-shadow: 0 0 10px #d811cb;
+  cursor: pointer;
+  transition: color 0.35s ease, border 0.35s ease, box-shadow 0.35s ease;
+}
+
+.cta-button:hover {
+  color: rgb(72, 240, 201);
+  border: 2px solid rgb(72, 240, 201);
+  box-shadow: 0 0 7px rgb(72, 240, 201);
+}
+
+/* Improve Button Tap Area on Mobile */
+@media (max-width: 480px) {
+  .cta-button {
+      font-size: 1rem;
+      padding: 12px 20px;
+  }
+
+  .phone-image {
+      max-width: 350px;
+  }
+}
+

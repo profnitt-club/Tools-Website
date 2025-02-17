@@ -1,0 +1,140 @@
+/* Main Container */
+@font-face {
+  font-family: poppins;
+  src: url("../fonts/Poppins-Medium.ttf");
+}
+  .hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #343045;
+    color: white;
+    padding: 50px;
+    position: relative;
+    height:50vh;
+  }
+  
+  /* Left Section - Text */
+  .hero-content {
+    max-width: 50%;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    font-family: poppins;
+  }
+  
+  .highlight {
+    color: #e84d9a;
+    font-family: poppins;
+  }
+  
+  h2 {
+    font-family: poppins;
+    font-size: 1.5rem;
+    font-weight: lighter;
+    opacity: 0.8;
+    margin-top: 10px;
+  }
+  
+  .subtext {
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  
+  /* Button & Arrow */
+  .button-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .use-tools-btn {
+    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2a2734;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .use-tools-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  
+  .arrow {
+    font-size: 2rem;
+    margin-left: 15px;
+    opacity: 0.7;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .button-container:hover .arrow {
+    transform: translateX(5px);
+  }
+  
+  /* Right Section - Image */
+  .hero-image img {
+    max-width: 500px;
+    border-radius: 60px;
+    border: 4px solid #DF53BB;
+    box-shadow: 0 0 20px #DF53BB;
+  }
+
+  /* --- RESPONSIVE DESIGN --- */
+
+/* Medium Screens (Tablets) */
+@media (max-width: 1024px) {
+  .hero-container {
+      flex-direction: column;
+      height: auto;
+      padding: 30px;
+      text-align: center;
+  }
+
+  .hero-content {
+      max-width: 80%;
+      margin-bottom: 20px;
+  }
+
+  .hero-image img {
+      max-width: 80%;
+  }
+}
+
+/* Small Screens (Phones) */
+@media (max-width: 768px) {
+  .hero-container {
+      flex-direction: column;
+      height: auto;
+      padding: 20px;
+  }
+
+  .hero-content {
+      max-width: 100%;
+      text-align: center;
+  }
+
+  h1 {
+      font-size: 2rem;
+  }
+
+  h2 {
+      font-size: 1.2rem;
+  }
+
+  .use-tools-btn {
+      font-size: 0.9rem;
+      padding: 10px 20px;
+  }
+
+  .hero-image img {
+      max-width: 90%;
+      border-radius: 30px;
+  }
+}
+  

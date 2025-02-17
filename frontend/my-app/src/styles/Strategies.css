@@ -1,0 +1,48 @@
+.main-container{
+    display:flex;
+    flex-direction: column;
+    gap:70px;
+    background-color: #2a2734;
+    width:100vw;
+    height:100vh;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.search-bar{
+    width:75%;
+    display: flex;
+}
+
+.profnitt-logo{
+    height:80px;
+    width:170px;
+    position:relative;
+}
+
+.search{
+    margin-top:30px;
+    padding: 0px 20px;
+    width:80%;
+    height:30px;
+    outline: none;
+    border: 3px solid rgb(166, 55, 180);
+    box-shadow: 0 0 10px #d811cb;
+    border-radius: 50px;
+    background: #292c43;
+    color:aliceblue;
+    font-size: large;
+    font-weight: bold;
+    text-transform: capitalize;
+    
+}
+
+.card-list {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  

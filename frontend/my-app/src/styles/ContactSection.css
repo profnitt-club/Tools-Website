@@ -1,0 +1,85 @@
+/* Container */
+.contact-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:90%;
+    gap:60px;
+    background: radial-gradient(circle,#3A3456, #211E2E);
+    padding: 20px;
+    border-radius: 60px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin:50px;
+  }
+  
+  /* Individual Contact Items */
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  /* Icons */
+  .icon {
+    font-size: 45px;
+    color: #b89af8;
+  }
+  
+  /* Titles */
+  h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* Subtext */
+  p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  /* Divider */
+  .divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 30px; /* Reduce gap */
+        padding: 15px; /* Adjust padding for smaller screens */
+        width: 100%; /* Ensure it fits inside mobile screens */
+        margin: 20px auto; /* Center the container */
+    }
+
+    .contact-item {
+        flex-direction: column; /* Stack icon and text */
+        gap: 10px; /* Reduce spacing */
+    }
+
+    .icon {
+        font-size: 35px; /* Reduce icon size */
+    }
+
+    h3 {
+        font-size: 1rem; /* Adjust heading size */
+    }
+
+    p {
+        font-size: 0.85rem; /* Adjust paragraph size */
+    }
+
+    .divider {
+        display: none; /* Hide dividers in mobile view */
+    }
+}
+
+  

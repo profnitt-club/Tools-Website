@@ -1,0 +1,136 @@
+/* ProfNITTFeatures.css */
+
+.profnitt-features-container {
+  background-color: #343045; /* Dark purple background */
+  color: white;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-image: url("../assets/vector4.png");
+  background-position: bottom;
+  background-size: 2500px 800px;
+  background-repeat: no-repeat;
+}
+
+.profnitt-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profnitt-header-section {
+  margin-bottom: 40px;
+}
+
+.profnitt-main-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profnitt-sub-title {
+  font-size: 2rem;
+  color: #c0c0df;
+  margin: 10px 0;
+}
+
+.profnitt-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #d3d3eb;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+/* Responsive Grid */
+.profnitt-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding-top: 20px;
+}
+
+/* Make grid adaptive */
+@media (max-width: 1024px) {
+  .profnitt-features-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .profnitt-features-grid {
+      grid-template-columns: 1fr; /* 1 column on smaller screens */
+  }
+}
+
+/* Feature Cards */
+.profnitt-feature-card {
+  background: radial-gradient(circle, #3e3c63, #262230);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: auto;
+}
+
+.profnitt-feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Feature Images */
+.profnitt-image-container {
+  margin-bottom: 20px;
+}
+
+.profnitt-feature-image {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 50%;
+  background-color: #2c2b4a;
+  padding: 10px;
+}
+
+/* Titles & Text */
+.profnitt-feature-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 16px 0 10px;
+}
+
+.profnitt-feature-description {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #e0dff7;
+  margin-bottom: 20px;
+}
+
+/* CTA Button */
+.profnitt-cta-button {
+  margin-top: 2%;
+  background-color: #8176AF;
+  width: 200px;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Button hover effect */
+.profnitt-cta-button:hover {
+  background-color: #58357b;
+}
+
+/* Button scaling for smaller screens */
+@media (max-width: 768px) {
+  .profnitt-cta-button {
+      width: 80%;
+      font-size: 1rem;
+      padding: 12px 16px;
+  }
+}
