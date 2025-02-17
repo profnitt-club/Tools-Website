@@ -1,10 +1,13 @@
 {
+  "homepage": "http://profnitt-club.github.io/Tools-Website",
   "name": "tool",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon backend/server.js",
-    "run": "node backend/server.js"
+    "run": "node backend/server.js",
+    "predeploy":"npm run build",
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +22,8 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "recharts": "^2.15.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
