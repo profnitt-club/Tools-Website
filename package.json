@@ -7,7 +7,7 @@
     "dev": "nodemon backend/server.js",
     "run": "node backend/server.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "build": "react-scripts build"
   },
   "keywords": [],
