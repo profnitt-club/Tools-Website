@@ -60,7 +60,7 @@ const CardDetails = () => {
               );
             })}
           </div>
-          <button className="get-linkofProject" onClick={() => window.location.href = gitlink}>Get Link</button>
+          <button className="get-linkofProject" onClick={() => window.open(gitlink, "_blank")}>Get Link</button>
         </div>
 
         <div className='demo'>

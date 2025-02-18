@@ -1,8 +1,14 @@
 import React from 'react'
 import "../styles/intro.css"
+import { useNavigate } from "react-router-dom";
 import introImage from "../assets/img_iphones.svg";
 
 const Intro = () => {
+    const navigate = useNavigate();
+    
+    const handleClick = () => {
+      navigate(`/strategies`);
+    };
     return (
         <div id="about" className="intro-container">
           <div className="content-wrapper">
@@ -11,7 +17,7 @@ const Intro = () => {
               <h1 className="main-title">INTRODUCTION</h1>
               <h2 className="sub-title">TO ProfNITT Tools</h2>
               <div className="button-container">
-                <button className="use-tools-btn" onClick={() => window.location.href = "/strategies"}>USE TOOLS</button>
+                <button className="use-tools-btn" onClick={handleClick}>USE TOOLS</button>
                 <span className="arrow">→</span>
               </div>
             </div>
