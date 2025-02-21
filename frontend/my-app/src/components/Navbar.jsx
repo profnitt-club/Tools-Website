@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Navbar.css";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -43,6 +44,12 @@ const Navbar = () => {
       .catch((err) => console.error("Logout failed:", err));
   };
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/strategies`);
+  };
+
   return (
     <nav className="navbar">
       {/* Logo */}
@@ -54,7 +61,7 @@ const Navbar = () => {
       <ul className="nav-links">
         <li><a href="#about">ABOUT</a></li>
         <li><a href="#services">SERVICES</a></li>
-        <li><a href="#tools">TOOLS</a></li>
+        <li onClick={handleClick()}><a >TOOLS</a></li>
         <li><a href="#explore">EXPLORE</a></li>
       </ul>
 
@@ -69,7 +76,7 @@ const Navbar = () => {
           </>
         ) : (
           <button className="login-btn" onClick={handleLogin}>
-            Login with Google
+            ProfNITT
           </button>
         )}
       </div>

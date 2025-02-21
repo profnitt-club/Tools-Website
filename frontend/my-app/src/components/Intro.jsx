@@ -14,10 +14,10 @@ const Intro = () => {
           <div className="content-wrapper">
             {/* Left Section */}
             <div className="text-section">
-              <h1 className="main-title">INTRODUCTION</h1>
-              <h2 className="sub-title">TO ProfNITT Tools</h2>
+              <div className="main-title">INTRODUCTION</div>
+              <h2 className="subtitle">TO ProfNITT Tools</h2>
               <div className="button-container">
-                <button className="use-tools-btn" onClick={handleClick}>USE TOOLS</button>
+                <button className="use-tools-btn" onClick={handleClick}>Explore Strategies</button>
                 <span className="arrow">→</span>
               </div>
             </div>
@@ -40,11 +40,11 @@ const Intro = () => {
             </div>
 
             {/* Right Section */}
-            <div className="card">
-              <div className="card-content">
-                <h2 className="card-title">ABOUT</h2>
-                <h3 className="card-subtitle">ProfNITT Club of NIT Trichy</h3>
-                <p className="card-description">
+            <div className="about-card">
+              <div className="about-card-content">
+                <h2 className="about-card-title">ABOUT US</h2>
+                <h3 className="about-card-subtitle">ProfNITT Club of NIT Trichy</h3>
+                <p className="about-card-description">
                   "ProfNITT Club, NIT Trichy, is a hub for innovation in quantitative
                   finance and technology. Our mission is to bridge the gap between
                   theory and real-world application by developing impactful projects
@@ -54,7 +54,7 @@ const Intro = () => {
                   generation of finance and tech leaders."
                 </p>
                 <br></br>
-                <button className="cta-button" onClick={() => window.open("https://profnitt.com", "_blank")}>
+                <button className="about-cta-button" onClick={() => window.open("https://profnitt.com", "_blank")}>
                   LET’S GET IN TOUCH
                 </button>
               </div>

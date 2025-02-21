@@ -4,12 +4,17 @@
   src: local("Poppins"), url("../fonts/Poppins-Medium.ttf") format("truetype");
 }
 
+@font-face{
+  font-family: "clashDisplay";
+  src: url("../fonts/ClashDisplay-Variable.ttf");
+}
+
 .navbar {
   display: flex;
   flex-wrap: wrap;  /* Allow items to wrap on small screens */
   justify-content: space-between;
   align-items: center;
-  background-color: #343045;
+  background-color: #292537;
   padding: 15px clamp(20px, 5vw, 50px); /* Dynamic padding */
   min-height: 75px;
   width: 100%;
@@ -19,13 +24,14 @@
   /* Logo */
   .logo img {
     height: 75px;
+    scale:1.4;
   }
   
   /* Navigation Links */
   .nav-links {
     list-style: none;
     display: flex;
-    gap: 30px;
+    gap: 120px;
   }
   
   .nav-links li {
@@ -33,10 +39,11 @@
   }
   
   .nav-links a {
+    font-family: poppins;
     text-decoration: none;
     color: white;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
   }
   
   .nav-links a:hover {
@@ -45,8 +52,9 @@
   
   /* Buttons */
   .nav-buttons {
+    position: relative;
     display: flex;
-    gap: 15px;
+    margin-right:50px;
   }
   
   .signup-btn {
@@ -68,10 +76,11 @@
     background: linear-gradient(to right, #5F5C8E, #A6A1C6);
     color: white;
     border: none;
-    padding: 8px 20px;
+    padding: 10px 25px;
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 1.1rem;
   }
   
   .login-btn:hover {

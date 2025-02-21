@@ -12,14 +12,13 @@ const HeroSection = () => {
   return (
     <div className="hero-container">
       <div className="hero-content">
-        <h1>
+        <div className="title">
           Prof<span className="highlight">NITT</span> Tools
-        </h1>
-        <h2>By</h2>
-        <h2>Finance & Investment Club of NIT Trichy</h2>
+        </div>
+        <div className="sub-title">By Finance & Investment Club of NIT Trichy</div>
 
         <div className="button-container">
-          <button className="use-tools-btn" onClick={handleClick}>USE TOOLS</button>
+          <button className="use-tools-btn" onClick={handleClick}>Explore Strategies</button>
           <span className="arrow">→</span>
         </div>
       </div>

@@ -20,7 +20,7 @@ const ContactSection = () => {
           <div className="contact-item">
             <TbWorldWww className="icon" />
             <div onClick={() => window.location.href = "https://profnitt.com"}>
-              <h3>VISIT OUR WEBSITE</h3>
+              <div className='heading'>VISIT OUR WEBSITE</div>
             </div>
           </div>
     

@@ -1,4 +1,14 @@
 /* ProfNITTIntro.css */
+@font-face{
+  font-family: clashDisplay;
+  src: url("../fonts/ClashDisplay-Variable.ttf");
+}
+
+@font-face {
+  font-family: poppin;
+  src: url("../fonts/Poppins-Thin.ttf");
+}
+
 .intro-container {
   background-color: #343045;
   color: white;
@@ -21,6 +31,39 @@
   background-repeat: no-repeat;
 }
 
+.about-card {
+  background: #292c43;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 2px solid #a18cd1;
+  box-shadow: 0 0 10px #a18cd1;
+  color: white;
+  text-align: center;
+}
+
+.about-card-title {
+  font-family:clashDisplay;
+  font-size: 30px;
+  font-weight:bolder;
+  color:white;
+  margin: 5px 0;
+}
+
+.about-card-subtitle{
+  font-family:poppin;
+  font-size: 20px;
+  font-weight:bolder;
+  color:white;
+  margin: 5px 0;
+}
+
+.about-card-description {
+  font-family:poppins;
+  font-size: 18px;
+  margin-top: 18px; 
+}
+
 /* Responsive Grid */
 @media (max-width: 1024px) {
   .content-wrapper {
@@ -40,17 +83,22 @@
 }
 
 .main-title {
+  font-family: clashDisplay;
   font-size: 2.5rem;
   font-weight: bold;
 }
 
-.sub-title {
+.subtitle {
+  font-family: poppin;
+  letter-spacing: 4.2px;
+  word-spacing: 10px;
   font-size: 1.8rem;
-  color: #c0c0df;
+  color: white;
   margin-top: 8px;
 }
 
 .description {
+  font-family:poppins;
   font-size: 1.2rem;
   margin-top: 16px;
 }
@@ -73,6 +121,7 @@
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 /* Adjustments for Small Screens */
@@ -83,6 +132,7 @@
 
   .sub-title {
       font-size: 1.5rem;
+      font-family: poppin;
   }
 
   .description {
@@ -100,17 +150,16 @@
 }
 
 /* Button Improvements */
-.cta-button {
-  padding: 10px 20px;
-  height: auto;
-  background: #45485f;
-  color: white;
+.about-cta-button {
+  background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+  border: none;
+  padding: 14px 24px;
+  border-radius: 25px;
+  font-size: 1rem;
   font-weight: bold;
-  border: 2px solid rgb(166, 55, 180);
-  border-radius: 40px;
-  box-shadow: 0 0 10px #d811cb;
+  color: #2a2734;
   cursor: pointer;
-  transition: color 0.35s ease, border 0.35s ease, box-shadow 0.35s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .cta-button:hover {

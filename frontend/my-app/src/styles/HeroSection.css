@@ -3,6 +3,17 @@
   font-family: poppins;
   src: url("../fonts/Poppins-Medium.ttf");
 }
+
+@font-face{
+  font-family: "clashDisplay";
+  src: url("../fonts/ClashDisplay-Variable.ttf");
+}
+
+@font-face{
+  font-family: "Supply";
+  src: url("../fonts/Supply-Medium.otf");
+}
+
   .hero-container {
     display: flex;
     align-items: center;
@@ -19,22 +30,23 @@
     max-width: 50%;
   }
   
-  h1 {
-    font-size: 3rem;
-    font-family: poppins;
+  .title {
+    font-size: 4.5rem;
+    font-family: clashDisplay;
+    font-weight: 800;
   }
   
   .highlight {
     color: #e84d9a;
-    font-family: poppins;
+    font-family: clashDisplay;
   }
   
-  h2 {
-    font-family: poppins;
+  .sub-title {
+    font-family: Supply;
     font-size: 1.5rem;
     font-weight: lighter;
     opacity: 0.8;
-    margin-top: 10px;
+    color:white;
   }
   
   .subtext {
@@ -52,13 +64,14 @@
   .use-tools-btn {
     background: linear-gradient(90deg, #a18cd1, #fbc2eb);
     border: none;
-    padding: 12px 24px;
+    padding: 14px 24px;
     border-radius: 25px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     color: #2a2734;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    margin-top:6px;
   }
   
   .use-tools-btn:hover {
@@ -70,11 +83,17 @@
     font-size: 2rem;
     margin-left: 15px;
     opacity: 0.7;
-    transition: transform 0.3s ease-in-out;
+    animation: goright 1.5s infinite;
+    scale:1.1;
   }
   
-  .button-container:hover .arrow {
-    transform: translateX(5px);
+  .button-container:hover {
+    transform: translateX(5px) infinite;
+  }
+
+  @keyframes goright {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(15px); }
   }
   
   /* Right Section - Image */
