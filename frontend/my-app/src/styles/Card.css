@@ -5,11 +5,11 @@
 
 .card {
     background: #292c43;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 40px;
+    padding: 40px;
     margin-bottom: 20px;
-    border: 2px solid rgb(72, 240, 201);
-    box-shadow: 0 0 7px rgb(72, 240, 201);
+    border: 2px solid #a18cd1;
+    box-shadow: 0 0 10px #a18cd1;
     color: white;
   }
   
@@ -31,7 +31,7 @@
     font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 30px;
     font-weight:bolder;
-    color:rgb(72, 240, 201);
+    color:white;
     margin: 5px 0;
   }
   
@@ -63,7 +63,7 @@
   .card-details {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: -10px;
   }
   
   .details-title {
@@ -86,21 +86,24 @@
   }
   
   .get-link {
-    padding: 8px 20px;
-    background: #45485f;
-    color: white;
+    margin-top: 2%;
+    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+    width: 100%;
+    max-width: 200px;
+    align-self: center;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 16px;
+    font-size: 1rem;
     font-weight: bold;
-    border: 2px solid rgb(166, 55, 180);
-    box-shadow: 0 0 10px #d811cb;
-    border-radius: 5px;
     cursor: pointer;
-    transition: color 0.35s ease, border 0.35s ease, box-shadow 0.35s ease;
+    transition: all 0.3s ease-in-out;
 }
 
 .get-link:hover {
-    color: rgb(72, 240, 201);
-    border: 2px solid rgb(72, 240, 201);
-    box-shadow: 0 0 7px rgb(72, 240, 201);
+  transform: scale(1.05);
+  opacity: 0.9;
 }
   
   .favorite {

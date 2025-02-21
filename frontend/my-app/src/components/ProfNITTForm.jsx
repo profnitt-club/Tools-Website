@@ -6,7 +6,7 @@ const ProfNITTForm = () => {
     <div id="explore" className="profnitt-form-container">
       {/* Header Section */}
       <div className="profnitt-form-header">
-        <h1 className="profnitt-form-title">JOIN ProfNITT Tools NOW!</h1>
+        <h1 className="profnitt-form-title">Join ProfNITT Tools Now!</h1>
         <h2 className="profnitt-form-subtitle">Let’s Build Your Trading Strategy with ProfNITT Tools</h2>
       </div>
 

@@ -1,4 +1,24 @@
 /* General Container */
+@font-face {
+  font-family: poppins;
+  src: url("../fonts/Poppins-Medium.ttf");
+}
+
+@font-face{
+  font-family: "clashDisplay";
+  src: url("../fonts/ClashDisplay-Variable.ttf");
+}
+
+@font-face{
+  font-family: "Supply";
+  src: url("../fonts/Supply-Medium.otf");
+}
+
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/Montserrat-Bold.ttf");
+}
+
 .how-to-trade {
   color: #ffffff;
   font-family: "Inter", sans-serif;
@@ -7,50 +27,57 @@
 
 /* Header Section */
 .trade-header {
-  background-image: url("../assets/maskgroup.png");
+  position: relative;
+  background: radial-gradient(circle, #3e3c63, #262230);
   background-repeat: no-repeat;
   background-size: cover;
   background-position-y: bottom;
   border-radius: 150px;
+  border: 2px solid #a18cd1;
+  box-shadow: 0 0 10px #a18cd1;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4.5rem;
   width: 90%;
-  padding: 20px;
+  padding-top: 25px;
+  padding-bottom: 35px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .trade-title {
-  font-size: 2rem;
+  font-family:clashDisplay;
+  word-spacing: 6px;;
+  font-size: 2.2rem;
   font-weight: bold;
 }
 
 .trade-subtitle {
-  font-size: 1.25rem;
+  font-family: poppin;
+  font-size: 1.5rem;
+  letter-spacing: 2.5px;
+  word-spacing: 2px;
   margin-top: 0.5rem;
 }
 
 .scroll-indicator {
+  position: absolute;
+  bottom: -40px; /* Moves it just below the trade-header */
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #C0B7E8;
+  border: 10px solid #000000d7;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
-  align-items: first baseline;
+  align-items: center;
   padding: 5px;
-  margin: 1rem auto 0;
 }
 
 .arrow-down {
-  width: 55px;
-  height: 30px;
-  animation: bounce 1.5s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
+  width: 58px;
+  align-self: center;
 }
 
 /* Instructions Section */
@@ -66,7 +93,7 @@
 
 .instructions-text-container{
   display: flex;
-  padding: 20px 40px;
+  padding: 20px 83px;
   justify-content: space-between;
 }
 
@@ -75,20 +102,25 @@
 }
 
 .instructions-title {
+  font-family: clashDisplay;
   position: relative;
   text-align: left;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   font-weight: bold;
   text-transform: uppercase;
+  word-spacing: 10px;
 }
 
 .instructions-subtitle {
+  font-family: poppin;
   position: relative;
   text-align: left;
-  display: flex;
-  gap: 10px;
-  font-size: 1.5rem;
-  align-items: center;
+  letter-spacing: 4.2px;
+  word-spacing: 1px;
+  font-size: 1.8rem;
+  color: white;
+  margin-top: 5px;
+  gap:10px;
 }
 
 .rightArrow {
@@ -103,49 +135,57 @@
 
 .instructions-description {
   width: 50%;
-  font-size: 1rem;
   line-height: 1.5;
   text-align: left;
+  font-family:poppins;
+  font-size: 1.2rem;
+  padding-bottom: -25px;
 }
 
 /* Steps Section */
 .steps-container {
-  width:100%;
-  background-image: url("../assets/vector.png");
-  background-size:contain;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 130px;
+  padding: 40px;
+  position: relative;
+  background-color: #343045; /* Dark background like in the image */
+  background-image: url("../assets/vector.png"); /* Path curve */
+  background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 120px;
-  padding: 20px;
 }
 
 .step {
   text-align: center;
-  width: 45%;
-  max-width: 110px;
+  position: relative;
 }
 
 .step-circle {
   background: linear-gradient(to right, #5F5C8E, #A6A1C6);
   color: rgb(42, 39, 52);
-  font-size: 2rem;
+  font-size: 64px;
   font-weight: bold;
-  width: 110px;
-  height: 110px;
+  width: 159px;
+  height: 159px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 10px solid #000000d7;
-  margin: 0 auto 0.5rem;
+  border: 15px solid #0D0D0D, ; /* Transparent border */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.634);
+  position: relative;
+  z-index: 1;
 }
 
 .step-label {
-  font-size: 1rem;
+  font-family:poppins;
+  font-size: 1.3rem;
   font-weight: bold;
+  color: whitesmoke;
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {

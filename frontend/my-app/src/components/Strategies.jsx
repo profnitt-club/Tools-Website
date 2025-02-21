@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Card from './Card';
 import "../styles/Strategies.css";
 import logo from "../assets/logo.png";
+import { FaSearchDollar } from "react-icons/fa";
 
 const Strategies = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,15 +77,14 @@ const Strategies = () => {
     <div className="main-container">
       {/* Search Bar */}
       <div className="search-bar">
-        <a href="/"><img src={logo} className="profnitt-logo" alt="ProfNIT Logo" /></a>
-        <input
-          type="text"
-          className="search"
-          placeholder="Search strategies..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+  <input
+    type="text"
+    className="search"
+    placeholder="Search Strategies..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+</div>
 
       {/* Cards */}
       <div className="strategy-container">

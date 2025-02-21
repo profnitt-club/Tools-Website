@@ -61,7 +61,7 @@ const Navbar = () => {
       <ul className="nav-links">
         <li><a href="#about">ABOUT</a></li>
         <li><a href="#services">SERVICES</a></li>
-        <li onClick={handleClick()}><a >TOOLS</a></li>
+        <li><a onClick={handleClick} style={{ cursor: "pointer" }}>TOOLS</a></li>
         <li><a href="#explore">EXPLORE</a></li>
       </ul>
 

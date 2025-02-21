@@ -1,5 +1,25 @@
 /* ProfNITTFeatures.css */
 
+@font-face {
+  font-family: poppins;
+  src: url("../fonts/Poppins-Medium.ttf");
+}
+
+@font-face{
+  font-family: "clashDisplay";
+  src: url("../fonts/ClashDisplay-Variable.ttf");
+}
+
+@font-face{
+  font-family: "Supply";
+  src: url("../fonts/Supply-Medium.otf");
+}
+
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/Montserrat-Bold.ttf");
+}
+
 .profnitt-features-container {
   background-color: #343045; /* Dark purple background */
   color: white;
@@ -22,21 +42,24 @@
 }
 
 .profnitt-main-title {
-  font-size: 2.8rem;
+  font-family: clashDisplay;
+  font-size: 2.7rem;
   font-weight: bold;
   margin: 0;
 }
 
 .profnitt-sub-title {
+  font-family: poppin;
   font-size: 2rem;
-  color: #c0c0df;
+  color: white;
   margin: 10px 0;
 }
 
 .profnitt-description {
+  font-family: poppins;
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #d3d3eb;
+  color: whitesmoke;
   max-width: 800px;
   margin: 20px auto;
 }
@@ -94,36 +117,38 @@
 
 /* Titles & Text */
 .profnitt-feature-title {
-  font-size: 1.4rem;
+  font-family: poppins;
+  font-size: 1.3rem;
   font-weight: bold;
   margin: 16px 0 10px;
 }
 
 .profnitt-feature-description {
+  font-family: poppins;
   font-size: 1rem;
   line-height: 1.5;
-  color: #e0dff7;
+  color: whitesmoke;
   margin-bottom: 20px;
 }
 
 /* CTA Button */
 .profnitt-cta-button {
-  margin-top: 2%;
-  background-color: #8176AF;
+  margin-top: 3%;
+  background: linear-gradient(90deg, #a18cd1, #fbc2eb);
   width: 200px;
-  color: white;
+  color: black;
   border: none;
   border-radius: 30px;
   padding: 14px 18px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease-in-out;
 }
 
 /* Button hover effect */
 .profnitt-cta-button:hover {
-  background-color: #58357b;
+  transform: scale(1.05);
 }
 
 /* Button scaling for smaller screens */

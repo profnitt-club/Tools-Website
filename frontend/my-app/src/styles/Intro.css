@@ -115,15 +115,6 @@
   max-width: 450px;
 }
 
-/* Responsive Card */
-.card {
-  background-color: #403f63;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
 /* Adjustments for Small Screens */
 @media (max-width: 768px) {
   .main-title {
