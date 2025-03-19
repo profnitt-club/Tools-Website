@@ -10,6 +10,7 @@
 }
 
 .navbar {
+  position:relative;
   display: flex;
   flex-wrap: wrap;  /* Allow items to wrap on small screens */
   justify-content: space-between;
