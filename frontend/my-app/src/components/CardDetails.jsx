@@ -15,9 +15,6 @@ const CardDetails = () => {
 
   return (
     <div className='tool-container'>
-        <div className='prof-header'>
-            <a href="/"><img src={logo} className="profnitt-logo" alt="ProfNIT Logo" /></a>
-        </div>
         <div className='tool-title'>
             {title}
         </div>

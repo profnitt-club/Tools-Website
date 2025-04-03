@@ -26,7 +26,7 @@ const ProfNITTForm = () => {
         <div className="profnitt-form-row">
           <textarea placeholder="Tell Us Something..." className="profnitt-textarea"></textarea>
         </div>
-        <button type="submit" className="profnitt-button">Login</button>
+        <button type="submit" className="profnitt-button">Submit</button>
       </form>
     </div>
   );

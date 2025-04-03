@@ -1,24 +1,32 @@
-import React from 'react'
-import "../styles/footer.css"
+import React from "react";
+import "../styles/Footer.css";
+import logo from "../assets/logo.png";
+import { FaFacebook } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6"
+import { FaTwitter } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="profnitt-form-footer">
-        <div className="profnitt-footer-left">
-          <p>© ProfNITT Tools 2024 Developed By: <span style={{ color: "#fa07c9", fontSize:"19px"}}>Divyansh Agrawal</span></p>
-          <a href="#">Privacy policy</a>
-          <a href="#">Cookies policy</a>
-          
+    <footer className="footer">
+      <div className="footer-content">
+        <span className="copyright">©2025 <strong>PROFNITT Tools</strong></span>
+        <div className="logo">
+          <span className="pizza-icon"><img src={logo}></img></span>
+          <span className="love-text"></span>
         </div>
-        <div className="profnitt-footer-right">
-          <p>Updates right to your Inbox</p>
-          <div className="profnitt-subscribe">
-            <input type="email" placeholder="Email Address" className="profnitt-subscribe-input" />
-            <button className="profnitt-subscribe-button">Send</button>
-          </div>
+        <div className="social-icons">
+          <i className="fab fa-facebook-f"><FaFacebook/></i>
+          <i className="fab fa-instagram"><FaInstagram/></i>
+          <i className="fab fa-behance"><FaTwitter/></i>
+          <i className="fab fa-soundcloud"><FaLinkedinIn/></i>
         </div>
       </div>
-  )
-}
+      <div className="sentiments">
+        Designed and Deployed by Divyansh Agrawal
+      </div>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
