@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
 
-  /*useEffect(() => {
+  useEffect(() => {
     // Check authentication status after redirect
     fetch("http://localhost:3000/profile", {
       credentials: "include", // Send cookies with the request
@@ -44,7 +44,7 @@ const Navbar = () => {
       .catch((err) => console.error("Logout failed:", err));
   };
 
-  const navigate = useNavigate();*/
+  const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/strategies`);
