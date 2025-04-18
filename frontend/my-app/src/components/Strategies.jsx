@@ -3,6 +3,7 @@ import Card from './Card';
 import "../styles/Strategies.css";
 import logo from "../assets/logo.png";
 import { FaSearchDollar } from "react-icons/fa";
+import Footer from './Footer';
 
 const Strategies = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -100,6 +101,7 @@ const Strategies = () => {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

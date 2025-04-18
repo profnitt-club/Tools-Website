@@ -10,6 +10,13 @@ const Navbar = () => {
     navigate(`/strategies`);
   };
 
+  const handleScrollTo = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <nav className="navbar">
       {/* Logo */}
@@ -19,10 +26,38 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       <ul className="nav-links">
-        <li><a href="#about">ABOUT</a></li>
-        <li><a href="#services">SERVICES</a></li>
-        <li><a onClick={handleClick} style={{ cursor: "pointer" }}>TOOLS</a></li>
-        <li><a href="#explore">EXPLORE</a></li>
+        <li>
+          <a
+            onClick={() => handleScrollTo("about")}
+            style={{ cursor: "pointer" }}
+          >
+            ABOUT
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={() => handleScrollTo("services")}
+            style={{ cursor: "pointer" }}
+          >
+            SERVICES
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={handleClick}
+            style={{ cursor: "pointer" }}
+          >
+            TOOLS
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={() => handleScrollTo("explore")}
+            style={{ cursor: "pointer" }}
+          >
+            EXPLORE
+          </a>
+        </li>
       </ul>
 
       {/* Buttons */}

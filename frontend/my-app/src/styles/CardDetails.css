@@ -18,11 +18,12 @@
     display: flex;
     flex-direction: column;
     row-gap: 50px;
-    background-color: #2a2734;
+    background-color: #343045;
     width: 100%;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    padding-top:20px;
 }
 
 .tool-title {

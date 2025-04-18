@@ -7,14 +7,13 @@
     position: relative;
     overflow-y: auto; /* Keeps scrolling enabled if content overflows */
     overflow-x: hidden;
-    padding: 1rem; /* Adds spacing for better mobile appearance */
     box-sizing: border-box;
 }
 /* old color= #2a2734
 /* Tablet and smaller desktops */
 @media (max-width: 1200px) {
     .main {
-        padding: 0.8rem;
+        padding: 0;
         width:100vw;
     }
 }
@@ -22,7 +21,7 @@
 /* Mobile Devices */
 @media (max-width: 768px) {
     .main {
-        padding: 0.5rem;
+        padding: 0;
         width:100vw;
         min-height: 100dvh;
     }
