@@ -26,6 +26,7 @@
   .logo img {
     height: 75px;
     scale:1.4;
+    cursor: pointer;
   }
   
   /* Navigation Links */

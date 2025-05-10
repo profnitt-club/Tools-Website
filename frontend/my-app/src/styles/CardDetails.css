@@ -124,6 +124,9 @@
     padding: 5px 15px;
     border-radius: 5px;
     font-size: 1rem;
+    max-width: 100%;
+    word-break: break-word;
+    text-align: center;
 }
 
 .performance-params {
@@ -138,6 +141,8 @@
     width: 90%;
     max-width: 800px;
     margin: auto;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .perf-title {
@@ -154,7 +159,11 @@
     justify-content: center;
     gap: 15px;
     padding: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
+
 
 .get-linkofProject {
     margin-top: 2%;
@@ -221,57 +230,92 @@ iframe {
 }
 
 @media screen and (max-width: 768px) {
+    .tool-container {
+        padding-top: 10px;
+        row-gap: 30px;
+    }
+
     .tool-title {
-        font-size: 2rem;
-        padding: 15px;
+        font-size: 1.8rem;
+        padding: 12px;
+        width: 90%;
     }
 
-    .tagbox {
-        width: 100%;
-        max-width: 350px;
-    }
-
-    .performance-params {
-        padding: 30px;
-    }
-
-    .perf-title {
+    .ab {
         font-size: 1.5rem;
     }
 
+    .tagbox, .tool-description {
+        max-width: 90%;
+        margin: auto;
+    }
+
+    .performance-params {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .params {
+        gap: 10px;
+    }
+
+    .get-linkofProject {
+        max-width: 180px;
+        font-size: 0.9rem;
+        padding: 10px 14px;
+    }
+
+    .demo-title {
+        font-size: 1.6rem;
+    }
+
     iframe {
-        height: 300px;
+        height: 280px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .tool-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         padding: 10px;
     }
 
-    .contributors {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .about-strategy {
-        margin: 10px;
-    }
-
-    .tagbox {
-        width: 100%;
-    }
-
-    .performance-params {
-        padding: 20px;
-    }
-
-    .perf-title {
+    .ab, .demo-title, .perf-title {
         font-size: 1.2rem;
     }
 
+    .contributors {
+        font-size: 0.9rem;
+    }
+
+    .contributor {
+        font-size: 0.9rem;
+    }
+
+    .tool-tag {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+    }
+
+    .params {
+        gap: 8px;
+    }
+
+    .get-linkofProject {
+        max-width: 160px;
+        font-size: 0.85rem;
+    }
+
     iframe {
-        height: 250px;
+        height: 220px;
+    }
+
+    .tagbox {
+        padding: 10px;
+    }
+
+    .desc {
+        font-size: 0.95rem;
     }
 }
+

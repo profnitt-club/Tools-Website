@@ -3,7 +3,7 @@ import "../styles/Navbar.css";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const ToolsNavbar = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -32,34 +32,10 @@ const Navbar = () => {
       <ul className="nav-links">
         <li>
           <a
-            onClick={() => handleScrollTo("about")}
-            style={{ cursor: "pointer" }}
-          >
-            ABOUT
-          </a>
-        </li>
-        <li>
-          <a
-            onClick={() => handleScrollTo("services")}
-            style={{ cursor: "pointer" }}
-          >
-            SERVICES
-          </a>
-        </li>
-        <li>
-          <a
             onClick={handleClick}
             style={{ cursor: "pointer" }}
           >
             TOOLS
-          </a>
-        </li>
-        <li>
-          <a
-            onClick={() => handleScrollTo("explore")}
-            style={{ cursor: "pointer" }}
-          >
-            EXPLORE
           </a>
         </li>
       </ul>
@@ -70,6 +46,6 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
+}
 
-export default Navbar;
+export default ToolsNavbar

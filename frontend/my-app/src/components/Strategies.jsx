@@ -45,9 +45,7 @@ const Strategies = () => {
       returns: "N/A",
       monthlyFee: "Free +5%",
       contributors: ["Shiwang Upadhyay", "Siddhant Mishra", "Pratyush Arya"],
-      params: [{"Sharpe Ratio":"3.85"},{"Win Rate":"72%"},{"Total Trades":"100"},
-        {"Total Winning Trades":"72%"}, {"Total Loosing Trades":"28"}, {"Max Drawdown":"3.5"}
-      ],
+      params: [],
       video:"",
       gitlink:"https://github.com/shiwangupadhyay/RSI-Screener",
     },

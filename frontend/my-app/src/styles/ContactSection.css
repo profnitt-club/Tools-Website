@@ -59,38 +59,93 @@
     background: rgba(255, 255, 255, 0.2);
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .contact-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 30px; /* Reduce gap */
-        padding: 15px; /* Adjust padding for smaller screens */
-        width: 100%; /* Ensure it fits inside mobile screens */
-        margin: 20px auto; /* Center the container */
-    }
+  @media (max-width: 1024px) and (min-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    gap: 40px;
+    padding: 25px;
+    margin: 30px auto;
+  }
 
-    .contact-item {
-        flex-direction: column; /* Stack icon and text */
-        gap: 10px; /* Reduce spacing */
-    }
+  .contact-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+  }
 
-    .icon {
-        font-size: 35px; /* Reduce icon size */
-    }
+  .icon {
+    font-size: 40px;
+  }
 
-    h3 {
-        font-size: 1rem; /* Adjust heading size */
-    }
+  h3 {
+    font-size: 1.1rem;
+  }
 
-    p {
-        font-size: 0.85rem; /* Adjust paragraph size */
-    }
+  p {
+    font-size: 0.9rem;
+  }
 
-    .divider {
-        display: none; /* Hide dividers in mobile view */
-    }
+  .divider {
+    height: 1px;
+    width: 80%;
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Small devices (phones, below 768px) */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+    padding: 15px;
+    width: 95%;
+    margin: 20px auto;
+  }
+
+  .contact-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .icon {
+    font-size: 35px;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+/* Extra small devices (below 480px) */
+@media (max-width: 480px) {
+  .contact-container {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .icon {
+    font-size: 30px;
+  }
+
+  h3 {
+    font-size: 0.95rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
 }
 
   

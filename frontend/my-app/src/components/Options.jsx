@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import "../styles/options.css"
 import liveMarket from "../assets/liveMarket.png"
 import metrics from "../assets/metrics.png"
@@ -32,6 +33,12 @@ const Options = () => {
           image: userFriendly,
         },
       ];
+
+      const navigate = useNavigate();
+
+      const handleClick = () => {
+        navigate(`/strategies`);
+      };
     
       return (
         <div id="services" className="profnitt-features-container">
@@ -60,7 +67,7 @@ const Options = () => {
               ))}
             </div>
           </div>
-          <button className="profnitt-cta-button">TRY IT NOW</button>
+          <button className="profnitt-cta-button" onClick={handleClick}>TRY IT NOW</button>
         </div>
       );
 }

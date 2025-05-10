@@ -1,13 +1,9 @@
-/* ProfNITT Form Styles */
-
+/* Base Container */
 .profnitt-form-container {
   font-family: 'Poppins', sans-serif;
   color: #ffffff;
   background: radial-gradient(circle, #403A5F, #211E2E);
-  padding-top: 30px;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-bottom: 50px;
+  padding: 40px 50px;
   border-radius: 100px;
   border: 2px solid #a18cd1;
   box-shadow: 0 0 10px #a18cd1;
@@ -15,11 +11,11 @@
   width: 70%;
   max-width: 800px;
   height: auto;
+  box-sizing: border-box;
 }
 
-/* Header Section */
+/* Header */
 .profnitt-form-header {
-  
   font-family: clashDisplay;
   text-align: center;
   margin-bottom: 30px;
@@ -29,7 +25,7 @@
   font-size: 2.5rem;
   word-spacing: 6px;
   font-weight: 600;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 
 .profnitt-form-subtitle {
@@ -37,7 +33,7 @@
   font-weight: 300;
 }
 
-/* Form Section */
+/* Form Styling */
 .profnitt-form {
   display: flex;
   flex-direction: column;
@@ -46,38 +42,42 @@
 
 .profnitt-form-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 15px;
 }
 
 .profnitt-input,
 .profnitt-textarea {
   flex: 1;
+  min-width: 45%;
   background: #2c2c3c;
   border: none;
   border-radius: 30px;
-  border: solid whitesmoke;
-  padding: 10px 15px;
+  border: solid 1px whitesmoke;
+  padding: 12px 18px;
   color: #ffffff;
   font-size: 16px;
   outline: none;
   height: 50px;
+  box-sizing: border-box;
 }
 
 .profnitt-textarea {
-  resize: none;
   height: 100px;
+  resize: none;
+  min-width: 100%;
 }
 
 .profnitt-button {
   margin-top: 2%;
   background: linear-gradient(90deg, #a18cd1, #fbc2eb);
   width: 50%;
-  max-width: 200px;
+  max-width: 250px;
   align-self: center;
   color: black;
   border: none;
   border-radius: 30px;
-  padding: 12px 16px;
+  padding: 12px 20px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -89,48 +89,64 @@
   opacity: 0.9;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
   .profnitt-form-container {
-      width: 90%;
-      padding: 30px;
-      border-radius: 50px;
+    width: 85%;
+    padding: 40px 30px;
+    border-radius: 70px;
   }
 
   .profnitt-form-title {
-      font-size: 28px;
+    font-size: 2.2rem;
   }
 
   .profnitt-form-subtitle {
-      font-size: 16px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profnitt-form-container {
+    width: 90%;
+    padding: 30px 20px;
+    border-radius: 50px;
   }
 
-  .profnitt-form-row {
-      flex-direction: column;
-      gap: 10px;
+  .profnitt-form-title {
+    font-size: 1.8rem;
+  }
+
+  .profnitt-form-subtitle {
+    font-size: 1rem;
+  }
+
+  .profnitt-input,
+  .profnitt-textarea {
+    min-width: 100%;
   }
 
   .profnitt-button {
-      width: 80%;
+    width: 80%;
   }
 }
 
 @media (max-width: 480px) {
   .profnitt-form-container {
-      width: 95%;
-      padding: 20px;
-      border-radius: 30px;
+    width: 95%;
+    padding: 25px 15px;
+    border-radius: 30px;
   }
 
   .profnitt-form-title {
-      font-size: 24px;
+    font-size: 1.5rem;
   }
 
   .profnitt-form-subtitle {
-      font-size: 14px;
+    font-size: 0.95rem;
   }
 
   .profnitt-button {
-      width: 100%;
+    width: 100%;
   }
 }

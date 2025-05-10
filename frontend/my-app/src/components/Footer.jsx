@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Footer.css";
 import logo from "../assets/logo.png";
 import { FaFacebook } from "react-icons/fa";
@@ -9,6 +10,10 @@ import { SiGmail } from "react-icons/si";
 import { IoMdCall } from "react-icons/io";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const handleLogoClick=() =>{
+    navigate(`/`);
+  }
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -18,7 +23,7 @@ const Footer = () => {
           <span className="copyright"><i><IoMdCall/></i><strong>+91 87664 38933</strong></span>
         </div>
         <div className="logo">
-          <span className="pizza-icon"><img src={logo}></img></span>
+          <span className="pizza-icon"><img src={logo} onClick={handleLogoClick}></img></span>
           <span className="love-text">The Finanace & Investment Club of Nit Trichy</span>
         </div>
         <div className="social-icons">
@@ -27,9 +32,6 @@ const Footer = () => {
           <a href="https://github.com/profnitt-club"><i className="fab fa-behance"><FaGithub/></i></a>
           <a href="https://www.linkedin.com/company/profnitt/"><i className="fab fa-soundcloud"><FaLinkedinIn/></i></a>
         </div>
-      </div>
-      <div className="sentiments">
-        Developed and Designed by Divyansh Agrawal & Amey Munmane
       </div>
     </footer>
   );
