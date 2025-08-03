@@ -85,7 +85,12 @@ const News = () => {
             </section>
         </>
       )}
-
+      <div className="news-disclaimer-wrapper">
+        <p className='disclaimer-text'>Disclaimer </p>
+        <p className="news-disclaimer">
+          This news content is sourced from publicly available sites and rewritten using AI. Insights are AI-generated and for informational purposes only, not financial or investment advice.
+        </p>
+      </div>
       <Footer />
     </div>
   );
