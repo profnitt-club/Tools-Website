@@ -10,6 +10,10 @@ const ToolsNavbar = () => {
     navigate(`/strategies`);
   };
 
+  const handleNewsClick = () => {
+    navigate(`/news`);
+  }
+
   const handleScrollTo = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -36,6 +40,14 @@ const ToolsNavbar = () => {
             style={{ cursor: "pointer" }}
           >
             TOOLS
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={handleNewsClick}
+            style={{ cursor: "pointer" }}
+          >
+            NEWS
           </a>
         </li>
       </ul>
