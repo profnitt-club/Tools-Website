@@ -7,12 +7,14 @@ import Footer from './Footer';
 const News = () => {
   const [newsData, setNewsData] = useState([]);
   const [insightData, setInsightData] = useState([]);
+  const [indicesData, setIndicesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   console.log("API Base URL:", import.meta.env.VITE_API_BASE);
 
   const NEWS_URL = `${import.meta.env.VITE_API_BASE}/api/news`;
   const INSIGHT_URL = `${import.meta.env.VITE_API_BASE}/api/insights`;
+  const INDICES_URL =  `${import.meta.env.VITE_API_BASE}/api/indices`;
 
 
   useEffect(() => {
@@ -25,7 +27,13 @@ const News = () => {
         const res2=await fetch(INSIGHT_URL);
         const data2= await res2.json();
         setInsightData(data2);
-        //console.log(data);
+
+        const res3=await fetch(INDICES_URL);
+        const data3= await res3.json();
+        setIndicesData(data3);
+        
+        console.log(data3);
+
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to fetch news/insights.");
