@@ -51,7 +51,7 @@ const News = () => {
         <p className="news-error">{error}</p>
       ) : (
         <>
-          <h1 className="news-heading"> Market Indices </h1>
+          <h1 className="news-heading"> Market WatchList </h1>
           <section className="news-section">
             <div className="indices-card-grid">
               {indicesData.map((index, idx) => (
