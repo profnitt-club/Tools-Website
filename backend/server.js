@@ -12,7 +12,7 @@ fetchAndStoreData();
 
 app.use("/api/news", require("./routes/news"));
 app.use("/api/insights", require("./routes/insights"));
-app.use("api/indices", require("./routes/indices"));
+app.use("/api/indices", require("./routes/indices"));
 
 
 cron.schedule("0 6,18 * * *", fetchAndStoreData);
