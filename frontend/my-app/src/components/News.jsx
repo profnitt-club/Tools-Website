@@ -51,23 +51,22 @@ const News = () => {
         <p className="news-error">{error}</p>
       ) : (
         <>
-          <h1 className="news-heading"> Market WatchList </h1>
           <section className="news-section">
             <div className="indices-card-grid">
               {indicesData.map((index, idx) => (
-                <div className="indices-card" key={idx}>
+                <div key={idx} className="indices-card">
                   <h3 className="index-title">{index.name}</h3>
                   <p className="index-price">{index.price}</p>
-                  <div className="flex items-center gap-1 mt-1">
+                  <div className="change-container">
                     {index.change >= 0 ? (
                       <>
                         <ArrowUp className="up-icon" />
-                        <span className="arrow-up">{index.change}</span>
+                        <span className="arrow-up">{index.change}%</span>
                       </>
                     ) : (
                       <>
                         <ArrowDown className="down-icon" />
-                        <span className="arrow-down">{index.change}</span>
+                        <span className="arrow-down">{index.change}%</span>
                       </>
                     )}
                   </div>

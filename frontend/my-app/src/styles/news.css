@@ -155,68 +155,85 @@
   margin: 0 auto;
 }
 
-.indices-card {
-    background: #292c43;
-    border-radius: 40px;
-    padding: 30px;
-    margin-bottom: 20px;
-    border: 2px solid #a18cd1;
-    box-shadow: 0 0 10px #a18cd1;
-    color: white;
-    transition: all 0.3s ease;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 80px;
+.news-section {
+  margin-top: 10px;
 }
 
 .indices-card-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.5rem;
-  width: 100%;
-  padding: 0 40px;
-  box-sizing: border-box;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
-.index-title{
-    font-family: poppins;
-    font-size: 23px;
-    font-weight: bold;
-    color: white;
+.indices-card {
+  background-color: #000;
+  color: #fff;
+  padding: 8px 27px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* spread left, center, right */
+  gap: 3px;
+  font-family: Arial, sans-serif;
 }
 
+/* Left-aligned title */
+.index-title {
+  font-weight: 600;
+  flex: 1; /* takes left side */
+  text-align: left;
+
+}
+
+/* Centered price */
 .index-price {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 19px;
-    line-height: 1.6;
-    color: #f4f4f4;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    white-space: pre-wrap;
-    letter-spacing: 0.3px;
+  font-size: large;
+  font-weight: 700;
+  flex: 1;
+  text-align: center;
+  margin-top: 30px;
 }
 
-.down-icon{
-    height:30px;
-    width:40px;
-    color:red;
-    font-weight: bold;
-    scale:1.2;
+/* Right-aligned percent change */
+.change-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: flex-end;
 }
 
-.arrow-up{
-    color:lime;
-    font-weight: bold;
-    font-size: 2rem;
+.up-icon {
+  color: #22c55e;
+  width: 14px;
+  height: 14px;
+  margin-top: 15px;
+  scale:1.7;
 }
 
-.arrow-down{
-    color:red;
-    font-weight: bold;
-    font-size: 1.2rem;
+.down-icon {
+  color: #ef4444;
+  width: 14px;
+  height: 14px;
+  margin-top: 15px;
+  scale:1.7;
 }
+
+.arrow-up {
+  font-size:large;
+  color: #22c55e;
+  font-weight: 500;
+  margin-top: 15px;
+}
+
+.arrow-down {
+  font-size:large;
+  color: #ef4444;
+  font-weight: 500;
+  margin-top: 15px;
+}
+
+
 
 /* ------------------- Responsive ------------------- */
 
