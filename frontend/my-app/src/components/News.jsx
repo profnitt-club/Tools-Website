@@ -14,24 +14,33 @@ const News = () => {
 
   const NEWS_URL = `${import.meta.env.VITE_API_BASE}/api/news`;
   const INSIGHT_URL = `${import.meta.env.VITE_API_BASE}/api/insights`;
-  const INDICES_URL =  `${import.meta.env.VITE_API_BASE}/api/indices`;
+  const INDICES_URL = "https://news-insights-api-e9caasgqa7fje9ag.centralindia-01.azurewebsites.net/indices_price_data";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch news
         const res = await fetch(NEWS_URL);
         const data = await res.json();
         setNewsData(data || []);
 
+        // Fetch insights
         const res2 = await fetch(INSIGHT_URL);
         const data2 = await res2.json();
         setInsightData(data2);
 
+        // Fetch indices
         const res3 = await fetch(INDICES_URL);
         const data3 = await res3.json();
-        setIndicesData(data3 || []);
-        
-        console.log("Indices Data:", data3);
+
+        // Transform object -> array
+        const formattedIndices = Object.entries(data3).map(([name, values]) => ({
+          name,
+          ...values, // symbol, price, change, percent_change
+        }));
+
+        setIndicesData(formattedIndices);
+        console.log("Formatted Indices Data:", formattedIndices);
 
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -51,6 +60,7 @@ const News = () => {
         <p className="news-error">{error}</p>
       ) : (
         <>
+          {/* 📊 Indices Section */}
           <section className="news-section">
             <div className="indices-card-grid">
               {indicesData.map((index, idx) => (
@@ -61,12 +71,16 @@ const News = () => {
                     {index.change >= 0 ? (
                       <>
                         <ArrowUp className="up-icon" />
-                        <span className="arrow-up">{index.change}%</span>
+                        <span className="arrow-up">
+                           {index.percent_change}%
+                        </span>
                       </>
                     ) : (
                       <>
                         <ArrowDown className="down-icon" />
-                        <span className="arrow-down">{index.change}%</span>
+                        <span className="arrow-down">
+                          {index.percent_change}%
+                        </span>
                       </>
                     )}
                   </div>
@@ -75,25 +89,27 @@ const News = () => {
             </div>
           </section>
 
-          <h1 className='news-heading'> Market News</h1>
+          {/* 📰 News Section */}
+          <h1 className="news-heading">Market News</h1>
           <section className="news-section">
             <div className="news-card-grid">
               {newsData.map((item, idx) => (
                 <div className="news-card" key={idx}>
                   <h3>{item.title}</h3>
-                  <p className='news-card-text'>{item.article}</p>
+                  <p className="news-card-text">{item.article}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <h1 className='news-heading'> Insights</h1>
+          {/* 💡 Insights Section */}
+          <h1 className="news-heading">Insights</h1>
           <section className="news-section">
             <div className="news-card-grid">
               {insightData.map((item, idx) => (
                 <div className="news-card" key={idx}>
                   <h3>{item.stock_or_sector || "Insight"}</h3>
-                  <p className='news-card-text'>{item.insight}</p>
+                  <p className="news-card-text">{item.insight}</p>
                   <p className="news-sentiments">
                     Sentiment:{" "}
                     <span
@@ -114,13 +130,16 @@ const News = () => {
           </section>
         </>
       )}
+
+      {/* 📌 Disclaimer */}
       <div className="news-disclaimer-wrapper">
-        <p className='disclaimer-text'>Disclaimer </p>
+        <p className="disclaimer-text">Disclaimer</p>
         <p className="news-disclaimer">
           This news content is sourced from publicly available sites and rewritten using AI. 
           Insights are AI-generated and for informational purposes only, not financial or investment advice.
         </p>
       </div>
+
       <Footer />
     </div>
   );
