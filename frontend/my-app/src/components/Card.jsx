@@ -2,12 +2,17 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Card.css";
 
-const Card = ({ title, createdTime, description, tags, trades, drawdown, minCapital, winRate, returns, monthlyFee, contributors, params, video, gitlink }) => {
+const Card = ({ id, title, createdTime, description, tags, trades, drawdown, minCapital, winRate, returns, monthlyFee, contributors, params, video, gitlink }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/card-details`, {
-      state: { title, createdTime, description, tags, trades, drawdown, minCapital, winRate, contributors, params, video, gitlink }
-    });
+    if (id) {
+      navigate(`/projects/${id}`);
+    } else {
+      // Fallback for hardcoded data without DB id
+      navigate(`/card-details`, {
+        state: { title, createdTime, description, tags, trades, drawdown, minCapital, winRate, contributors, params, video, gitlink }
+      });
+    }
   };
   return (
     <div className="card">
@@ -23,7 +28,7 @@ const Card = ({ title, createdTime, description, tags, trades, drawdown, minCapi
       <p className="card-description">{description} </p>
       <p className="card-by">by: <a href="">ProfNITT</a></p>
       <div className="card-tags">
-        {tags.map((tag, index) => (
+        {(tags || []).map((tag, index) => (
           <span key={index} className="tag">{tag}</span>
         ))}
       </div>
