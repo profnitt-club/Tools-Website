@@ -55,7 +55,11 @@ async function fetchAndStoreData() {
 
     console.log('✅ External data fetched and stored successfully.');
   } catch (err) {
-    console.error("Error in fetchAndStoreData:", err);
+    if (err.response) {
+      console.error("❌ External API Error in fetchAndStoreData:", err.response.status, err.response.data?.message || err.message);
+    } else {
+      console.error("❌ Error in fetchAndStoreData:", err.message);
+    }
   }
 }
 

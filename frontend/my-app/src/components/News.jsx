@@ -17,39 +17,26 @@ const News = () => {
   const INDICES_URL = "https://news-insights-api-e9caasgqa7fje9ag.centralindia-01.azurewebsites.net/indices_price_data";
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch news
-        const res = await fetch(NEWS_URL);
-        const data = await res.json();
-        setNewsData(data || []);
+    // TEMPORARY STATIC DATA (External API is out of quota)
+    setNewsData([
+      { title: "Market hits new high", article: "The stock market hit a new all-time high today amid tech rally." },
+      { title: "Federal Reserve holds rates", article: "The Fed announced it will keep interest rates steady for another month." },
+      { title: "Oil prices surge", article: "Global oil prices saw a significant increase due to supply concerns." }
+    ]);
+    
+    setInsightData([
+      { stock_or_sector: "Technology", insight: "AI continues to drive massive growth in the tech sector.", sentiment: "positive" },
+      { stock_or_sector: "Real Estate", insight: "High mortgage rates are slowing down residential real estate.", sentiment: "negative" },
+      { stock_or_sector: "Energy", insight: "Renewables are gaining traction but traditional energy remains stable.", sentiment: "neutral" }
+    ]);
 
-        // Fetch insights
-        const res2 = await fetch(INSIGHT_URL);
-        const data2 = await res2.json();
-        setInsightData(data2);
+    setIndicesData([
+      { name: "NIFTY 50", price: "24,000.00", change: 150.5, percent_change: 0.63 },
+      { name: "SENSEX", price: "79,000.00", change: 500.2, percent_change: 0.64 },
+      { name: "BANKNIFTY", price: "52,000.00", change: -100.0, percent_change: -0.19 }
+    ]);
 
-        // Fetch indices
-        const res3 = await fetch(INDICES_URL);
-        const data3 = await res3.json();
-
-        // Transform object -> array
-        const formattedIndices = Object.entries(data3).map(([name, values]) => ({
-          name,
-          ...values, // symbol, price, change, percent_change
-        }));
-
-        setIndicesData(formattedIndices);
-        console.log("Formatted Indices Data:", formattedIndices);
-
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to fetch news/insights/indices.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    setLoading(false);
   }, []);
 
   return (

@@ -24,11 +24,11 @@ function App() {
     <AuthProvider>
       <Routes>
         {/* Public Routes — existing UI unchanged */}
-        <Route path="/" element={<><Navbar/> <MainBody /></>} />
-        <Route path="/strategies" element={<><ToolsNavbar/> <Strategies /></>} />
-        <Route path="/card-details" element={<><ToolsNavbar/> <CardDetails /></>} />
-        <Route path="/projects/:id" element={<><ToolsNavbar/> <CardDetails /></>} />
-        <Route path="/news" element={<><ToolsNavbar/> <News /></>} />
+        <Route path="/" element={<><Navbar /> <MainBody /></>} />
+        <Route path="/strategies" element={<><ToolsNavbar /> <Strategies /></>} />
+        <Route path="/card-details" element={<><ToolsNavbar /> <CardDetails /></>} />
+        <Route path="/projects/:id" element={<><ToolsNavbar /> <CardDetails /></>} />
+        <Route path="/news" element={<><ToolsNavbar /> <News /></>} />
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<Login />} />
