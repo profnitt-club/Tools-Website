@@ -1,5 +1,4 @@
 import React from 'react'
-import "../styles/mainbody.css"
 import HeroSection from './Herosection'
 import ContactSection from './ContactSection'
 import Intro from './Intro'
@@ -10,7 +9,7 @@ import Footer from './Footer'
 
 const MainBody = () => {
   return (
-    <div className='main'>
+    <div className='flex flex-col bg-pn-bg w-full min-h-screen relative overflow-y-auto overflow-x-hidden px-[clamp(0.5rem,2vw,1rem)] sm:px-0'>
         <HeroSection/>
         <ContactSection/>
         <Intro/>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import "../styles/news.css";
 import logo from "../assets/logo.png";
 import { FaSearchDollar } from "react-icons/fa";
 import Footer from './Footer';
@@ -84,32 +83,32 @@ const News = () => {
   }, []);
 
   return (
-    <div className="news-main-container">
+    <div className="flex flex-col gap-[30px] bg-pn-bg w-full min-h-screen relative overflow-x-hidden pt-10">
       {loading ? (
-        <p className="news-loading">Loading...</p>
+        <p className="text-center text-[5rem] font-bold mt-[15%] min-h-screen text-pn-pink">Loading...</p>
       ) : error ? (
-        <p className="news-error">{error}</p>
+        <p className="text-center text-[5rem] font-bold mt-[15%] min-h-screen text-pn-pink">{error}</p>
       ) : (
         <>
           {/* 📊 Indices Section */}
-          <section className="news-section">
-            <div className="indices-card-grid">
+          <section className="mx-[20px] md:mx-[50px] mt-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 px-[20px] md:px-0">
               {indicesData.map((index, idx) => (
-                <div key={idx} className="indices-card">
-                  <h3 className="index-title">{index.name}</h3>
-                  <p className="index-price">{index.price}</p>
-                  <div className="change-container">
+                <div key={idx} className="bg-black text-white py-[3px] px-[27px] rounded-[12px] flex items-center justify-between gap-[3px] font-sans">
+                  <h3 className="font-semibold flex-1 text-left">{index.name}</h3>
+                  <p className="text-lg font-bold flex-1 text-center mt-[30px]">{index.price}</p>
+                  <div className="flex items-center gap-1 flex-1 justify-end">
                     {index.change >= 0 ? (
                       <>
-                        <ArrowUp className="up-icon" />
-                        <span className="arrow-up">
+                        <ArrowUp className="text-green-500 w-[14px] h-[14px] mt-[15px] scale-[1.7]" />
+                        <span className="text-lg text-green-500 font-medium mt-[15px]">
                            {index.percent_change}%
                         </span>
                       </>
                     ) : (
                       <>
-                        <ArrowDown className="down-icon" />
-                        <span className="arrow-down">
+                        <ArrowDown className="text-red-500 w-[14px] h-[14px] mt-[15px] scale-[1.7]" />
+                        <span className="text-lg text-red-500 font-medium mt-[15px]">
                           {index.percent_change}%
                         </span>
                       </>
@@ -121,35 +120,35 @@ const News = () => {
           </section>
 
           {/* 📰 News Section */}
-          <h1 className="news-heading">Market News</h1>
-          <section className="news-section">
-            <div className="news-card-grid">
+          <h1 className="bg-[#211e2b] self-center font-sans text-[2rem] md:text-[3rem] font-bold text-white border-2 border-[#DF53BB] shadow-[0_0_7px_#DF53BB] rounded-[30px] p-[15px] md:p-[20px] text-center w-[70%] md:w-[40%] max-w-[350px]">Market News</h1>
+          <section className="mx-[20px] md:mx-[50px] mt-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-[20px] md:px-[40px] box-border">
               {newsData.map((item, idx) => (
-                <div className="news-card" key={idx}>
-                  <h3>{item.title}</h3>
-                  <p className="news-card-text">{item.article}</p>
+                <div className="bg-pn-card rounded-[40px] p-[20px] md:p-[30px] mb-5 border-2 border-pn-purple shadow-[0_0_10px_#a18cd1] text-white transition-all duration-300 ease-in-out flex flex-col justify-between min-h-[250px] md:min-h-[280px] hover:-translate-y-1" key={idx}>
+                  <h3 className="font-poppins text-[20px] md:text-[23px] font-bold text-white">{item.title}</h3>
+                  <p className="font-sans text-[15px] md:text-[16px] leading-[1.6] text-[#e0e0e0] my-3 whitespace-pre-wrap tracking-[0.3px]">{item.article}</p>
                 </div>
               ))}
             </div>
           </section>
 
           {/* 💡 Insights Section */}
-          <h1 className="news-heading">Insights</h1>
-          <section className="news-section">
-            <div className="news-card-grid">
+          <h1 className="bg-[#211e2b] self-center font-sans text-[2rem] md:text-[3rem] font-bold text-white border-2 border-[#DF53BB] shadow-[0_0_7px_#DF53BB] rounded-[30px] p-[15px] md:p-[20px] text-center w-[70%] md:w-[40%] max-w-[350px]">Insights</h1>
+          <section className="mx-[20px] md:mx-[50px] mt-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-[20px] md:px-[40px] box-border">
               {insightData.map((item, idx) => (
-                <div className="news-card" key={idx}>
-                  <h3>{item.stock_or_sector || "Insight"}</h3>
-                  <p className="news-card-text">{item.insight}</p>
-                  <p className="news-sentiments">
+                <div className="bg-pn-card rounded-[40px] p-[20px] md:p-[30px] mb-5 border-2 border-pn-purple shadow-[0_0_10px_#a18cd1] text-white transition-all duration-300 ease-in-out flex flex-col justify-between min-h-[250px] md:min-h-[280px] hover:-translate-y-1" key={idx}>
+                  <h3 className="font-poppins text-[20px] md:text-[23px] font-bold text-white">{item.stock_or_sector || "Insight"}</h3>
+                  <p className="font-sans text-[15px] md:text-[16px] leading-[1.6] text-[#e0e0e0] my-3 whitespace-pre-wrap tracking-[0.3px]">{item.insight}</p>
+                  <p className="text-[1rem] md:text-[1.2rem] font-poppins font-bold mt-auto pt-2.5">
                     Sentiment:{" "}
                     <span
                       className={
                         item.sentiment === "positive"
-                          ? "sentiment-positive"
+                          ? "text-green-400"
                           : item.sentiment === "neutral"
-                          ? "sentiment-neutral"
-                          : "sentiment-negative"
+                          ? "text-[#fffb03]"
+                          : "text-red-600"
                       }
                     >
                       {item.sentiment || "Neutral"}
@@ -163,9 +162,9 @@ const News = () => {
       )}
 
       {/* 📌 Disclaimer */}
-      <div className="news-disclaimer-wrapper">
-        <p className="disclaimer-text">Disclaimer</p>
-        <p className="news-disclaimer">
+      <div className="w-full bg-[#211e2b] p-[15px] md:p-[20px] mt-[30px] border-t border-white/10 text-center -mb-[30px]">
+        <p className="text-[1.2rem] md:text-[1.5rem] font-poppins font-bold text-[#ff69b4] mb-2.5">Disclaimer</p>
+        <p className="text-[0.95em] md:text-[1em] text-[#cccccc] italic leading-[1.5] max-w-[900px] mx-auto px-[15px] md:px-0">
           This news content is sourced from publicly available sites and rewritten using AI. 
           Insights are AI-generated and for informational purposes only, not financial or investment advice.
         </p>
