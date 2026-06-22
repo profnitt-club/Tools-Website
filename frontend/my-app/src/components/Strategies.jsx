@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
+import "../styles/Strategies.css";
 import logo from "../assets/logo.png";
 import { FaSearchDollar } from "react-icons/fa";
 import Footer from './Footer';
@@ -97,35 +98,33 @@ const Strategies = () => {
   );
 
   return (
-    <div className="flex flex-col gap-[70px] bg-pn-bg w-full min-h-screen relative overflow-y-auto overflow-x-hidden">
+    <div className="main-container">
       {/* Search Bar */}
-      <div className="w-[75%] flex items-center justify-center mx-auto relative">
-        <input
-          type="text"
-          className="mt-[50px] -mb-[30px] py-2 px-5 w-full outline-none border-[3px] border-pn-pink shadow-[0_0_5px_#e84d9a] rounded-[50px] bg-pn-card text-[#f0f8ff] text-lg font-bold capitalize"
-          placeholder="Search Strategies..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+      <div className="search-bar">
+  <input
+    type="text"
+    className="search"
+    placeholder="Search Strategies..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+</div>
 
       {/* Cards */}
-      <div className="w-full">
+      <div className="strategy-container">
         {loading ? (
-          <div className="text-center p-[50px] text-pn-pink text-[2rem]">
+          <div style={{ textAlign: 'center', padding: '50px', color: '#e84d9a', fontSize: '2rem' }}>
             Loading strategies...
           </div>
         ) : (
-          <div className="w-[80%] mx-auto flex flex-col gap-5 pb-10">
+          <div className="card-list">
             {filteredCards.map((card, index) => (
               <Card key={card.id || index} {...card} />
             ))}
           </div>
         )}
       </div>
-      <div className="mt-auto">
-        <Footer/>
-      </div>
+      <Footer/>
     </div>
   );
 };

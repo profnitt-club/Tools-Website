@@ -1,0 +1,126 @@
+.footer {
+  background-color: #292537;
+  color: white;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  min-height: 150px;
+  box-sizing: border-box;
+  width: 100vw;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  gap: 20px;
+}
+
+.contact-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 16px;
+  align-items: center;
+}
+
+.contact-contents span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.contact-contents i {
+  font-size: 24px;
+  color: #e84d9a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copyright {
+  font-size: 18px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.pizza-icon img {
+}
+
+.love-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #e84d9a;
+  text-align: center;
+  max-width: 220px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.social-icons a i {
+  font-size: 30px;
+  margin: 0 8px;
+  color: whitesmoke;
+}
+
+.sentiments {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 30px;
+  color: whitesmoke;
+  padding: 0 10px;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .contact-contents span,
+  .love-text,
+  .sentiments {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .social-icons a i {
+    font-size: 26px;
+    margin: 0 6px;
+  }
+
+  .pizza-icon img {
+  }
+}
+
+@media (max-width: 480px) {
+  .copyright {
+    font-size: 14px;
+  }
+
+  .social-icons {
+    gap: 10px;
+  }
+
+  .sentiments {
+    font-size: 14px;
+  }
+}

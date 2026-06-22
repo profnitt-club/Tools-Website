@@ -1,0 +1,152 @@
+/* Base Container */
+.profnitt-form-container {
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  background: radial-gradient(circle, #403A5F, #211E2E);
+  padding: 40px 50px;
+  border-radius: 100px;
+  border: 2px solid #a18cd1;
+  box-shadow: 0 0 10px #a18cd1;
+  margin: 20px auto;
+  width: 70%;
+  max-width: 800px;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Header */
+.profnitt-form-header {
+  font-family: clashDisplay;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profnitt-form-title {
+  font-size: 2.5rem;
+  word-spacing: 6px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.profnitt-form-subtitle {
+  font-size: 1.38rem;
+  font-weight: 300;
+}
+
+/* Form Styling */
+.profnitt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profnitt-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.profnitt-input,
+.profnitt-textarea {
+  flex: 1;
+  min-width: 45%;
+  background: #2c2c3c;
+  border: none;
+  border-radius: 30px;
+  border: solid 1px whitesmoke;
+  padding: 12px 18px;
+  color: #ffffff;
+  font-size: 16px;
+  outline: none;
+  height: 50px;
+  box-sizing: border-box;
+}
+
+.profnitt-textarea {
+  height: 100px;
+  resize: none;
+  min-width: 100%;
+}
+
+.profnitt-button {
+  margin-top: 2%;
+  background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+  width: 50%;
+  max-width: 250px;
+  align-self: center;
+  color: black;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.profnitt-button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .profnitt-form-container {
+    width: 85%;
+    padding: 40px 30px;
+    border-radius: 70px;
+  }
+
+  .profnitt-form-title {
+    font-size: 2.2rem;
+  }
+
+  .profnitt-form-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profnitt-form-container {
+    width: 90%;
+    padding: 30px 20px;
+    border-radius: 50px;
+  }
+
+  .profnitt-form-title {
+    font-size: 1.8rem;
+  }
+
+  .profnitt-form-subtitle {
+    font-size: 1rem;
+  }
+
+  .profnitt-input,
+  .profnitt-textarea {
+    min-width: 100%;
+  }
+
+  .profnitt-button {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profnitt-form-container {
+    width: 95%;
+    padding: 25px 15px;
+    border-radius: 30px;
+  }
+
+  .profnitt-form-title {
+    font-size: 1.5rem;
+  }
+
+  .profnitt-form-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .profnitt-button {
+    width: 100%;
+  }
+}

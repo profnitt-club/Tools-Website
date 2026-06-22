@@ -31,15 +31,6 @@ export default {
         'pn-glow': '0 0 10px rgba(161, 140, 209, 0.5)',
         'pn-pink-glow': '0 0 10px rgba(223, 83, 187, 0.5)',
       },
-      keyframes: {
-        goright: {
-          '0%, 100%': { transform: 'translateX(0)' },
-          '50%': { transform: 'translateX(15px)' },
-        }
-      },
-      animation: {
-        goright: 'goright 1.5s infinite',
-      }
     },
   },
   plugins: [],

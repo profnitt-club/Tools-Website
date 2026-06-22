@@ -2,32 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: poppins;
-  src: url("./fonts/Poppins-Medium.ttf");
-}
-
-@font-face{
-  font-family: "clashDisplay";
-  src: url("./fonts/ClashDisplay-Variable.ttf");
-}
-
-@font-face{
-  font-family: "Supply";
-  src: url("./fonts/Supply-Medium.otf");
-}
-
-@font-face {
-  font-family: montserrat;
-  src: url("./fonts/Montserrat-Bold.ttf");
-}
-
 /* Existing global styles */
 body {
   margin: 0;
   padding: 0;
   width:100vw;
   overflow-x: hidden;
-  background-color: #343045;
-  color: white;
 }

@@ -1,0 +1,321 @@
+@font-face {
+    font-family: medpop;
+    src: url("../fonts/Poppins-Medium.ttf");
+}
+
+@font-face {
+    font-family: pop;
+    src: url("../fonts/Poppins-ExtraBold.ttf");
+}
+
+.prof-header {
+    height: auto;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.tool-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+    background-color: #343045;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    padding-top:20px;
+}
+
+.tool-title {
+    background-color: #211e2b;
+    align-self: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 3rem;
+    font-weight: bolder;
+    color: white;
+    border: 2px solid #DF53BB;
+    box-shadow: 0 0 7px #DF53BB;
+    border-radius: 30px;
+    padding: 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+}
+
+.contributors {
+    color: white;
+    font-size: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.contributor {
+    font-family: medpop;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: #e34ba9;
+    border-radius: 50%;
+}
+
+.about-strategy {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px;
+    text-align: center;
+}
+
+.ab {
+    color: white;
+    font-size: 1.8rem;
+}
+
+.tool-description {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 600px;
+}
+
+.desc {
+    color: white;
+    font-size: 1rem;
+    font-family: medpop;
+}
+
+.tagbox {
+    background-color: #211e2b;
+    display: flex;
+    flex-direction: column;
+    font-family: pop;
+    border: 3px solid #a18cd1;
+    box-shadow: 0 0 10px #a18cd1;
+    border-radius: 30px;
+    padding: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    color: white;
+}
+
+.tool-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tool-tag {
+    font-weight: bold;
+    font-family: medpop;
+    color: antiquewhite;
+    background: #45485f;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    max-width: 100%;
+    word-break: break-word;
+    text-align: center;
+}
+
+.performance-params {
+    background-color: #211e2b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid #a18cd1;
+    box-shadow: 0 0 10px #a18cd1;
+    border-radius: 30px;
+    padding: 50px;
+    width: 90%;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.perf-title {
+    color: white;
+    font-size: 2rem;
+    font-family: pop;
+    font-weight: bold;
+    text-align: center;
+}
+
+.params {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+.get-linkofProject {
+    margin-top: 2%;
+    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+    width: 100%;
+    max-width: 200px;
+    align-self: center;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.get-linkofProject:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.demo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.demo-title {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: #DF53BB;
+    text-align: center;
+    margin: 20px 0;
+}
+
+iframe {
+    width: 90%;
+    max-width: 800px;
+    height: 400px;
+    border: 3px solid rgb(166, 55, 180);
+    box-shadow: 0 0 10px #d811cb;
+    border-radius: 30px;
+}
+
+/* RESPONSIVENESS */
+@media screen and (max-width: 1024px) {
+    .about-strategy {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tool-title {
+        font-size: 2.5rem;
+    }
+
+    .perf-title {
+        font-size: 1.8rem;
+    }
+
+    .demo-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .tool-container {
+        padding-top: 10px;
+        row-gap: 30px;
+    }
+
+    .tool-title {
+        font-size: 1.8rem;
+        padding: 12px;
+        width: 90%;
+    }
+
+    .ab {
+        font-size: 1.5rem;
+    }
+
+    .tagbox, .tool-description {
+        max-width: 90%;
+        margin: auto;
+    }
+
+    .performance-params {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .params {
+        gap: 10px;
+    }
+
+    .get-linkofProject {
+        max-width: 180px;
+        font-size: 0.9rem;
+        padding: 10px 14px;
+    }
+
+    .demo-title {
+        font-size: 1.6rem;
+    }
+
+    iframe {
+        height: 280px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .tool-title {
+        font-size: 1.4rem;
+        padding: 10px;
+    }
+
+    .ab, .demo-title, .perf-title {
+        font-size: 1.2rem;
+    }
+
+    .contributors {
+        font-size: 0.9rem;
+    }
+
+    .contributor {
+        font-size: 0.9rem;
+    }
+
+    .tool-tag {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+    }
+
+    .params {
+        gap: 8px;
+    }
+
+    .get-linkofProject {
+        max-width: 160px;
+        font-size: 0.85rem;
+    }
+
+    iframe {
+        height: 220px;
+    }
+
+    .tagbox {
+        padding: 10px;
+    }
+
+    .desc {
+        font-size: 0.95rem;
+    }
+}
+
