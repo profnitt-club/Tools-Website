@@ -18,12 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/projects", require("./routes/projects"));
-app.use("/api/contacts", require("./routes/contacts"));
-app.use("/api/news", require("./routes/news"));
-app.use("/api/insights", require("./routes/insights"));
-app.use("/api/indices", require("./routes/indices"));
+app.use("/api/auth", require("./routes/auth.route"));
+app.use("/api/projects", require("./routes/projects.route"));
+app.use("/api/contacts", require("./routes/contacts.route"));
+app.use("/api/news", require("./routes/news.route"));
+app.use("/api/insights", require("./routes/insights.route"));
+app.use("/api/indices", require("./routes/indices.route"));
 
 // Health check
 app.get("/api/health", (req, res) => {

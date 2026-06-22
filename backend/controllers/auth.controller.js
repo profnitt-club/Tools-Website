@@ -1,16 +1,8 @@
-const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { pool } = require('../config/db');
-const authMiddleware = require('../middleware/auth');
 
-const router = express.Router();
-
-/**
- * POST /api/auth/login
- * Admin login — returns JWT token.
- */
-router.post('/login', async (req, res) => {
+const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -52,13 +44,9 @@ router.post('/login', async (req, res) => {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Server error.' });
   }
-});
+};
 
-/**
- * GET /api/auth/me
- * Get current admin info (protected).
- */
-router.get('/me', authMiddleware, async (req, res) => {
+const getMe = async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT id, username, email, created_at FROM admins WHERE id = $1',
@@ -74,6 +62,9 @@ router.get('/me', authMiddleware, async (req, res) => {
     console.error('Auth me error:', err);
     res.status(500).json({ error: 'Server error.' });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  login,
+  getMe,
+};

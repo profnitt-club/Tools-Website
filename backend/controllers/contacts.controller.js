@@ -1,14 +1,6 @@
-const express = require('express');
 const { pool } = require('../config/db');
-const authMiddleware = require('../middleware/auth');
 
-const router = express.Router();
-
-/**
- * POST /api/contacts
- * Public — submit a contact form.
- */
-router.post('/', async (req, res) => {
+const createContact = async (req, res) => {
   try {
     const { firstName, lastName, email, phone, subject, message } = req.body;
 
@@ -27,13 +19,9 @@ router.post('/', async (req, res) => {
     console.error('Error saving contact:', err);
     res.status(500).json({ error: 'Failed to send message.' });
   }
-});
+};
 
-/**
- * GET /api/contacts
- * Admin — list all contact submissions.
- */
-router.get('/', authMiddleware, async (req, res) => {
+const getContacts = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM contacts ORDER BY created_at DESC');
     res.json(result.rows);
@@ -41,13 +29,9 @@ router.get('/', authMiddleware, async (req, res) => {
     console.error('Error fetching contacts:', err);
     res.status(500).json({ error: 'Failed to fetch contacts.' });
   }
-});
+};
 
-/**
- * PATCH /api/contacts/:id/read
- * Admin — mark a contact as read.
- */
-router.patch('/:id/read', authMiddleware, async (req, res) => {
+const markRead = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
@@ -64,13 +48,9 @@ router.patch('/:id/read', authMiddleware, async (req, res) => {
     console.error('Error marking contact as read:', err);
     res.status(500).json({ error: 'Failed to update contact.' });
   }
-});
+};
 
-/**
- * DELETE /api/contacts/:id
- * Admin — delete a contact submission.
- */
-router.delete('/:id', authMiddleware, async (req, res) => {
+const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query('DELETE FROM contacts WHERE id = $1 RETURNING id', [id]);
@@ -84,6 +64,11 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     console.error('Error deleting contact:', err);
     res.status(500).json({ error: 'Failed to delete contact.' });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createContact,
+  getContacts,
+  markRead,
+  deleteContact,
+};
