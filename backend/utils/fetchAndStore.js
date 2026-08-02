@@ -1,9 +1,9 @@
 const axios = require('axios');
-const pool = require('../db/pool');
+const { pool } = require('../config/db');
 
 const NEWS_API = process.env.NEWS_API_URL;
 const INSIGHT_API = process.env.INSIGHTS_API_URL;
-const INDICES_API=process.env.INDICES_API_URL;
+const INDICES_API = process.env.INDICES_API_URL;
 
 async function fetchAndStoreData() {
   try {
@@ -52,8 +52,14 @@ async function fetchAndStoreData() {
         [name, data.symbol, data.price, data.change, data.percent_change]
       );
     }
+
+    console.log('✅ External data fetched and stored successfully.');
   } catch (err) {
-    console.error("Error in fetchAndStoreData:", err);
+    if (err.response) {
+      console.error("❌ External API Error in fetchAndStoreData:", err.response.status, err.response.data?.message || err.message);
+    } else {
+      console.error("❌ Error in fetchAndStoreData:", err.message);
+    }
   }
 }
 
