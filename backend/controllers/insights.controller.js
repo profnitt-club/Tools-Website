@@ -1,9 +1,9 @@
-const { pool } = require("../config/db");
+const { sql } = require("../config/db");
 
 const getInsights = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM insights ORDER BY created_at DESC');
-    res.json(result.rows);
+    const rows = await sql`SELECT * FROM insights ORDER BY created_at DESC`;
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

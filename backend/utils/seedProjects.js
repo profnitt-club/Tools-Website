@@ -3,7 +3,7 @@
  * Run once: node utils/seedProjects.js
  */
 require('dotenv').config();
-const { pool, initDB } = require('../config/db');
+const { sql, initDB } = require('../config/db');
 
 const projects = [
   {
@@ -61,18 +61,16 @@ async function seedProjects() {
     await initDB();
 
     for (const p of projects) {
-      await pool.query(
-        `INSERT INTO projects 
+      await sql`
+        INSERT INTO projects 
           (title, description, created_time, tags, trades, drawdown, 
            min_capital, win_rate, returns, monthly_fee, contributors, 
            params, video, gitlink, is_published)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, true)`,
-        [
-          p.title, p.description, p.created_time, p.tags, p.trades,
-          p.drawdown, p.min_capital, p.win_rate, p.returns, p.monthly_fee,
-          p.contributors, JSON.stringify(p.params), p.video, p.gitlink,
-        ]
-      );
+        VALUES (
+          ${p.title}, ${p.description}, ${p.created_time}, ${p.tags}, ${p.trades}, ${p.drawdown},
+          ${p.min_capital}, ${p.win_rate}, ${p.returns}, ${p.monthly_fee}, ${p.contributors}, ${p.params},
+          ${p.video}, ${p.gitlink}, ${true}
+        )`;
       console.log(`✅ Seeded: ${p.title}`);
     }
 
@@ -80,7 +78,6 @@ async function seedProjects() {
   } catch (err) {
     console.error('❌ Error seeding projects:', err.message);
   } finally {
-    await pool.end();
     process.exit(0);
   }
 }
