@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { pool } = require('../config/db');
+const { sql } = require('../config/db');
 
 const login = async (req, res) => {
   try {
@@ -10,16 +10,13 @@ const login = async (req, res) => {
       return res.status(400).json({ error: 'Username and password are required.' });
     }
 
-    const result = await pool.query(
-      'SELECT * FROM admins WHERE username = $1',
-      [username]
-    );
+    const admins = await sql`SELECT * FROM admins WHERE username = ${username}`;
 
-    if (result.rows.length === 0) {
+    if (admins.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
-    const admin = result.rows[0];
+    const admin = admins[0];
     const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch) {
@@ -48,16 +45,13 @@ const login = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT id, username, email, created_at FROM admins WHERE id = $1',
-      [req.admin.id]
-    );
+    const rows = await sql`SELECT id, username, email, created_at FROM admins WHERE id = ${req.admin.id}`;
 
-    if (result.rows.length === 0) {
+    if (rows.length === 0) {
       return res.status(404).json({ error: 'Admin not found.' });
     }
 
-    res.json(result.rows[0]);
+    res.json(rows[0]);
   } catch (err) {
     console.error('Auth me error:', err);
     res.status(500).json({ error: 'Server error.' });

@@ -1,9 +1,9 @@
-const { pool } = require("../config/db");
+const { sql } = require("../config/db");
 
 const getIndices = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM indices');
-    res.json(result.rows);
+    const rows = await sql`SELECT * FROM indices`;
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

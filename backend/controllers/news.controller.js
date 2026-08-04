@@ -1,9 +1,9 @@
-const { pool } = require("../config/db");
+const { sql } = require("../config/db");
 
 const getNews = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM news");
-    res.json(result.rows);
+    const rows = await sql`SELECT * FROM news`;
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch news" });
   }

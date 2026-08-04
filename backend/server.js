@@ -30,7 +30,26 @@ app.get("/api/health", (req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// Initialize DB tables and start server
+// Maintenance: trigger fetchAndStoreData (useful for Vercel Cron)
+app.post('/api/refresh', async (req, res) => {
+    try {
+        // If REFRESH_SECRET is configured, require it in header `x-refresh-secret`.
+        if (process.env.REFRESH_SECRET) {
+            const secret = req.headers['x-refresh-secret'] || req.headers['x-refresh-token'];
+            if (!secret || secret !== process.env.REFRESH_SECRET) {
+                return res.status(403).json({ error: 'Forbidden' });
+            }
+        }
+
+        await fetchAndStoreData();
+        res.json({ status: 'ok', message: 'Refresh started' });
+    } catch (err) {
+        console.error('Refresh error:', err);
+        res.status(500).json({ error: 'Refresh failed' });
+    }
+});
+
+// Initialize DB tables and start server (or export app for serverless platforms)
 const PORT = process.env.PORT || 5001;
 
 async function startServer() {
@@ -54,4 +73,13 @@ async function startServer() {
     }
 }
 
-startServer();
+// Vercel (and some other serverless platforms) expect the entry file to export
+// a handler or the Express app rather than calling `listen()` directly.
+if (process.env.VERCEL) {
+    // For serverless deployments (Vercel) we export the app and do NOT run
+    // blocking initialization/migrations automatically. Run migrations
+    // separately via the `scripts/init-db.js` helper when needed.
+    module.exports = app;
+} else {
+    startServer();
+}

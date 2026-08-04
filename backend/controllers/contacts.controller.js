@@ -1,4 +1,4 @@
-const { pool } = require('../config/db');
+const { sql } = require('../config/db');
 
 const createContact = async (req, res) => {
   try {
@@ -8,11 +8,10 @@ const createContact = async (req, res) => {
       return res.status(400).json({ error: 'First name, email, and message are required.' });
     }
 
-    const result = await pool.query(
-      `INSERT INTO contacts (first_name, last_name, email, phone, subject, message)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [firstName, lastName, email, phone, subject, message]
-    );
+    await sql`
+      INSERT INTO contacts (first_name, last_name, email, phone, subject, message)
+      VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${subject}, ${message})
+    `;
 
     res.status(201).json({ message: 'Message sent successfully!' });
   } catch (err) {
@@ -23,8 +22,8 @@ const createContact = async (req, res) => {
 
 const getContacts = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM contacts ORDER BY created_at DESC');
-    res.json(result.rows);
+    const rows = await sql`SELECT * FROM contacts ORDER BY created_at DESC`;
+    res.json(rows);
   } catch (err) {
     console.error('Error fetching contacts:', err);
     res.status(500).json({ error: 'Failed to fetch contacts.' });
@@ -34,16 +33,13 @@ const getContacts = async (req, res) => {
 const markRead = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      'UPDATE contacts SET is_read = true WHERE id = $1 RETURNING *',
-      [id]
-    );
+    const rows = await sql`UPDATE contacts SET is_read = true WHERE id = ${id} RETURNING *`;
 
-    if (result.rows.length === 0) {
+    if (rows.length === 0) {
       return res.status(404).json({ error: 'Contact not found.' });
     }
 
-    res.json(result.rows[0]);
+    res.json(rows[0]);
   } catch (err) {
     console.error('Error marking contact as read:', err);
     res.status(500).json({ error: 'Failed to update contact.' });
@@ -53,9 +49,9 @@ const markRead = async (req, res) => {
 const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query('DELETE FROM contacts WHERE id = $1 RETURNING id', [id]);
+    const rows = await sql`DELETE FROM contacts WHERE id = ${id} RETURNING id`;
 
-    if (result.rows.length === 0) {
+    if (rows.length === 0) {
       return res.status(404).json({ error: 'Contact not found.' });
     }
 

@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { pool } = require('../config/db');
+const { sql } = require('../config/db');
 
 const getProjects = async (req, res) => {
   try {
@@ -16,13 +16,14 @@ const getProjects = async (req, res) => {
       }
     }
 
-    const query = showAll
-      ? 'SELECT * FROM projects ORDER BY created_at DESC'
-      : 'SELECT * FROM projects WHERE is_published = true ORDER BY created_at DESC';
+    let rows;
+    if (showAll) {
+      rows = await sql`SELECT * FROM projects ORDER BY created_at DESC`;
+    } else {
+      rows = await sql`SELECT * FROM projects WHERE is_published = ${true} ORDER BY created_at DESC`;
+    }
 
-    const result = await pool.query(query);
-
-    const projects = result.rows.map((row) => ({
+    const projects = rows.length ? rows.map((row) => ({
       id: row.id,
       title: row.title,
       description: row.description,
@@ -42,7 +43,7 @@ const getProjects = async (req, res) => {
       isPublished: row.is_published,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
-    }));
+    })) : [];
 
     res.json(projects);
   } catch (err) {
@@ -54,13 +55,13 @@ const getProjects = async (req, res) => {
 const getProjectById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query('SELECT * FROM projects WHERE id = $1', [id]);
+    const rows = await sql`SELECT * FROM projects WHERE id = ${id}`;
 
-    if (result.rows.length === 0) {
+    if (rows.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
 
-    const row = result.rows[0];
+    const row = rows[0];
     const project = {
       id: row.id,
       title: row.title,
@@ -104,23 +105,20 @@ const createProject = async (req, res) => {
     const parsedContributors = typeof contributors === 'string' ? JSON.parse(contributors) : (contributors || []);
     const parsedParams = typeof params === 'string' ? JSON.parse(params) : (params || []);
 
-    const result = await pool.query(
-      `INSERT INTO projects 
+    const createdTimeValue = createdTime || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+    const inserted = await sql`
+      INSERT INTO projects 
         (title, description, created_time, tags, trades, drawdown, 
          min_capital, win_rate, returns, monthly_fee, contributors, 
          params, video, gitlink, thumbnail, is_published)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-       RETURNING *`,
-      [
-        title, description, createdTime || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-        parsedTags, trades, drawdown, minCapital, winRate, returns,
-        monthlyFee, parsedContributors, JSON.stringify(parsedParams),
-        video, gitlink, thumbnail,
-        isPublished === 'false' ? false : true,
-      ]
-    );
+      VALUES (
+        ${title}, ${description}, ${createdTimeValue}, ${parsedTags}, ${trades}, ${drawdown},
+        ${minCapital}, ${winRate}, ${returns}, ${monthlyFee}, ${parsedContributors}, ${parsedParams},
+        ${video}, ${gitlink}, ${thumbnail}, ${isPublished === 'false' ? false : true}
+      ) RETURNING *`;
 
-    res.status(201).json(result.rows[0]);
+    res.status(201).json(inserted[0]);
   } catch (err) {
     console.error('Error creating project:', err);
     res.status(500).json({ error: 'Failed to create project.' });
@@ -136,12 +134,11 @@ const updateProject = async (req, res) => {
       params, video, gitlink, isPublished,
     } = req.body;
 
-    const existing = await pool.query('SELECT * FROM projects WHERE id = $1', [id]);
-    if (existing.rows.length === 0) {
+    const existing = await sql`SELECT * FROM projects WHERE id = ${id}`;
+    if (existing.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
-
-    let thumbnail = existing.rows[0].thumbnail;
+    let thumbnail = existing[0].thumbnail;
     if (req.file) {
       if (thumbnail) {
         const oldPath = path.join(__dirname, '..', thumbnail);
@@ -150,28 +147,20 @@ const updateProject = async (req, res) => {
       thumbnail = `/uploads/projects/${req.file.filename}`;
     }
 
-    const parsedTags = typeof tags === 'string' ? JSON.parse(tags) : (tags || existing.rows[0].tags);
-    const parsedContributors = typeof contributors === 'string' ? JSON.parse(contributors) : (contributors || existing.rows[0].contributors);
-    const parsedParams = typeof params === 'string' ? JSON.parse(params) : (params || existing.rows[0].params);
+    const parsedTags = typeof tags === 'string' ? JSON.parse(tags) : (tags || existing[0].tags);
+    const parsedContributors = typeof contributors === 'string' ? JSON.parse(contributors) : (contributors || existing[0].contributors);
+    const parsedParams = typeof params === 'string' ? JSON.parse(params) : (params || existing[0].params);
 
-    const result = await pool.query(
-      `UPDATE projects SET
-        title = $1, description = $2, created_time = $3, tags = $4,
-        trades = $5, drawdown = $6, min_capital = $7, win_rate = $8,
-        returns = $9, monthly_fee = $10, contributors = $11, params = $12,
-        video = $13, gitlink = $14, thumbnail = $15, is_published = $16,
+    const updated = await sql`
+      UPDATE projects SET
+        title = ${title}, description = ${description}, created_time = ${createdTime}, tags = ${parsedTags},
+        trades = ${trades}, drawdown = ${drawdown}, min_capital = ${minCapital}, win_rate = ${winRate},
+        returns = ${returns}, monthly_fee = ${monthlyFee}, contributors = ${parsedContributors}, params = ${parsedParams},
+        video = ${video}, gitlink = ${gitlink}, thumbnail = ${thumbnail}, is_published = ${isPublished === 'false' ? false : (isPublished === 'true' ? true : existing[0].is_published)},
         updated_at = NOW()
-       WHERE id = $17 RETURNING *`,
-      [
-        title, description, createdTime, parsedTags, trades, drawdown,
-        minCapital, winRate, returns, monthlyFee, parsedContributors,
-        JSON.stringify(parsedParams), video, gitlink, thumbnail,
-        isPublished === 'false' ? false : (isPublished === 'true' ? true : existing.rows[0].is_published),
-        id,
-      ]
-    );
+      WHERE id = ${id} RETURNING *`;
 
-    res.json(result.rows[0]);
+    res.json(updated[0]);
   } catch (err) {
     console.error('Error updating project:', err);
     res.status(500).json({ error: 'Failed to update project.' });
@@ -182,8 +171,8 @@ const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const existing = await pool.query('SELECT thumbnail FROM projects WHERE id = $1', [id]);
-    if (existing.rows.length === 0) {
+    const existing = await sql`SELECT thumbnail FROM projects WHERE id = ${id}`;
+    if (existing.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
 
@@ -192,7 +181,7 @@ const deleteProject = async (req, res) => {
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     }
 
-    await pool.query('DELETE FROM projects WHERE id = $1', [id]);
+    await sql`DELETE FROM projects WHERE id = ${id}`;
     res.json({ message: 'Project deleted successfully.' });
   } catch (err) {
     console.error('Error deleting project:', err);
@@ -203,16 +192,13 @@ const deleteProject = async (req, res) => {
 const togglePublish = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query(
-      'UPDATE projects SET is_published = NOT is_published, updated_at = NOW() WHERE id = $1 RETURNING *',
-      [id]
-    );
+    const rows = await sql`UPDATE projects SET is_published = NOT is_published, updated_at = NOW() WHERE id = ${id} RETURNING *`;
 
-    if (result.rows.length === 0) {
+    if (rows.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
 
-    res.json(result.rows[0]);
+    res.json(rows[0]);
   } catch (err) {
     console.error('Error toggling publish:', err);
     res.status(500).json({ error: 'Failed to toggle publish status.' });

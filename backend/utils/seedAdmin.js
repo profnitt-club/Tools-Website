@@ -15,7 +15,7 @@
 
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
-const { pool } = require('../config/db');
+const { sql } = require('../config/db');
 
 async function seedAdmin() {
   // Parse CLI arguments
@@ -31,23 +31,17 @@ async function seedAdmin() {
 
   try {
     // Check if admin already exists
-    const existing = await pool.query('SELECT id FROM admins WHERE username = $1', [username]);
+    const existing = await sql`SELECT id FROM admins WHERE username = ${username}`;
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    if (existing.rows.length > 0) {
+    if (existing.length > 0) {
       // Update existing admin
-      await pool.query(
-        'UPDATE admins SET email = $1, password = $2 WHERE username = $3',
-        [email, hashedPassword, username]
-      );
+      await sql`UPDATE admins SET email = ${email}, password = ${hashedPassword} WHERE username = ${username}`;
       console.log(`✅ Admin "${username}" password updated successfully.`);
     } else {
       // Create new admin
-      await pool.query(
-        'INSERT INTO admins (username, email, password) VALUES ($1, $2, $3)',
-        [username, email, hashedPassword]
-      );
+      await sql`INSERT INTO admins (username, email, password) VALUES (${username}, ${email}, ${hashedPassword})`;
       console.log(`✅ Admin "${username}" created successfully.`);
     }
 
@@ -56,9 +50,9 @@ async function seedAdmin() {
   } catch (err) {
     console.error('❌ Error seeding admin:', err.message);
   } finally {
-    await pool.end();
+    // Neon serverless client is stateless for serverless; no pool to close.
     process.exit(0);
   }
 }
 
-seedAdmin();
+// seedAdmin();
