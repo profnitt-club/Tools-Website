@@ -5,7 +5,7 @@ import "../styles/CardDetails.css";
 import logo from "../assets/logo.png";
 import Footer from './Footer';
 
-const API_BASE = import.meta.env.VITE_API_BASE || '';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
 
 const CardDetails = () => {
   const location = useLocation();

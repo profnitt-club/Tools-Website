@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import { FaSearchDollar } from "react-icons/fa";
 import Footer from './Footer';
 
-const API_BASE = import.meta.env.VITE_API_BASE || '';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
 
 const Strategies = () => {
   const [searchQuery, setSearchQuery] = useState("");

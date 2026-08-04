@@ -12,8 +12,9 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const NEWS_URL = `${import.meta.env.VITE_API_BASE}/api/news`;
-  const INSIGHT_URL = `${import.meta.env.VITE_API_BASE}/api/insights`;
+  const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
+  const NEWS_URL = `${API_BASE}/api/news`;
+  const INSIGHT_URL = `${API_BASE}/api/insights`;
   const INDICES_URL = "https://news-insights-api-e9caasgqa7fje9ag.centralindia-01.azurewebsites.net/indices_price_data";
 
   useEffect(() => {

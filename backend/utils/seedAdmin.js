@@ -26,7 +26,7 @@ async function seedAdmin() {
   };
 
   const username = getArg('username') || process.env.ADMIN_USERNAME || 'admin';
-  const email = getArg('email') || process.env.ADMIN_EMAIL || 'admin@profnitt.com';
+  const email = getArg('email') || process.env.ADMIN_EMAIL || 'profnitt.club@gmail.com';
   const password = getArg('password') || process.env.ADMIN_PASSWORD || 'admin123';
 
   try {
@@ -38,7 +38,7 @@ async function seedAdmin() {
     if (existing.length > 0) {
       // Update existing admin
       await sql`UPDATE admins SET email = ${email}, password = ${hashedPassword} WHERE username = ${username}`;
-      console.log(`✅ Admin "${username}" password updated successfully.`);
+      console.log(`✅ Admin "${username}" updated successfully.`);
     } else {
       // Create new admin
       await sql`INSERT INTO admins (username, email, password) VALUES (${username}, ${email}, ${hashedPassword})`;
@@ -55,4 +55,4 @@ async function seedAdmin() {
   }
 }
 
-// seedAdmin();
+seedAdmin();

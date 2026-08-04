@@ -12,6 +12,8 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import AdminLayout from './components/admin/AdminLayout';
 import Login from './pages/admin/Login';
+import ForgotPassword from './pages/admin/ForgotPassword';
+import ResetPassword from './pages/admin/ResetPassword';
 import Dashboard from './pages/admin/Dashboard';
 import ProjectsList from './pages/admin/ProjectsList';
 import ProjectForm from './pages/admin/ProjectForm';
@@ -32,6 +34,8 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin/reset-password" element={<ResetPassword />} />
         <Route path="/admin" element={
           <ProtectedRoute>
             <AdminLayout />

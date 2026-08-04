@@ -65,7 +65,15 @@ export default function Login() {
               />
             </div>
             <div>
-              <label className="block text-gray-300 text-sm font-medium mb-2">Password</label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-gray-300 text-sm font-medium">Password</label>
+                <a
+                  href="#/admin/forgot-password"
+                  className="text-xs text-pn-purple hover:text-pn-lavender transition-colors"
+                >
+                  Forgot password?
+                </a>
+              </div>
               <input
                 type="password"
                 value={password}
