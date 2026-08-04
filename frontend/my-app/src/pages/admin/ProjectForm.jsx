@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../api';
+import api, { API_BASE } from '../../api';
 import { FaTimes, FaPlus } from 'react-icons/fa';
 
 export default function ProjectForm() {
@@ -63,7 +63,7 @@ export default function ProjectForm() {
             gitlink: p.gitlink || '',
             isPublished: p.isPublished ?? p.is_published ?? true,
           });
-          if (p.thumbnail) setPreviewUrl(p.thumbnail);
+          if (p.thumbnail) setPreviewUrl(p.thumbnail.startsWith('/') ? `${API_BASE}${p.thumbnail}` : p.thumbnail);
         })
         .catch((err) => {
           console.error('Error loading project:', err);
@@ -143,7 +143,9 @@ export default function ProjectForm() {
       formData.append('monthlyFee', form.monthlyFee);
       formData.append('contributors', JSON.stringify(form.contributors));
       // Convert params from {key, value} to {key: value} for backend
-      const paramsForDB = form.params.map((p) => ({ [p.key]: p.value }));
+      const paramsForDB = form.params
+        .filter((p) => p && (p.key || typeof p === 'object'))
+        .map((p) => (p.key ? { [p.key]: p.value || '' } : p));
       formData.append('params', JSON.stringify(paramsForDB));
       formData.append('video', form.video);
       formData.append('gitlink', form.gitlink);

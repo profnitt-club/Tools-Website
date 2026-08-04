@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_BASE || '';
+export const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
 
 const api = axios.create({
   baseURL: `${API_BASE}/api`,
