@@ -4,11 +4,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon backend/server.js",
-    "run": "node backend/server.js",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "build": "react-scripts build"
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"magenta.bold,cyan.bold\" \"npm --prefix backend start\" \"npm --prefix frontend/my-app run dev\"",
+    "dev:backend": "npm --prefix backend start",
+    "dev:frontend": "npm --prefix frontend/my-app run dev",
+    "build": "npm --prefix frontend/my-app run build"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +27,7 @@
     "recharts": "^2.15.1"
   },
   "devDependencies": {
+    "concurrently": "^9.2.4",
     "gh-pages": "^6.3.0",
     "react-scripts": "^5.0.1",
     "vite": "^6.1.0"
