@@ -19,8 +19,6 @@ const sql = neon(connectionString);
  */
 async function initDB() {
   try {
-    await sql`BEGIN`;
-
     // Existing tables (news, insights, indices) are assumed to exist
     // from the original setup. We create them here too for safety.
     await sql`
@@ -62,9 +60,15 @@ async function initDB() {
         username VARCHAR(100) UNIQUE NOT NULL,
         email VARCHAR(255),
         password TEXT NOT NULL,
+        reset_password_token VARCHAR(255),
+        reset_password_expires TIMESTAMP,
         created_at TIMESTAMP DEFAULT NOW()
       );
     `;
+
+    // Ensure reset password columns exist for existing tables
+    await sql`ALTER TABLE admins ADD COLUMN IF NOT EXISTS reset_password_token VARCHAR(255);`;
+    await sql`ALTER TABLE admins ADD COLUMN IF NOT EXISTS reset_password_expires TIMESTAMP;`;
 
     await sql`
       CREATE TABLE IF NOT EXISTS projects (
@@ -104,10 +108,8 @@ async function initDB() {
       );
     `;
 
-    await sql`COMMIT`;
     console.log('Database tables initialized successfully');
   } catch (err) {
-    await sql`ROLLBACK`;
     console.error('Error initializing database tables:', err.message);
   }
 }

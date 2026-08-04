@@ -141,7 +141,7 @@ const updateProject = async (req, res) => {
     let thumbnail = existing[0].thumbnail;
     if (req.file) {
       if (thumbnail) {
-        const oldPath = path.join(__dirname, '..', thumbnail);
+        const oldPath = path.join(__dirname, '..', thumbnail.replace(/^\//, ''));
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
       thumbnail = `/uploads/projects/${req.file.filename}`;
@@ -176,8 +176,8 @@ const deleteProject = async (req, res) => {
       return res.status(404).json({ error: 'Project not found.' });
     }
 
-    if (existing.rows[0].thumbnail) {
-      const filePath = path.join(__dirname, '..', existing.rows[0].thumbnail);
+    if (existing[0].thumbnail) {
+      const filePath = path.join(__dirname, '..', existing[0].thumbnail.replace(/^\//, ''));
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     }
 
