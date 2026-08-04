@@ -114,4 +114,16 @@ async function initDB() {
   }
 }
 
-module.exports = { initDB, sql };
+let dbInitialized = false;
+
+async function ensureDBInitialized() {
+  if (dbInitialized) return;
+  try {
+    await initDB();
+    dbInitialized = true;
+  } catch (err) {
+    console.error('Lazy initDB failed:', err.message);
+  }
+}
+
+module.exports = { initDB, ensureDBInitialized, sql };
