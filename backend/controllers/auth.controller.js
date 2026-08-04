@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { sql } = require('../config/db');
+const { sql, ensureDBInitialized } = require('../config/db');
 const { sendPasswordResetEmail } = require('../services/email.service');
 
 const login = async (req, res) => {
   try {
+    await ensureDBInitialized();
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -62,6 +63,7 @@ const getMe = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   try {
+    await ensureDBInitialized();
     const { email } = req.body;
 
     if (!email) {
