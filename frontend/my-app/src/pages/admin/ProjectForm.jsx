@@ -40,25 +40,65 @@ export default function ProjectForm() {
       api.get(`/projects/${id}`)
         .then((res) => {
           const p = res.data;
+
+          const parseArray = (val) => {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            if (typeof val === 'string') {
+              try {
+                const parsed = JSON.parse(val);
+                return Array.isArray(parsed) ? parsed : [];
+              } catch (e) {
+                return [];
+              }
+            }
+            return [];
+          };
+
+          const parseParams = (val) => {
+            let raw = val;
+            if (typeof raw === 'string') {
+              try {
+                raw = JSON.parse(raw);
+              } catch (e) {
+                return [];
+              }
+            }
+            if (Array.isArray(raw)) {
+              return raw.map((param) => {
+                if (param && typeof param === 'object') {
+                  if ('key' in param && 'value' in param) {
+                    return { key: String(param.key), value: String(param.value) };
+                  }
+                  const entries = Object.entries(param);
+                  if (entries.length > 0) {
+                    return { key: String(entries[0][0]), value: String(entries[0][1]) };
+                  }
+                }
+                return { key: String(param), value: '' };
+              });
+            } else if (raw && typeof raw === 'object') {
+              return Object.entries(raw).map(([key, value]) => ({
+                key: String(key),
+                value: String(value),
+              }));
+            }
+            return [];
+          };
+
           setForm({
             title: p.title || '',
             description: p.description || '',
             createdTime: p.createdTime || p.created_time || '',
-            tags: p.tags || [],
+            tags: parseArray(p.tags),
             trades: p.trades || '',
             drawdown: p.drawdown || '',
             minCapital: p.minCapital || p.min_capital || '',
             winRate: p.winRate || p.win_rate || '',
             returns: p.returns || '',
             monthlyFee: p.monthlyFee || p.monthly_fee || '',
-            contributors: p.contributors || [],
-            params: (p.params || []).map((param) => {
-              if (typeof param === 'object' && !param.key) {
-                const [key, value] = Object.entries(param)[0] || ['', ''];
-                return { key, value: String(value) };
-              }
-              return param;
-            }),
+            contributors: parseArray(p.contributors),
+            params: parseParams(p.params),
             video: p.video || '',
             gitlink: p.gitlink || '',
             isPublished: p.isPublished ?? p.is_published ?? true,
@@ -67,7 +107,7 @@ export default function ProjectForm() {
         })
         .catch((err) => {
           console.error('Error loading project:', err);
-          alert('Failed to load project.');
+          alert(err.response?.data?.error || 'Failed to load project.');
           navigate('/admin/projects');
         })
         .finally(() => setLoading(false));
@@ -152,7 +192,7 @@ export default function ProjectForm() {
       formData.append('isPublished', String(form.isPublished));
       if (thumbnail) formData.append('thumbnail', thumbnail);
 
-      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      const config = { headers: { 'Content-Type': undefined } };
 
       if (isEditing) {
         await api.put(`/projects/${id}`, formData, config);
@@ -184,18 +224,18 @@ export default function ProjectForm() {
   return (
     <div className="max-w-4xl">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white font-poppins">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white font-poppins">
             {isEditing ? 'Edit Project' : 'New Project'}
           </h1>
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-400 text-sm sm:text-base mt-1">
             {isEditing ? 'Update the strategy details below.' : 'Fill in the strategy details below.'}
           </p>
         </div>
         <button
           onClick={() => navigate('/admin/projects')}
-          className="px-4 py-2 rounded-xl border border-pn-purple/30 text-gray-400 hover:text-white hover:border-pn-purple/60 transition-all duration-200 text-sm"
+          className="self-start sm:self-auto px-4 py-2 rounded-xl border border-pn-purple/30 text-gray-400 hover:text-white hover:border-pn-purple/60 transition-all duration-200 text-sm"
         >
           ← Back
         </button>
@@ -203,7 +243,7 @@ export default function ProjectForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Basic Info</h2>
           <div className="space-y-4">
             <div>
@@ -214,7 +254,7 @@ export default function ProjectForm() {
               <label className={labelClass}>Description</label>
               <textarea name="description" value={form.description} onChange={handleChange} className={`${inputClass} h-32 resize-none`} placeholder="Describe the strategy..." />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Created Date</label>
                 <input name="createdTime" value={form.createdTime} onChange={handleChange} className={inputClass} placeholder="e.g. 10 Feb 2025" />
@@ -228,9 +268,9 @@ export default function ProjectForm() {
         </div>
 
         {/* Performance Metrics */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Performance Metrics</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className={labelClass}>Win Rate</label>
               <input name="winRate" value={form.winRate} onChange={handleChange} className={inputClass} placeholder="e.g. 51%" />
@@ -255,9 +295,9 @@ export default function ProjectForm() {
         </div>
 
         {/* Tags */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Tags</h2>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <input
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
@@ -265,7 +305,7 @@ export default function ProjectForm() {
               className={`${inputClass} flex-1`}
               placeholder="Type a tag and press Enter..."
             />
-            <button type="button" onClick={addTag} className="px-4 py-2 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200">
+            <button type="button" onClick={addTag} className="px-4 py-3 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200 flex items-center justify-center">
               <FaPlus />
             </button>
           </div>
@@ -282,9 +322,9 @@ export default function ProjectForm() {
         </div>
 
         {/* Contributors */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Contributors</h2>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <input
               value={contributorInput}
               onChange={(e) => setContributorInput(e.target.value)}
@@ -292,7 +332,7 @@ export default function ProjectForm() {
               className={`${inputClass} flex-1`}
               placeholder="Contributor name..."
             />
-            <button type="button" onClick={addContributor} className="px-4 py-2 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200">
+            <button type="button" onClick={addContributor} className="px-4 py-3 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200 flex items-center justify-center">
               <FaPlus />
             </button>
           </div>
@@ -309,14 +349,14 @@ export default function ProjectForm() {
         </div>
 
         {/* Performance Parameters */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Performance Parameters</h2>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <input value={paramKey} onChange={(e) => setParamKey(e.target.value)} className={`${inputClass} flex-1`} placeholder="Key (e.g. Sharpe Ratio)" />
             <input value={paramValue} onChange={(e) => setParamValue(e.target.value)} className={`${inputClass} flex-1`} placeholder="Value (e.g. 0.000469)"
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addParam(); } }}
             />
-            <button type="button" onClick={addParam} className="px-4 py-2 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200">
+            <button type="button" onClick={addParam} className="px-4 py-3 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200 flex items-center justify-center">
               <FaPlus />
             </button>
           </div>
@@ -333,7 +373,7 @@ export default function ProjectForm() {
         </div>
 
         {/* Links & Media */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Links & Media</h2>
           <div className="space-y-4">
             <div>
@@ -346,8 +386,8 @@ export default function ProjectForm() {
             </div>
             <div>
               <label className={labelClass}>Thumbnail Image</label>
-              <div className="flex items-center gap-4">
-                <input type="file" accept="image/*" onChange={handleThumbnailChange} className="text-gray-400 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-pn-purple/20 file:text-pn-purple file:font-medium file:cursor-pointer hover:file:bg-pn-purple/30" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <input type="file" accept="image/*" onChange={handleThumbnailChange} className="text-gray-400 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-pn-purple/20 file:text-pn-purple file:font-medium file:cursor-pointer hover:file:bg-pn-purple/30 max-w-full" />
                 {previewUrl && (
                   <img src={previewUrl} alt="Preview" className="h-16 w-16 rounded-xl object-cover border border-pn-purple/30" />
                 )}
@@ -357,8 +397,8 @@ export default function ProjectForm() {
         </div>
 
         {/* Publish Toggle & Submit */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
-          <div className="flex items-center justify-between">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" name="isPublished" checked={form.isPublished} onChange={handleChange} className="sr-only peer" />
@@ -367,18 +407,18 @@ export default function ProjectForm() {
               <span className="text-white font-medium">{form.isPublished ? 'Published' : 'Draft'}</span>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => navigate('/admin/projects')}
-                className="px-6 py-3 rounded-xl border border-pn-purple/30 text-gray-400 hover:text-white hover:border-pn-purple/60 transition-all duration-200 font-medium text-sm"
+                className="flex-1 sm:flex-initial px-6 py-3 rounded-xl border border-pn-purple/30 text-gray-400 hover:text-white hover:border-pn-purple/60 transition-all duration-200 font-medium text-sm text-center"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={saving}
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200 disabled:opacity-50 shadow-pn-glow"
+                className="flex-1 sm:flex-initial px-8 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200 disabled:opacity-50 shadow-pn-glow text-center"
               >
                 {saving ? 'Saving...' : (isEditing ? 'Update Project' : 'Create Project')}
               </button>

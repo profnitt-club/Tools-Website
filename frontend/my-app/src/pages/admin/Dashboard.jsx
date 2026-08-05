@@ -54,19 +54,19 @@ export default function Dashboard() {
   return (
     <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white font-poppins">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white font-poppins">
           Welcome back, <span className="text-pn-pink">{admin?.username}</span>
         </h1>
-        <p className="text-gray-400 mt-1">Here's what's happening with your ProfNITT Tools platform.</p>
+        <p className="text-gray-400 text-sm sm:text-base mt-1">Here's what's happening with your ProfNITT Tools platform.</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
         {statCards.map((card, idx) => (
           <div
             key={idx}
-            className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6 hover:border-pn-purple/40 transition-all duration-300 hover:-translate-y-1"
+            className="bg-pn-card rounded-2xl border border-pn-purple/20 p-5 sm:p-6 hover:border-pn-purple/40 transition-all duration-300 hover:-translate-y-1"
           >
             <div className="flex items-center justify-between mb-4">
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${card.color} flex items-center justify-center text-white text-xl shadow-lg`}>
@@ -78,31 +78,31 @@ export default function Dashboard() {
                 </span>
               )}
             </div>
-            <p className="text-3xl font-bold text-white">{card.value}</p>
-            <p className="text-gray-400 text-sm mt-1">{card.label}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-white">{card.value}</p>
+            <p className="text-gray-400 text-xs sm:text-sm mt-1">{card.label}</p>
           </div>
         ))}
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-6">
+      <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-5 sm:p-6">
         <h2 className="text-lg font-bold text-white mb-4 font-poppins">Quick Actions</h2>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
           <a
             href="#/admin/projects/new"
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-pn-glow"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-pn-glow text-center"
           >
             + New Project
           </a>
           <a
             href="#/admin/projects"
-            className="px-6 py-3 rounded-xl border border-pn-purple/30 text-pn-purple font-medium text-sm hover:bg-pn-purple/10 transition-all duration-200"
+            className="px-6 py-3 rounded-xl border border-pn-purple/30 text-pn-purple font-medium text-sm hover:bg-pn-purple/10 transition-all duration-200 text-center"
           >
             Manage Projects
           </a>
           <a
             href="#/admin/contacts"
-            className="px-6 py-3 rounded-xl border border-pn-pink/30 text-pn-pink font-medium text-sm hover:bg-pn-pink/10 transition-all duration-200"
+            className="px-6 py-3 rounded-xl border border-pn-pink/30 text-pn-pink font-medium text-sm hover:bg-pn-pink/10 transition-all duration-200 text-center"
           >
             View Messages {stats.unread > 0 && `(${stats.unread})`}
           </a>

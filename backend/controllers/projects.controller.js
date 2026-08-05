@@ -2,6 +2,18 @@ const path = require('path');
 const fs = require('fs');
 const { sql } = require('../config/db');
 
+const safeParseJson = (val, fallback) => {
+  if (!val) return fallback;
+  if (typeof val === 'string') {
+    try {
+      return JSON.parse(val);
+    } catch (e) {
+      return fallback;
+    }
+  }
+  return val;
+};
+
 const getProjects = async (req, res) => {
   try {
     let showAll = false;
@@ -28,15 +40,15 @@ const getProjects = async (req, res) => {
       title: row.title,
       description: row.description,
       createdTime: row.created_time,
-      tags: row.tags || [],
+      tags: safeParseJson(row.tags, []),
       trades: row.trades,
       drawdown: row.drawdown,
       minCapital: row.min_capital,
       winRate: row.win_rate,
       returns: row.returns,
       monthlyFee: row.monthly_fee,
-      contributors: row.contributors || [],
-      params: row.params || [],
+      contributors: safeParseJson(row.contributors, []),
+      params: safeParseJson(row.params, []),
       video: row.video,
       gitlink: row.gitlink,
       thumbnail: row.thumbnail,
@@ -48,7 +60,7 @@ const getProjects = async (req, res) => {
     res.json(projects);
   } catch (err) {
     console.error('Error fetching projects:', err);
-    res.status(500).json({ error: 'Failed to fetch projects.' });
+    res.status(500).json({ error: 'Failed to fetch projects: ' + err.message });
   }
 };
 
@@ -67,15 +79,15 @@ const getProjectById = async (req, res) => {
       title: row.title,
       description: row.description,
       createdTime: row.created_time,
-      tags: row.tags || [],
+      tags: safeParseJson(row.tags, []),
       trades: row.trades,
       drawdown: row.drawdown,
       minCapital: row.min_capital,
       winRate: row.win_rate,
       returns: row.returns,
       monthlyFee: row.monthly_fee,
-      contributors: row.contributors || [],
-      params: row.params || [],
+      contributors: safeParseJson(row.contributors, []),
+      params: safeParseJson(row.params, []),
       video: row.video,
       gitlink: row.gitlink,
       thumbnail: row.thumbnail,
@@ -87,7 +99,7 @@ const getProjectById = async (req, res) => {
     res.json(project);
   } catch (err) {
     console.error('Error fetching project:', err);
-    res.status(500).json({ error: 'Failed to fetch project.' });
+    res.status(500).json({ error: 'Failed to fetch project: ' + err.message });
   }
 };
 
@@ -101,9 +113,9 @@ const createProject = async (req, res) => {
 
     const thumbnail = req.file ? `/uploads/projects/${req.file.filename}` : null;
 
-    const parsedTags = typeof tags === 'string' ? JSON.parse(tags) : (tags || []);
-    const parsedContributors = typeof contributors === 'string' ? JSON.parse(contributors) : (contributors || []);
-    const parsedParams = typeof params === 'string' ? JSON.parse(params) : (params || []);
+    const parsedTags = safeParseJson(tags, []);
+    const parsedContributors = safeParseJson(contributors, []);
+    const parsedParams = safeParseJson(params, []);
 
     const createdTimeValue = createdTime || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -113,15 +125,15 @@ const createProject = async (req, res) => {
          min_capital, win_rate, returns, monthly_fee, contributors, 
          params, video, gitlink, thumbnail, is_published)
       VALUES (
-        ${title}, ${description}, ${createdTimeValue}, ${parsedTags}, ${trades}, ${drawdown},
-        ${minCapital}, ${winRate}, ${returns}, ${monthlyFee}, ${parsedContributors}, ${parsedParams},
-        ${video}, ${gitlink}, ${thumbnail}, ${isPublished === 'false' ? false : true}
+        ${title || ''}, ${description || ''}, ${createdTimeValue}, ${parsedTags}, ${trades || ''}, ${drawdown || ''},
+        ${minCapital || ''}, ${winRate || ''}, ${returns || ''}, ${monthlyFee || ''}, ${parsedContributors}, ${JSON.stringify(parsedParams)},
+        ${video || ''}, ${gitlink || ''}, ${thumbnail}, ${isPublished === 'false' ? false : true}
       ) RETURNING *`;
 
     res.status(201).json(inserted[0]);
   } catch (err) {
     console.error('Error creating project:', err);
-    res.status(500).json({ error: 'Failed to create project.' });
+    res.status(500).json({ error: 'Failed to create project: ' + err.message });
   }
 };
 
@@ -138,7 +150,8 @@ const updateProject = async (req, res) => {
     if (existing.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
-    let thumbnail = existing[0].thumbnail;
+    const current = existing[0];
+    let thumbnail = current.thumbnail;
     if (req.file) {
       if (thumbnail) {
         const oldPath = path.join(__dirname, '..', thumbnail.replace(/^\//, ''));
@@ -147,23 +160,50 @@ const updateProject = async (req, res) => {
       thumbnail = `/uploads/projects/${req.file.filename}`;
     }
 
-    const parsedTags = typeof tags === 'string' ? JSON.parse(tags) : (tags || existing[0].tags);
-    const parsedContributors = typeof contributors === 'string' ? JSON.parse(contributors) : (contributors || existing[0].contributors);
-    const parsedParams = typeof params === 'string' ? JSON.parse(params) : (params || existing[0].params);
+    const safeParse = (val, fallback) => {
+      if (typeof val === 'string') {
+        try {
+          return JSON.parse(val);
+        } catch (e) {
+          return fallback;
+        }
+      }
+      return val || fallback;
+    };
+
+    const parsedTags = safeParse(tags, current.tags || []);
+    const parsedContributors = safeParse(contributors, current.contributors || []);
+    const parsedParams = safeParse(params, current.params || []);
+
+    const finalTitle = title !== undefined ? title : current.title;
+    const finalDescription = description !== undefined ? description : current.description;
+    const finalCreatedTime = createdTime !== undefined ? createdTime : current.created_time;
+    const finalTrades = trades !== undefined ? trades : current.trades;
+    const finalDrawdown = drawdown !== undefined ? drawdown : current.drawdown;
+    const finalMinCapital = minCapital !== undefined ? minCapital : current.min_capital;
+    const finalWinRate = winRate !== undefined ? winRate : current.win_rate;
+    const finalReturns = returns !== undefined ? returns : current.returns;
+    const finalMonthlyFee = monthlyFee !== undefined ? monthlyFee : current.monthly_fee;
+    const finalVideo = video !== undefined ? video : current.video;
+    const finalGitlink = gitlink !== undefined ? gitlink : current.gitlink;
+
+    let finalIsPublished = current.is_published;
+    if (isPublished === 'false' || isPublished === false) finalIsPublished = false;
+    else if (isPublished === 'true' || isPublished === true) finalIsPublished = true;
 
     const updated = await sql`
       UPDATE projects SET
-        title = ${title}, description = ${description}, created_time = ${createdTime}, tags = ${parsedTags},
-        trades = ${trades}, drawdown = ${drawdown}, min_capital = ${minCapital}, win_rate = ${winRate},
-        returns = ${returns}, monthly_fee = ${monthlyFee}, contributors = ${parsedContributors}, params = ${parsedParams},
-        video = ${video}, gitlink = ${gitlink}, thumbnail = ${thumbnail}, is_published = ${isPublished === 'false' ? false : (isPublished === 'true' ? true : existing[0].is_published)},
+        title = ${finalTitle}, description = ${finalDescription}, created_time = ${finalCreatedTime}, tags = ${parsedTags},
+        trades = ${finalTrades}, drawdown = ${finalDrawdown}, min_capital = ${finalMinCapital}, win_rate = ${finalWinRate},
+        returns = ${finalReturns}, monthly_fee = ${finalMonthlyFee}, contributors = ${parsedContributors}, params = ${JSON.stringify(parsedParams)},
+        video = ${finalVideo}, gitlink = ${finalGitlink}, thumbnail = ${thumbnail}, is_published = ${finalIsPublished},
         updated_at = NOW()
       WHERE id = ${id} RETURNING *`;
 
     res.json(updated[0]);
   } catch (err) {
     console.error('Error updating project:', err);
-    res.status(500).json({ error: 'Failed to update project.' });
+    res.status(500).json({ error: 'Failed to update project: ' + err.message });
   }
 };
 

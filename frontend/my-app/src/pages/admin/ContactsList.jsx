@@ -44,24 +44,24 @@ export default function ContactsList() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white font-poppins">Contact Messages</h1>
-        <p className="text-gray-400 mt-1">{contacts.length} messages, {contacts.filter(c => !c.is_read).length} unread</p>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white font-poppins">Contact Messages</h1>
+        <p className="text-gray-400 text-sm sm:text-base mt-1">{contacts.length} messages, {contacts.filter(c => !c.is_read).length} unread</p>
       </div>
 
       {contacts.length === 0 ? (
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-12 text-center">
+        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-8 sm:p-12 text-center">
           <FaEnvelope className="text-4xl text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-400 text-lg">No messages yet.</p>
+          <p className="text-gray-400 text-base sm:text-lg">No messages yet.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {contacts.map((c) => (
-            <div key={c.id} className={`bg-pn-card rounded-2xl border p-6 transition-all duration-300 ${c.is_read ? 'border-pn-purple/10' : 'border-pn-pink/30 shadow-pn-pink-glow'}`}>
-              <div className="flex items-start justify-between gap-4">
+            <div key={c.id} className={`bg-pn-card rounded-2xl border p-4 sm:p-6 transition-all duration-300 ${c.is_read ? 'border-pn-purple/10' : 'border-pn-pink/30 shadow-pn-pink-glow'}`}>
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-bold text-white">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <h3 className="text-base sm:text-lg font-bold text-white">
                       {c.first_name} {c.last_name}
                     </h3>
                     {!c.is_read && (
@@ -70,13 +70,13 @@ export default function ContactsList() {
                   </div>
                   {c.subject && <p className="text-pn-purple font-medium text-sm mb-1">{c.subject}</p>}
                   <p className="text-gray-300 text-sm mb-3">{c.message}</p>
-                  <div className="flex flex-wrap gap-4 text-xs text-gray-500">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
                     {c.email && <span>📧 {c.email}</span>}
                     {c.phone && <span>📞 {c.phone}</span>}
                     <span>📅 {new Date(c.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
-                <div className="flex gap-2 flex-shrink-0">
+                <div className="flex items-center gap-2 self-end sm:self-start flex-shrink-0 pt-2 sm:pt-0 border-t border-pn-purple/10 sm:border-0 w-full sm:w-auto justify-end">
                   {!c.is_read && (
                     <button onClick={() => markRead(c.id)} title="Mark read" className="p-2.5 rounded-xl border border-pn-purple/20 text-gray-400 hover:text-green-400 hover:border-green-500/50 transition-all">
                       <FaEnvelopeOpen />
