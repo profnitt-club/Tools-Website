@@ -40,25 +40,65 @@ export default function ProjectForm() {
       api.get(`/projects/${id}`)
         .then((res) => {
           const p = res.data;
+
+          const parseArray = (val) => {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            if (typeof val === 'string') {
+              try {
+                const parsed = JSON.parse(val);
+                return Array.isArray(parsed) ? parsed : [];
+              } catch (e) {
+                return [];
+              }
+            }
+            return [];
+          };
+
+          const parseParams = (val) => {
+            let raw = val;
+            if (typeof raw === 'string') {
+              try {
+                raw = JSON.parse(raw);
+              } catch (e) {
+                return [];
+              }
+            }
+            if (Array.isArray(raw)) {
+              return raw.map((param) => {
+                if (param && typeof param === 'object') {
+                  if ('key' in param && 'value' in param) {
+                    return { key: String(param.key), value: String(param.value) };
+                  }
+                  const entries = Object.entries(param);
+                  if (entries.length > 0) {
+                    return { key: String(entries[0][0]), value: String(entries[0][1]) };
+                  }
+                }
+                return { key: String(param), value: '' };
+              });
+            } else if (raw && typeof raw === 'object') {
+              return Object.entries(raw).map(([key, value]) => ({
+                key: String(key),
+                value: String(value),
+              }));
+            }
+            return [];
+          };
+
           setForm({
             title: p.title || '',
             description: p.description || '',
             createdTime: p.createdTime || p.created_time || '',
-            tags: p.tags || [],
+            tags: parseArray(p.tags),
             trades: p.trades || '',
             drawdown: p.drawdown || '',
             minCapital: p.minCapital || p.min_capital || '',
             winRate: p.winRate || p.win_rate || '',
             returns: p.returns || '',
             monthlyFee: p.monthlyFee || p.monthly_fee || '',
-            contributors: p.contributors || [],
-            params: (p.params || []).map((param) => {
-              if (typeof param === 'object' && !param.key) {
-                const [key, value] = Object.entries(param)[0] || ['', ''];
-                return { key, value: String(value) };
-              }
-              return param;
-            }),
+            contributors: parseArray(p.contributors),
+            params: parseParams(p.params),
             video: p.video || '',
             gitlink: p.gitlink || '',
             isPublished: p.isPublished ?? p.is_published ?? true,
@@ -67,7 +107,7 @@ export default function ProjectForm() {
         })
         .catch((err) => {
           console.error('Error loading project:', err);
-          alert('Failed to load project.');
+          alert(err.response?.data?.error || 'Failed to load project.');
           navigate('/admin/projects');
         })
         .finally(() => setLoading(false));
