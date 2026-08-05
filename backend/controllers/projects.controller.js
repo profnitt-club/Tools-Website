@@ -138,7 +138,8 @@ const updateProject = async (req, res) => {
     if (existing.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
-    let thumbnail = existing[0].thumbnail;
+    const current = existing[0];
+    let thumbnail = current.thumbnail;
     if (req.file) {
       if (thumbnail) {
         const oldPath = path.join(__dirname, '..', thumbnail.replace(/^\//, ''));
@@ -147,23 +148,50 @@ const updateProject = async (req, res) => {
       thumbnail = `/uploads/projects/${req.file.filename}`;
     }
 
-    const parsedTags = typeof tags === 'string' ? JSON.parse(tags) : (tags || existing[0].tags);
-    const parsedContributors = typeof contributors === 'string' ? JSON.parse(contributors) : (contributors || existing[0].contributors);
-    const parsedParams = typeof params === 'string' ? JSON.parse(params) : (params || existing[0].params);
+    const safeParse = (val, fallback) => {
+      if (typeof val === 'string') {
+        try {
+          return JSON.parse(val);
+        } catch (e) {
+          return fallback;
+        }
+      }
+      return val || fallback;
+    };
+
+    const parsedTags = safeParse(tags, current.tags || []);
+    const parsedContributors = safeParse(contributors, current.contributors || []);
+    const parsedParams = safeParse(params, current.params || []);
+
+    const finalTitle = title !== undefined ? title : current.title;
+    const finalDescription = description !== undefined ? description : current.description;
+    const finalCreatedTime = createdTime !== undefined ? createdTime : current.created_time;
+    const finalTrades = trades !== undefined ? trades : current.trades;
+    const finalDrawdown = drawdown !== undefined ? drawdown : current.drawdown;
+    const finalMinCapital = minCapital !== undefined ? minCapital : current.min_capital;
+    const finalWinRate = winRate !== undefined ? winRate : current.win_rate;
+    const finalReturns = returns !== undefined ? returns : current.returns;
+    const finalMonthlyFee = monthlyFee !== undefined ? monthlyFee : current.monthly_fee;
+    const finalVideo = video !== undefined ? video : current.video;
+    const finalGitlink = gitlink !== undefined ? gitlink : current.gitlink;
+
+    let finalIsPublished = current.is_published;
+    if (isPublished === 'false' || isPublished === false) finalIsPublished = false;
+    else if (isPublished === 'true' || isPublished === true) finalIsPublished = true;
 
     const updated = await sql`
       UPDATE projects SET
-        title = ${title}, description = ${description}, created_time = ${createdTime}, tags = ${parsedTags},
-        trades = ${trades}, drawdown = ${drawdown}, min_capital = ${minCapital}, win_rate = ${winRate},
-        returns = ${returns}, monthly_fee = ${monthlyFee}, contributors = ${parsedContributors}, params = ${parsedParams},
-        video = ${video}, gitlink = ${gitlink}, thumbnail = ${thumbnail}, is_published = ${isPublished === 'false' ? false : (isPublished === 'true' ? true : existing[0].is_published)},
+        title = ${finalTitle}, description = ${finalDescription}, created_time = ${finalCreatedTime}, tags = ${parsedTags},
+        trades = ${finalTrades}, drawdown = ${finalDrawdown}, min_capital = ${finalMinCapital}, win_rate = ${finalWinRate},
+        returns = ${finalReturns}, monthly_fee = ${finalMonthlyFee}, contributors = ${parsedContributors}, params = ${JSON.stringify(parsedParams)},
+        video = ${finalVideo}, gitlink = ${finalGitlink}, thumbnail = ${thumbnail}, is_published = ${finalIsPublished},
         updated_at = NOW()
       WHERE id = ${id} RETURNING *`;
 
     res.json(updated[0]);
   } catch (err) {
     console.error('Error updating project:', err);
-    res.status(500).json({ error: 'Failed to update project.' });
+    res.status(500).json({ error: 'Failed to update project: ' + err.message });
   }
 };
 
