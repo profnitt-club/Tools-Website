@@ -17,7 +17,7 @@ const ContactSection = () => {
     
           <div className="divider"></div>
     
-          <div className="contact-item" onClick={() => window.open("https://profnitt.in", "_blank")}>
+          <div className="contact-item" onClick={() => window.open("https://www.profnitt.co.in", "_blank")}>
             <TbWorldWww className="icon" />
             <div>
               <div className='heading'>VISIT OUR WEBSITE</div>

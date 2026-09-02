@@ -14,19 +14,20 @@ const safeParseJson = (val, fallback) => {
   return val;
 };
 
+const resolveProjectType = (row) => {
+  if (row.type) return row.type;
+  const title = (row.title || '').toLowerCase();
+  if (row.id === 1 || row.id === 3 || title.includes('xauusd') || title.includes('ipo breakout strategy')) {
+    return 'strategy';
+  }
+  return 'tool';
+};
+
 const getProjects = async (req, res) => {
   try {
-    let showAll = false;
     const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      try {
-        const jwt = require('jsonwebtoken');
-        jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
-        showAll = true;
-      } catch (e) {
-        // Invalid token — just show published
-      }
-    }
+    const showAll = authHeader && authHeader.startsWith('Bearer ');
+    const { type } = req.query;
 
     let rows;
     if (showAll) {
@@ -35,9 +36,10 @@ const getProjects = async (req, res) => {
       rows = await sql`SELECT * FROM projects WHERE is_published = ${true} ORDER BY created_at DESC`;
     }
 
-    const projects = rows.length ? rows.map((row) => ({
+    let projects = rows.length ? rows.map((row) => ({
       id: row.id,
       title: row.title,
+      type: resolveProjectType(row),
       description: row.description,
       createdTime: row.created_time,
       tags: safeParseJson(row.tags, []),
@@ -56,6 +58,10 @@ const getProjects = async (req, res) => {
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     })) : [];
+
+    if (type) {
+      projects = projects.filter((p) => p.type === type.toLowerCase());
+    }
 
     res.json(projects);
   } catch (err) {
@@ -77,6 +83,7 @@ const getProjectById = async (req, res) => {
     const project = {
       id: row.id,
       title: row.title,
+      type: resolveProjectType(row),
       description: row.description,
       createdTime: row.created_time,
       tags: safeParseJson(row.tags, []),
@@ -106,7 +113,7 @@ const getProjectById = async (req, res) => {
 const createProject = async (req, res) => {
   try {
     const {
-      title, description, createdTime, tags, trades, drawdown,
+      title, type, description, createdTime, tags, trades, drawdown,
       minCapital, winRate, returns, monthlyFee, contributors,
       params, video, gitlink, isPublished,
     } = req.body;
@@ -118,14 +125,15 @@ const createProject = async (req, res) => {
     const parsedParams = safeParseJson(params, []);
 
     const createdTimeValue = createdTime || new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const projectType = type || (title && (title.toLowerCase().includes('xauusd') || title.toLowerCase().includes('ipo breakout strategy')) ? 'strategy' : 'tool');
 
     const inserted = await sql`
       INSERT INTO projects 
-        (title, description, created_time, tags, trades, drawdown, 
+        (title, type, description, created_time, tags, trades, drawdown, 
          min_capital, win_rate, returns, monthly_fee, contributors, 
          params, video, gitlink, thumbnail, is_published)
       VALUES (
-        ${title || ''}, ${description || ''}, ${createdTimeValue}, ${parsedTags}, ${trades || ''}, ${drawdown || ''},
+        ${title || ''}, ${projectType}, ${description || ''}, ${createdTimeValue}, ${parsedTags}, ${trades || ''}, ${drawdown || ''},
         ${minCapital || ''}, ${winRate || ''}, ${returns || ''}, ${monthlyFee || ''}, ${parsedContributors}, ${JSON.stringify(parsedParams)},
         ${video || ''}, ${gitlink || ''}, ${thumbnail}, ${isPublished === 'false' ? false : true}
       ) RETURNING *`;
@@ -141,7 +149,7 @@ const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      title, description, createdTime, tags, trades, drawdown,
+      title, type, description, createdTime, tags, trades, drawdown,
       minCapital, winRate, returns, monthlyFee, contributors,
       params, video, gitlink, isPublished,
     } = req.body;
@@ -176,6 +184,7 @@ const updateProject = async (req, res) => {
     const parsedParams = safeParse(params, current.params || []);
 
     const finalTitle = title !== undefined ? title : current.title;
+    const finalType = type !== undefined ? type : (current.type || resolveProjectType(current));
     const finalDescription = description !== undefined ? description : current.description;
     const finalCreatedTime = createdTime !== undefined ? createdTime : current.created_time;
     const finalTrades = trades !== undefined ? trades : current.trades;
@@ -193,7 +202,7 @@ const updateProject = async (req, res) => {
 
     const updated = await sql`
       UPDATE projects SET
-        title = ${finalTitle}, description = ${finalDescription}, created_time = ${finalCreatedTime}, tags = ${parsedTags},
+        title = ${finalTitle}, type = ${finalType}, description = ${finalDescription}, created_time = ${finalCreatedTime}, tags = ${parsedTags},
         trades = ${finalTrades}, drawdown = ${finalDrawdown}, min_capital = ${finalMinCapital}, win_rate = ${finalWinRate},
         returns = ${finalReturns}, monthly_fee = ${finalMonthlyFee}, contributors = ${parsedContributors}, params = ${JSON.stringify(parsedParams)},
         video = ${finalVideo}, gitlink = ${finalGitlink}, thumbnail = ${thumbnail}, is_published = ${finalIsPublished},

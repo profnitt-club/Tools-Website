@@ -40,6 +40,24 @@ export default function ProjectsList() {
     }
   };
 
+  const [filterType, setFilterType] = useState('all'); // 'all', 'strategy', 'tool'
+
+  const isStrategy = (p) => {
+    if (p.type === 'strategy') return true;
+    if (p.type === 'tool') return false;
+    const title = (p.title || '').toLowerCase();
+    return p.id === 1 || p.id === 3 || title.includes('xauusd') || title.includes('ipo breakout');
+  };
+
+  const filteredProjects = projects.filter((p) => {
+    if (filterType === 'strategy') return isStrategy(p);
+    if (filterType === 'tool') return !isStrategy(p);
+    return true;
+  });
+
+  const strategiesCount = projects.filter(isStrategy).length;
+  const toolsCount = projects.filter((p) => !isStrategy(p)).length;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -51,10 +69,12 @@ export default function ProjectsList() {
   return (
     <div>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white font-poppins">Projects</h1>
-          <p className="text-gray-400 text-sm sm:text-base mt-1">{projects.length} total strategies</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white font-poppins">Projects & Content</h1>
+          <p className="text-gray-400 text-sm sm:text-base mt-1">
+            {strategiesCount} strategies • {toolsCount} tools ({projects.length} total)
+          </p>
         </div>
         <button
           onClick={() => navigate('/admin/projects/new')}
@@ -64,10 +84,44 @@ export default function ProjectsList() {
         </button>
       </div>
 
+      {/* Filter Tabs */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        <button
+          onClick={() => setFilterType('all')}
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            filterType === 'all'
+              ? 'bg-pn-purple text-pn-darkest shadow-pn-glow'
+              : 'bg-pn-card border border-pn-purple/20 text-gray-400 hover:text-white'
+          }`}
+        >
+          All ({projects.length})
+        </button>
+        <button
+          onClick={() => setFilterType('strategy')}
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            filterType === 'strategy'
+              ? 'bg-pn-purple text-pn-darkest shadow-pn-glow'
+              : 'bg-pn-card border border-pn-purple/20 text-gray-400 hover:text-white'
+          }`}
+        >
+          ⚡ Strategies ({strategiesCount})
+        </button>
+        <button
+          onClick={() => setFilterType('tool')}
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            filterType === 'tool'
+              ? 'bg-pn-purple text-pn-darkest shadow-pn-glow'
+              : 'bg-pn-card border border-pn-purple/20 text-gray-400 hover:text-white'
+          }`}
+        >
+          🛠️ Tools ({toolsCount})
+        </button>
+      </div>
+
       {/* Projects List */}
-      {projects.length === 0 ? (
+      {filteredProjects.length === 0 ? (
         <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-8 sm:p-12 text-center">
-          <p className="text-gray-400 text-base sm:text-lg mb-4">No projects yet.</p>
+          <p className="text-gray-400 text-base sm:text-lg mb-4">No {filterType !== 'all' ? filterType + 's' : 'projects'} found.</p>
           <button
             onClick={() => navigate('/admin/projects/new')}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200"
@@ -77,46 +131,60 @@ export default function ProjectsList() {
         </div>
       ) : (
         <div className="space-y-4">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6 hover:border-pn-purple/40 transition-all duration-300"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-full">{project.title}</h3>
-                    <span
-                      className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                        (project.isPublished ?? project.is_published)
-                          ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                          : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                      }`}
-                    >
-                      {(project.isPublished ?? project.is_published) ? 'Published' : 'Draft'}
-                    </span>
-                  </div>
-                  <p className="text-gray-400 text-sm line-clamp-2 mb-3">{project.description}</p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {(project.tags || []).slice(0, 5).map((tag, idx) => (
-                      <span key={idx} className="bg-pn-tag text-gray-300 text-xs px-2.5 py-1 rounded-lg">
-                        {tag}
+          {filteredProjects.map((project) => {
+            const isStrat = isStrategy(project);
+            return (
+              <div
+                key={project.id}
+                className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6 hover:border-pn-purple/40 transition-all duration-300"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-full">{project.title}</h3>
+                      <span
+                        className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                          isStrat
+                            ? 'bg-pink-500/20 text-pink-300 border border-pink-500/30'
+                            : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                        }`}
+                      >
+                        {isStrat ? 'Strategy' : 'Tool'}
                       </span>
-                    ))}
-                    {(project.tags || []).length > 5 && (
-                      <span className="text-gray-500 text-xs py-1">+{project.tags.length - 5} more</span>
+                      <span
+                        className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                          (project.isPublished ?? project.is_published)
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                            : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        }`}
+                      >
+                        {(project.isPublished ?? project.is_published) ? 'Published' : 'Draft'}
+                      </span>
+                    </div>
+                    <p className="text-gray-400 text-sm line-clamp-2 mb-3">{project.description}</p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {(project.tags || []).slice(0, 5).map((tag, idx) => (
+                        <span key={idx} className="bg-pn-tag text-gray-300 text-xs px-2.5 py-1 rounded-lg">
+                          {tag}
+                        </span>
+                      ))}
+                      {(project.tags || []).length > 5 && (
+                        <span className="text-gray-500 text-xs py-1">+{project.tags.length - 5} more</span>
+                      )}
+                    </div>
+
+                    {/* Stats - ONLY FOR STRATEGIES */}
+                    {isStrat && (
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs sm:text-sm">
+                        {project.winRate && <span className="text-gray-400">Win Rate: <span className="text-white font-medium">{project.winRate ?? project.win_rate}</span></span>}
+                        {project.returns && <span className="text-gray-400">Returns: <span className="text-white font-medium">{project.returns}</span></span>}
+                        {(project.minCapital ?? project.min_capital) && <span className="text-gray-400">Min Capital: <span className="text-white font-medium">{project.minCapital ?? project.min_capital}</span></span>}
+                      </div>
                     )}
                   </div>
 
-                  {/* Stats */}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs sm:text-sm">
-                    {project.winRate && <span className="text-gray-400">Win Rate: <span className="text-white font-medium">{project.winRate ?? project.win_rate}</span></span>}
-                    {project.returns && <span className="text-gray-400">Returns: <span className="text-white font-medium">{project.returns}</span></span>}
-                    {(project.minCapital ?? project.min_capital) && <span className="text-gray-400">Min Capital: <span className="text-white font-medium">{project.minCapital ?? project.min_capital}</span></span>}
-                  </div>
-                </div>
 
                 {/* Actions */}
                 <div className="flex items-center gap-2 self-start sm:self-start flex-shrink-0 pt-2 sm:pt-0 border-t border-pn-purple/10 sm:border-0 w-full sm:w-auto justify-end">
@@ -144,9 +212,11 @@ export default function ProjectsList() {
                 </div>
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
       )}
+
     </div>
   );
 }

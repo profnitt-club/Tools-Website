@@ -1,63 +1,116 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Navbar.css";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ToolsNavbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = () => {
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
+  const handleStrategiesClick = () => {
+    closeMenu();
     navigate(`/strategies`);
   };
 
-  const handleNewsClick = () => {
-    navigate(`/news`);
-  }
-
-  const handleScrollTo = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+  const handleToolsClick = () => {
+    closeMenu();
+    navigate(`/tools`);
   };
 
-  const handleLogoClick=() =>{
+  const handleNewsClick = () => {
+    closeMenu();
+    navigate(`/news`);
+  };
+
+  const handleLogoClick = () => {
+    closeMenu();
     navigate(`/`);
-  }
+  };
 
   return (
-    <nav className="navbar">
-      {/* Logo */}
-      <div className="logo">
-        <img src={logo} alt="ProfNIT Tools" onClick={handleLogoClick} />
-      </div>
+    <header className="navbar-wrapper">
+      <nav className="navbar" role="navigation" aria-label="Tools Navigation">
+        {/* Logo */}
+        <div className="logo">
+          <img src={logo} alt="ProfNIT Tools" onClick={handleLogoClick} />
+        </div>
 
-      {/* Navigation Links */}
-      <ul className="nav-links">
-        <li>
-          <a
-            onClick={handleClick}
-            style={{ cursor: "pointer" }}
-          >
-            TOOLS
-          </a>
-        </li>
-        <li>
-          <a
-            onClick={handleNewsClick}
-            style={{ cursor: "pointer" }}
-          >
-            NEWS
-          </a>
-        </li>
-      </ul>
+        {/* Three-Bar Hamburger Button */}
+        <button
+          className={`hamburger-btn ${isOpen ? "active" : ""}`}
+          onClick={toggleMenu}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isOpen}
+        >
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </button>
 
-      {/* Buttons */}
-      <div className="nav-buttons">
-        <button className="login-btn" onClick={() => window.open("https://profnitt.in", "_blank")}>ProfNITT</button>
-      </div>
-    </nav>
+        {/* Navigation Menu Container (Links & Actions) */}
+        <div className={`nav-menu-container ${isOpen ? "open" : ""}`}>
+          <ul className="nav-links">
+            <li>
+              <a
+                onClick={handleStrategiesClick}
+                role="button"
+                tabIndex={0}
+                className={location.pathname === "/strategies" ? "active-nav" : ""}
+                onKeyDown={(e) => e.key === "Enter" && handleStrategiesClick()}
+              >
+                STRATEGIES
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={handleToolsClick}
+                role="button"
+                tabIndex={0}
+                className={location.pathname === "/tools" ? "active-nav" : ""}
+                onKeyDown={(e) => e.key === "Enter" && handleToolsClick()}
+              >
+                TOOLS
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={handleNewsClick}
+                role="button"
+                tabIndex={0}
+                className={location.pathname === "/news" ? "active-nav" : ""}
+                onKeyDown={(e) => e.key === "Enter" && handleNewsClick()}
+              >
+                NEWS
+              </a>
+            </li>
+          </ul>
+
+
+          {/* Buttons */}
+          <div className="nav-buttons">
+            <button
+              className="login-btn"
+              onClick={() => {
+                closeMenu();
+                window.open("https://www.profnitt.co.in", "_blank");
+              }}
+            >
+              ProfNITT
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
   );
-}
+};
 
-export default ToolsNavbar
+export default ToolsNavbar;

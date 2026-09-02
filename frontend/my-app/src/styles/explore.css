@@ -4,12 +4,12 @@
   src: url("../fonts/Poppins-Medium.ttf");
 }
 
-@font-face{
+@font-face {
   font-family: "clashDisplay";
   src: url("../fonts/ClashDisplay-Variable.ttf");
 }
 
-@font-face{
+@font-face {
   font-family: "Supply";
   src: url("../fonts/Supply-Medium.otf");
 }
@@ -21,233 +21,229 @@
 
 .how-to-trade {
   color: #ffffff;
-  font-family: "Inter", sans-serif;
-  padding: 2rem 1rem;
+  font-family: "Poppins", sans-serif;
+  padding: 60px 20px;
+  background-color: #121212;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Header Section */
 .trade-header {
   position: relative;
-  background: radial-gradient(circle, #3e3c63, #262230);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position-y: bottom;
-  border-radius: 150px;
-  border: 2px solid #a18cd1;
-  box-shadow: 0 0 10px #a18cd1;
+  background: #18181b;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   text-align: center;
-  margin-bottom: 4.5rem;
+  margin-bottom: 50px;
   width: 90%;
-  padding-top: 25px;
-  padding-bottom: 35px;
+  max-width: 1140px;
+  padding: 36px 24px 44px;
   margin-left: auto;
   margin-right: auto;
+  box-sizing: border-box;
 }
 
 .trade-title {
-  font-family:clashDisplay;
-  word-spacing: 6px;;
-  font-size: 2.2rem;
-  font-weight: bold;
+  font-family: clashDisplay, sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .trade-subtitle {
-  font-family: poppin;
-  font-size: 1.5rem;
-  letter-spacing: 2.5px;
-  word-spacing: 2px;
-  margin-top: 0.5rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  margin-top: 8px;
+  color: #e84d9a;
+  font-weight: 600;
 }
 
 .scroll-indicator {
   position: absolute;
-  bottom: -40px; /* Moves it just below the trade-header */
+  bottom: -24px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #C0B7E8;
-  border: 10px solid #000000d7;
-  width: 50px;
-  height: 50px;
+  background-color: #1f2238;
+  border: 2px solid rgba(232, 77, 154, 0.5);
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .arrow-down {
-  width: 58px;
-  align-self: center;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-down img {
+  width: 14px;
+  height: auto;
 }
 
 /* Instructions Section */
 .trade-instructions {
   text-align: center;
   width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 36px;
 }
 
-.instructions-text-container{
+.instructions-text-container {
   display: flex;
-  padding: 20px 83px;
+  padding: 20px 0;
   justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
 }
 
 .instructions-header {
-  width: 50%;
+  flex: 1;
+  text-align: left;
 }
 
 .instructions-title {
-  font-family: clashDisplay;
-  position: relative;
-  text-align: left;
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-family: clashDisplay, sans-serif;
+  font-size: clamp(2rem, 3.5vw, 2.6rem);
+  font-weight: 700;
   text-transform: uppercase;
-  word-spacing: 10px;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  margin-bottom: 4px;
 }
 
 .instructions-subtitle {
-  font-family: poppin;
-  position: relative;
-  text-align: left;
-  letter-spacing: 4.2px;
-  word-spacing: 1px;
-  font-size: 1.8rem;
-  color: white;
-  margin-top: 5px;
-  gap:10px;
-}
-
-.rightArrow {
-  width: 50px;
-  animation: goright 1.5s infinite;
-}
-
-@keyframes goright {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(15px); }
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 1px;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  color: #e84d9a;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 16px;
 }
 
 .instructions-description {
-  width: 50%;
-  line-height: 1.5;
+  flex: 1;
+  line-height: 1.65;
   text-align: left;
-  font-family:poppins;
-  font-size: 1.2rem;
-  padding-bottom: -25px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  color: #94a3b8;
 }
 
 /* Steps Section */
 .steps-container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 130px;
-  padding: 40px;
+  gap: 24px;
+  padding: 40px 20px;
   position: relative;
-  background-color: #343045; /* Dark background like in the image */
-  background-image: url("../assets/vector.png"); /* Path curve */
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #18181b;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
 }
 
 .step {
   text-align: center;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .step-circle {
-  background: linear-gradient(to right, #5F5C8E, #A6A1C6);
-  color: rgb(42, 39, 52);
-  font-size: 64px;
-  font-weight: bold;
-  width: 159px;
-  height: 159px;
+  background: #1f2238;
+  color: #e84d9a;
+  font-family: clashDisplay, sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 15px solid #0D0D0D, ; /* Transparent border */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.634);
-  position: relative;
-  z-index: 1;
+  border: 2px solid rgba(232, 77, 154, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.step:hover .step-circle {
+  transform: translateY(-4px);
+  border-color: #e84d9a;
 }
 
 .step-label {
-  font-family:poppins;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: whitesmoke;
-  margin-top: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-top: 14px;
 }
 
-@media (max-width: 768px) {
+/* Responsive Adjustments */
+@media (max-width: 900px) {
   .instructions-text-container {
     flex-direction: column;
-    padding: 20px;
-    align-items: center;
+    text-align: center;
+    gap: 20px;
   }
 
-  .instructions-header, 
+  .instructions-header,
   .instructions-description {
     width: 100%;
     text-align: center;
   }
 
-  .instructions-header {
-    margin-bottom: 20px;
-  }
-
-  .button-container {
+  .instructions-header .button-container {
     justify-content: center;
   }
 
   .steps-container {
-    flex-direction: column;
-    gap: 40px;
-    padding: 20px 0;
-    background-size: cover;
-    background-image: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    padding: 30px 16px;
   }
+}
 
-  .step-circle {
-    width: 100px;
-    height: 100px;
-    font-size: 2rem;
-    border-width: 10px;
-  }
-
-  .step-label {
-    font-size: 1rem;
-  }
-
-  .scroll-indicator {
-    width: 40px;
-    height: 40px;
-    border-width: 8px;
-    
-  }
-
-  .arrow-down {
-    width: 30px;
-    margin-right:25px;
-  }
-
+@media (max-width: 540px) {
   .how-to-trade {
-    padding: 1rem 0.5rem;
+    padding: 40px 14px;
   }
 
   .trade-header {
-    width: 95%;
-    padding: 15px 10px;
-    margin-bottom: 2rem;
-    border-radius: 50px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 28px 16px 36px;
+  }
+
+  .steps-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .step-circle {
+    width: 80px;
+    height: 80px;
+    font-size: 1.8rem;
   }
 }
+

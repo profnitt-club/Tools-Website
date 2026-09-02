@@ -12,6 +12,7 @@ export default function ProjectForm() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     title: '',
+    type: 'tool',
     description: '',
     createdTime: '',
     tags: [],
@@ -86,8 +87,10 @@ export default function ProjectForm() {
             return [];
           };
 
+          const projectType = p.type || ((p.title || '').toLowerCase().includes('xauusd') || (p.title || '').toLowerCase().includes('ipo breakout') ? 'strategy' : 'tool');
           setForm({
             title: p.title || '',
+            type: projectType,
             description: p.description || '',
             createdTime: p.createdTime || p.created_time || '',
             tags: parseArray(p.tags),
@@ -172,6 +175,7 @@ export default function ProjectForm() {
     try {
       const formData = new FormData();
       formData.append('title', form.title);
+      formData.append('type', form.type);
       formData.append('description', form.description);
       formData.append('createdTime', form.createdTime);
       formData.append('tags', JSON.stringify(form.tags));
@@ -247,6 +251,34 @@ export default function ProjectForm() {
           <h2 className="text-lg font-bold text-white mb-4">Basic Info</h2>
           <div className="space-y-4">
             <div>
+              <label className={labelClass}>Project Type *</label>
+
+              <div className="grid grid-cols-2 gap-3 mt-1">
+                <button
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, type: 'strategy' }))}
+                  className={`py-3 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                    form.type === 'strategy'
+                      ? 'bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest shadow-pn-glow ring-2 ring-pn-purple'
+                      : 'bg-pn-darkest border border-pn-purple/20 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  ⚡ Strategy (Backtested)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, type: 'tool' }))}
+                  className={`py-3 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                    form.type === 'tool'
+                      ? 'bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest shadow-pn-glow ring-2 ring-pn-purple'
+                      : 'bg-pn-darkest border border-pn-purple/20 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  🛠️ Tool (Analytics / Platform)
+                </button>
+              </div>
+            </div>
+            <div>
               <label className={labelClass}>Title *</label>
               <input name="title" value={form.title} onChange={handleChange} className={inputClass} placeholder="e.g. 5 Minutes XAUUSD Strategy" required />
             </div>
@@ -269,7 +301,17 @@ export default function ProjectForm() {
 
         {/* Performance Metrics */}
         <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Performance Metrics</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-bold text-white">Performance Metrics</h2>
+            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${form.type === 'strategy' ? 'bg-pn-purple/20 text-pn-lavender border border-pn-purple/30' : 'bg-gray-800 text-gray-400'}`}>
+              {form.type === 'strategy' ? 'Active for Strategies' : 'Optional / Hidden on Tool Previews'}
+            </span>
+          </div>
+          <p className="text-gray-400 text-xs mb-4">
+            {form.type === 'strategy'
+              ? 'Win Rate, Drawdown, Min Capital, and Returns will be displayed on the strategy card preview.'
+              : 'Tool cards do not display trading performance metrics in previews.'}
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
               <label className={labelClass}>Win Rate</label>

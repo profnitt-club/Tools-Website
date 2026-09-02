@@ -74,6 +74,7 @@ async function initDB() {
       CREATE TABLE IF NOT EXISTS projects (
         id SERIAL PRIMARY KEY,
         title VARCHAR(500) NOT NULL,
+        type VARCHAR(50) DEFAULT 'tool',
         description TEXT,
         created_time VARCHAR(100),
         tags TEXT[] DEFAULT '{}',
@@ -93,6 +94,12 @@ async function initDB() {
         updated_at TIMESTAMP DEFAULT NOW()
       );
     `;
+
+    // Ensure type column exists and categorize 5 Min XAUUSD and IPO Breakout as strategies
+    await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS type VARCHAR(50) DEFAULT 'tool';`;
+    await sql`UPDATE projects SET type = 'strategy' WHERE id IN (1, 3) OR title ILIKE '%xauusd%' OR title ILIKE '%ipo breakout strategy%';`;
+    await sql`UPDATE projects SET type = 'tool' WHERE type IS NULL;`;
+
 
     await sql`
       CREATE TABLE IF NOT EXISTS contacts (

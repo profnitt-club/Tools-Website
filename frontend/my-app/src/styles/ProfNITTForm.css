@@ -2,13 +2,13 @@
 .profnitt-form-container {
   font-family: 'Poppins', sans-serif;
   color: #ffffff;
-  background: radial-gradient(circle, #403A5F, #211E2E);
-  padding: 40px 50px;
-  border-radius: 100px;
-  border: 2px solid #a18cd1;
-  box-shadow: 0 0 10px #a18cd1;
-  margin: 20px auto;
-  width: 70%;
+  background: #1c1e33;
+  padding: 48px 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  margin: 40px auto 60px;
+  width: 90%;
   max-width: 800px;
   height: auto;
   box-sizing: border-box;
@@ -16,109 +16,109 @@
 
 /* Header */
 .profnitt-form-header {
-  font-family: clashDisplay;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 .profnitt-form-title {
-  font-size: 2.5rem;
-  word-spacing: 6px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-family: clashDisplay, sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .profnitt-form-subtitle {
-  font-size: 1.38rem;
-  font-weight: 300;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 400;
+  color: #e84d9a;
+  margin: 0;
 }
 
 /* Form Styling */
 .profnitt-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .profnitt-form-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 16px;
 }
 
 .profnitt-input,
 .profnitt-textarea {
   flex: 1;
   min-width: 45%;
-  background: #2c2c3c;
-  border: none;
-  border-radius: 30px;
-  border: solid 1px whitesmoke;
+  background: #151726;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   padding: 12px 18px;
   color: #ffffff;
-  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
   outline: none;
-  height: 50px;
+  height: 48px;
   box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profnitt-input:focus,
+.profnitt-textarea:focus {
+  border-color: #e84d9a;
+  box-shadow: 0 0 0 2px rgba(232, 77, 154, 0.2);
+}
+
+.profnitt-input::placeholder,
+.profnitt-textarea::placeholder {
+  color: #64748b;
 }
 
 .profnitt-textarea {
-  height: 100px;
-  resize: none;
+  height: 110px;
+  resize: vertical;
   min-width: 100%;
 }
 
 .profnitt-button {
-  margin-top: 2%;
-  background: linear-gradient(90deg, #a18cd1, #fbc2eb);
-  width: 50%;
-  max-width: 250px;
+  margin-top: 10px;
+  background: #e84d9a;
+  border: 1px solid rgba(232, 77, 154, 0.8);
+  width: 100%;
+  max-width: 240px;
   align-self: center;
-  color: black;
-  border: none;
-  border-radius: 30px;
-  padding: 12px 20px;
-  font-size: 1rem;
-  font-weight: bold;
+  color: #ffffff;
+  border-radius: 25px;
+  padding: 13px 24px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 14px rgba(232, 77, 154, 0.35);
+  transition: all 0.25s ease;
 }
 
-.profnitt-button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+.profnitt-button:hover:not(:disabled) {
+  background: #d83a85;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(232, 77, 154, 0.45);
+}
+
+.profnitt-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Responsive Breakpoints */
-@media (max-width: 1024px) {
-  .profnitt-form-container {
-    width: 85%;
-    padding: 40px 30px;
-    border-radius: 70px;
-  }
-
-  .profnitt-form-title {
-    font-size: 2.2rem;
-  }
-
-  .profnitt-form-subtitle {
-    font-size: 1.2rem;
-  }
-}
-
 @media (max-width: 768px) {
   .profnitt-form-container {
-    width: 90%;
-    padding: 30px 20px;
-    border-radius: 50px;
-  }
-
-  .profnitt-form-title {
-    font-size: 1.8rem;
-  }
-
-  .profnitt-form-subtitle {
-    font-size: 1rem;
+    width: calc(100% - 32px);
+    padding: 32px 20px;
+    border-radius: 20px;
+    margin: 30px auto;
   }
 
   .profnitt-input,
@@ -127,26 +127,15 @@
   }
 
   .profnitt-button {
-    width: 80%;
+    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
   .profnitt-form-container {
-    width: 95%;
-    padding: 25px 15px;
-    border-radius: 30px;
-  }
-
-  .profnitt-form-title {
-    font-size: 1.5rem;
-  }
-
-  .profnitt-form-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .profnitt-button {
-    width: 100%;
+    padding: 24px 16px;
+    border-radius: 16px;
+    width: calc(100% - 24px);
   }
 }
+
