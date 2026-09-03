@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { FaProjectDiagram, FaEnvelope, FaTachometerAlt, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaBolt, FaWrench, FaEnvelope, FaTachometerAlt, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 import logo from '../../assets/logo.png';
 
 export default function AdminLayout() {
@@ -81,9 +81,13 @@ export default function AdminLayout() {
             <FaTachometerAlt className="text-lg" />
             Dashboard
           </NavLink>
-          <NavLink to="/admin/projects" className={linkClasses}>
-            <FaProjectDiagram className="text-lg" />
-            Projects
+          <NavLink to="/admin/strategies" className={linkClasses}>
+            <FaBolt className="text-lg" />
+            Strategies
+          </NavLink>
+          <NavLink to="/admin/tools" className={linkClasses}>
+            <FaWrench className="text-lg" />
+            Tools
           </NavLink>
           <NavLink to="/admin/contacts" className={linkClasses}>
             <FaEnvelope className="text-lg" />

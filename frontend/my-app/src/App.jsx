@@ -17,6 +17,10 @@ import ResetPassword from './pages/admin/ResetPassword';
 import Dashboard from './pages/admin/Dashboard';
 import ProjectsList from './pages/admin/ProjectsList';
 import ProjectForm from './pages/admin/ProjectForm';
+import StrategiesList from './pages/admin/StrategiesList';
+import StrategyForm from './pages/admin/StrategyForm';
+import ToolsList from './pages/admin/ToolsList';
+import ToolForm from './pages/admin/ToolForm';
 import ContactsList from './pages/admin/ContactsList';
 
 function App() {
@@ -45,6 +49,12 @@ function App() {
         }>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="strategies" element={<StrategiesList />} />
+          <Route path="strategies/new" element={<StrategyForm />} />
+          <Route path="strategies/edit/:id" element={<StrategyForm />} />
+          <Route path="tools" element={<ToolsList />} />
+          <Route path="tools/new" element={<ToolForm />} />
+          <Route path="tools/edit/:id" element={<ToolForm />} />
           <Route path="projects" element={<ProjectsList />} />
           <Route path="projects/new" element={<ProjectForm />} />
           <Route path="projects/edit/:id" element={<ProjectForm />} />

@@ -46,7 +46,7 @@ export default function ProjectsList() {
     if (p.type === 'strategy') return true;
     if (p.type === 'tool') return false;
     const title = (p.title || '').toLowerCase();
-    return p.id === 1 || p.id === 3 || title.includes('xauusd') || title.includes('ipo breakout');
+    return p.id === 1 || p.id === 3 || title.includes('xauusd') || title.includes('ipo breakout') || title.includes('strategy');
   };
 
   const filteredProjects = projects.filter((p) => {
