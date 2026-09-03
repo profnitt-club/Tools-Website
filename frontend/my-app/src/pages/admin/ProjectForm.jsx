@@ -26,6 +26,7 @@ export default function ProjectForm() {
     params: [],
     video: '',
     gitlink: '',
+    liveLink: '',
     isPublished: true,
   });
   const [thumbnail, setThumbnail] = useState(null);
@@ -104,6 +105,7 @@ export default function ProjectForm() {
             params: parseParams(p.params),
             video: p.video || '',
             gitlink: p.gitlink || '',
+            liveLink: p.liveLink || p.live_link || '',
             isPublished: p.isPublished ?? p.is_published ?? true,
           });
           if (p.thumbnail) setPreviewUrl(p.thumbnail.startsWith('/') ? `${API_BASE}${p.thumbnail}` : p.thumbnail);
@@ -193,6 +195,7 @@ export default function ProjectForm() {
       formData.append('params', JSON.stringify(paramsForDB));
       formData.append('video', form.video);
       formData.append('gitlink', form.gitlink);
+      formData.append('liveLink', form.liveLink);
       formData.append('isPublished', String(form.isPublished));
       if (thumbnail) formData.append('thumbnail', thumbnail);
 
@@ -421,6 +424,10 @@ export default function ProjectForm() {
             <div>
               <label className={labelClass}>GitHub Link</label>
               <input name="gitlink" value={form.gitlink} onChange={handleChange} className={inputClass} placeholder="https://github.com/..." />
+            </div>
+            <div>
+              <label className={labelClass}>Live Project Link</label>
+              <input name="liveLink" value={form.liveLink} onChange={handleChange} className={inputClass} placeholder="https://..." />
             </div>
             <div>
               <label className={labelClass}>Demo Video URL</label>

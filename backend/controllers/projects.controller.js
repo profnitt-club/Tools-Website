@@ -15,9 +15,10 @@ const safeParseJson = (val, fallback) => {
 };
 
 const resolveProjectType = (row) => {
-  if (row.type) return row.type;
+  if (row.type === 'strategy') return 'strategy';
+  if (row.type === 'tool') return 'tool';
   const title = (row.title || '').toLowerCase();
-  if (row.id === 1 || row.id === 3 || title.includes('xauusd') || title.includes('ipo breakout strategy')) {
+  if (row.id === 1 || row.id === 3 || title.includes('xauusd') || title.includes('ipo breakout') || title.includes('strategy')) {
     return 'strategy';
   }
   return 'tool';
@@ -53,6 +54,7 @@ const getProjects = async (req, res) => {
       params: safeParseJson(row.params, []),
       video: row.video,
       gitlink: row.gitlink,
+      liveLink: row.live_link,
       thumbnail: row.thumbnail,
       isPublished: row.is_published,
       createdAt: row.created_at,
@@ -115,7 +117,7 @@ const createProject = async (req, res) => {
     const {
       title, type, description, createdTime, tags, trades, drawdown,
       minCapital, winRate, returns, monthlyFee, contributors,
-      params, video, gitlink, isPublished,
+      params, video, gitlink, liveLink, isPublished,
     } = req.body;
 
     const thumbnail = req.file ? `/uploads/projects/${req.file.filename}` : null;
@@ -131,11 +133,11 @@ const createProject = async (req, res) => {
       INSERT INTO projects 
         (title, type, description, created_time, tags, trades, drawdown, 
          min_capital, win_rate, returns, monthly_fee, contributors, 
-         params, video, gitlink, thumbnail, is_published)
+         params, video, gitlink, live_link, thumbnail, is_published)
       VALUES (
         ${title || ''}, ${projectType}, ${description || ''}, ${createdTimeValue}, ${parsedTags}, ${trades || ''}, ${drawdown || ''},
         ${minCapital || ''}, ${winRate || ''}, ${returns || ''}, ${monthlyFee || ''}, ${parsedContributors}, ${JSON.stringify(parsedParams)},
-        ${video || ''}, ${gitlink || ''}, ${thumbnail}, ${isPublished === 'false' ? false : true}
+        ${video || ''}, ${gitlink || ''}, ${liveLink || ''}, ${thumbnail}, ${isPublished === 'false' ? false : true}
       ) RETURNING *`;
 
     res.status(201).json(inserted[0]);
@@ -151,7 +153,7 @@ const updateProject = async (req, res) => {
     const {
       title, type, description, createdTime, tags, trades, drawdown,
       minCapital, winRate, returns, monthlyFee, contributors,
-      params, video, gitlink, isPublished,
+      params, video, gitlink, liveLink, isPublished,
     } = req.body;
 
     const existing = await sql`SELECT * FROM projects WHERE id = ${id}`;
@@ -195,6 +197,7 @@ const updateProject = async (req, res) => {
     const finalMonthlyFee = monthlyFee !== undefined ? monthlyFee : current.monthly_fee;
     const finalVideo = video !== undefined ? video : current.video;
     const finalGitlink = gitlink !== undefined ? gitlink : current.gitlink;
+    const finalLiveLink = liveLink !== undefined ? liveLink : current.live_link;
 
     let finalIsPublished = current.is_published;
     if (isPublished === 'false' || isPublished === false) finalIsPublished = false;
@@ -205,7 +208,7 @@ const updateProject = async (req, res) => {
         title = ${finalTitle}, type = ${finalType}, description = ${finalDescription}, created_time = ${finalCreatedTime}, tags = ${parsedTags},
         trades = ${finalTrades}, drawdown = ${finalDrawdown}, min_capital = ${finalMinCapital}, win_rate = ${finalWinRate},
         returns = ${finalReturns}, monthly_fee = ${finalMonthlyFee}, contributors = ${parsedContributors}, params = ${JSON.stringify(parsedParams)},
-        video = ${finalVideo}, gitlink = ${finalGitlink}, thumbnail = ${thumbnail}, is_published = ${finalIsPublished},
+        video = ${finalVideo}, gitlink = ${finalGitlink}, live_link = ${finalLiveLink}, thumbnail = ${thumbnail}, is_published = ${finalIsPublished},
         updated_at = NOW()
       WHERE id = ${id} RETURNING *`;
 
