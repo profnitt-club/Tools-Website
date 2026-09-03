@@ -210,7 +210,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   margin-top: auto;
-  padding: 16px;
+  padding: 12px 14px;
   background: #121214;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
@@ -224,16 +224,16 @@
 .details-title {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
 }
 
 .value {
   font-family: "Poppins", sans-serif;
-  font-size: 1.1rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
