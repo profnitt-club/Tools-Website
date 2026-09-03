@@ -71,11 +71,8 @@ const CardDetails = () => {
   const normalizedTitle = (title || '').toLowerCase();
   const isStrategy = type === 'strategy' || normalizedTitle.includes('xauusd') || normalizedTitle.includes('ipo breakout strategy');
 
-  const githubUrl = gitlink || "https://github.com/profnitt";
-  const liveUrl =
-    project.liveLink ||
-    project.live_link ||
-    (gitlink && !gitlink.includes("github.com") ? gitlink : "https://www.profnitt.co.in");
+  const githubUrl = gitlink || null;
+  const liveUrl = project.liveLink || project.live_link || null;
 
   // Normalize params — handle both {key: value} and {key, value} formats
   const normalizedParams = (params || []).map((param) => {
@@ -132,14 +129,16 @@ const CardDetails = () => {
             </div>
           </div>
 
-          <div className="details-hero-action">
-            <button
-              className="visit-now-btn"
-              onClick={() => window.open(liveUrl || githubUrl, "_blank")}
-            >
-              Visit Now <span>↗</span>
-            </button>
-          </div>
+          {(liveUrl || githubUrl) && (
+            <div className="details-hero-action">
+              <button
+                className="visit-now-btn"
+                onClick={() => window.open(liveUrl || githubUrl, "_blank")}
+              >
+                Visit Now <span>↗</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Content Section: Description + Tags Sidebar */}
@@ -152,9 +151,15 @@ const CardDetails = () => {
             <h2 className="section-heading">
               About <span className="highlight-accent">{isStrategy ? 'Strategy' : 'Tool'}</span>
             </h2>
-            <p className="details-description">
-              {description}
-            </p>
+            {description ? (
+              <p className="details-description">
+                {description}
+              </p>
+            ) : (
+              <p className="details-description" style={{opacity: 0.5, fontStyle: 'italic'}}>
+                No description provided.
+              </p>
+            )}
           </div>
 
           {/* Sidebar: Tags & Info (NO second Visit Now button) */}
@@ -203,12 +208,12 @@ const CardDetails = () => {
         )}
 
         {/* Video Demonstration Section */}
-        <div className="details-demo-card">
-          <div className="section-badge">DEMONSTRATION</div>
-          <h2 className="section-heading">
-            Watch the <span className="highlight-accent">Demonstration</span>
-          </h2>
-          {video ? (
+        {video && (
+          <div className="details-demo-card">
+            <div className="section-badge">DEMONSTRATION</div>
+            <h2 className="section-heading">
+              Watch the <span className="highlight-accent">Demonstration</span>
+            </h2>
             <div className="iframe-wrapper">
               <iframe
                 src={video.replace(/watch\?v=([^&]+).*/, "embed/$1")}
@@ -216,34 +221,36 @@ const CardDetails = () => {
                 title="Demo Video"
               ></iframe>
             </div>
-          ) : (
-            <div className="no-video-placeholder">
-              <p>No video demonstration currently attached to this {isStrategy ? 'strategy' : 'tool'}.</p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* BOTTOM ACTION BUTTONS: GitHub Link + Live Deployment */}
-        <div className="details-bottom-actions">
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bottom-action-btn github-btn"
-          >
-            <FaGithub className="btn-icon" />
-            <span>GitHub Repository</span>
-          </a>
-          <a
-            href={liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bottom-action-btn live-btn"
-          >
-            <FaExternalLinkAlt className="btn-icon" />
-            <span>Live Deployment</span>
-          </a>
-        </div>
+        {(githubUrl || liveUrl) && (
+          <div className="details-bottom-actions">
+            {githubUrl && (
+              <a
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bottom-action-btn github-btn"
+              >
+                <FaGithub className="btn-icon" />
+                <span>GitHub Repository</span>
+              </a>
+            )}
+            {liveUrl && (
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bottom-action-btn live-btn"
+              >
+                <FaExternalLinkAlt className="btn-icon" />
+                <span>Live Deployment</span>
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       <Footer />

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FaGithub } from "react-icons/fa";
 import "../styles/Card.css";
 
 const Card = ({
@@ -19,6 +20,7 @@ const Card = ({
   params,
   video,
   gitlink,
+  liveLink,
 }) => {
   const navigate = useNavigate();
 
@@ -51,10 +53,14 @@ const Card = ({
           params,
           video,
           gitlink,
+          liveLink,
         },
       });
     }
   };
+
+  const isExternalLive = liveLink && (liveLink.startsWith("http://") || liveLink.startsWith("https://"));
+  const detailUrl = id ? `#/projects/${id}` : null;
 
   return (
     <div
@@ -64,25 +70,51 @@ const Card = ({
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
     >
-      {/* Card Top Row: Date, Badge, and Explore Button */}
+      {/* Card Top Row: Date, Badge, and Action Links */}
       <div className="card-top-bar">
         <div className="card-meta-left">
-          <span className="created-time">created: {createdTime || "Recent"}</span>
+          <span className="created-time">{createdTime ? `created: ${createdTime}` : ''}</span>
           <span className={`project-badge ${isStrategy ? "badge-strategy" : "badge-tool"}`}>
             {isStrategy ? "Strategy" : "Tool"}
           </span>
         </div>
 
         <div className="card-actions">
-          <button
-            className="get-link"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClick();
-            }}
-          >
-            Explore <span>→</span>
-          </button>
+          {gitlink && (
+            <a
+              href={gitlink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-github-link"
+              title="View on GitHub"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaGithub />
+            </a>
+          )}
+          {isExternalLive ? (
+            <a
+              href={liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-live-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Live <span>↗</span>
+            </a>
+          ) : detailUrl ? (
+            <a
+              href={detailUrl}
+              className="card-live-link"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleClick();
+              }}
+            >
+              Live <span>↗</span>
+            </a>
+          ) : null}
         </div>
       </div>
 
@@ -93,6 +125,9 @@ const Card = ({
           by: <span>ProfNITT</span>
         </p>
       </div>
+
+      {/* Description */}
+      {description && <p className="card-description">{description}</p>}
 
       {/* Tags */}
       {tags && tags.length > 0 && (
@@ -107,24 +142,26 @@ const Card = ({
 
       {/* Conditional Architecture: Metrics ONLY for Strategies */}
       {isStrategy ? (
-        <div className="card-details">
-          <div className="metric-box">
-            <p className="details-title">Winrate</p>
-            <p className="value">{winRate || "N/A"}</p>
+        (winRate || drawdown || minCapital || returns) ? (
+          <div className="card-details">
+            <div className="metric-box">
+              <p className="details-title">Winrate</p>
+              <p className="value">{winRate || "N/A"}</p>
+            </div>
+            <div className="metric-box">
+              <p className="details-title">Drawdown</p>
+              <p className="value">{drawdown || "N/A"}</p>
+            </div>
+            <div className="metric-box">
+              <p className="details-title">Min Capital</p>
+              <p className="value">{minCapital || "N/A"}</p>
+            </div>
+            <div className="metric-box">
+              <p className="details-title">Returns</p>
+              <p className="value">{returns || "N/A"}</p>
+            </div>
           </div>
-          <div className="metric-box">
-            <p className="details-title">Drawdown</p>
-            <p className="value">{drawdown || "N/A"}</p>
-          </div>
-          <div className="metric-box">
-            <p className="details-title">Min Capital</p>
-            <p className="value">{minCapital || "N/A"}</p>
-          </div>
-          <div className="metric-box">
-            <p className="details-title">Returns</p>
-            <p className="value">{returns ? `${returns}` : "N/A"}</p>
-          </div>
-        </div>
+        ) : null
       ) : (
         /* Tools Section: NO win rate, drawdown, min capital, returns! Clean tool info bar */
         <div className="card-tool-details">
@@ -151,4 +188,3 @@ const Card = ({
 };
 
 export default Card;
-
