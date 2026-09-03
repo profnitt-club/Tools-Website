@@ -224,7 +224,7 @@
 .details-title {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -233,7 +233,7 @@
 
 .value {
   font-family: "Poppins", sans-serif;
-  font-size: 0.92rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
