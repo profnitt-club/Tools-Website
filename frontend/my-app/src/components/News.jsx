@@ -57,13 +57,25 @@ const News = () => {
 
       // 3. Fetch Indices
       try {
-        const res3 = await fetch(INDICES_URL);
-        if (!res3.ok) throw new Error("Indices API failed");
+        let res3;
+        try {
+          res3 = await fetch(`${API_BASE}/api/indices`);
+          if (!res3.ok) throw new Error("Local backend indices failed");
+        } catch {
+          res3 = await fetch(INDICES_URL);
+          if (!res3.ok) throw new Error("Azure indices API failed");
+        }
         const data3 = await res3.json();
-        const formattedIndices = Object.entries(data3).map(([name, values]) => ({
-          name,
-          ...values,
-        }));
+        let formattedIndices = [];
+        if (Array.isArray(data3)) {
+          formattedIndices = data3;
+        } else if (typeof data3 === 'object' && data3 !== null) {
+          formattedIndices = Object.entries(data3).map(([name, values]) => ({
+            name,
+            ...values,
+          }));
+        }
+
         if (formattedIndices && formattedIndices.length > 0) {
           setIndicesData(formattedIndices);
         } else {
