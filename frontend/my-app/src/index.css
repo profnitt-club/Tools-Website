@@ -2,10 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Existing global styles */
-body {
+/* Global styles */
+html, body {
   margin: 0;
   padding: 0;
-  width:100vw;
+  width: 100%;
+  background-color: #121212;
+  color: #edf2f7;
   overflow-x: hidden;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
+
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}

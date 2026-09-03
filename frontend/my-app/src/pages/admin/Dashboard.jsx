@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api';
-import { FaProjectDiagram, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaBolt, FaWrench, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Dashboard() {
   const { admin } = useAuth();
-  const [stats, setStats] = useState({ projects: 0, published: 0, drafts: 0, contacts: 0, unread: 0 });
+  const [stats, setStats] = useState({ strategies: 0, tools: 0, published: 0, drafts: 0, contacts: 0, unread: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,8 +19,19 @@ export default function Dashboard() {
         const projects = projectsRes.data;
         const contacts = contactsRes.data;
 
+        const isStrategy = (p) => {
+          if (p.type === 'strategy') return true;
+          if (p.type === 'tool') return false;
+          const title = (p.title || '').toLowerCase();
+          return p.id === 1 || p.id === 3 || title.includes('xauusd') || title.includes('ipo breakout');
+        };
+
+        const strategiesCount = projects.filter(isStrategy).length;
+        const toolsCount = projects.filter((p) => !isStrategy(p)).length;
+
         setStats({
-          projects: projects.length,
+          strategies: strategiesCount,
+          tools: toolsCount,
           published: projects.filter((p) => p.isPublished || p.is_published).length,
           drafts: projects.filter((p) => !(p.isPublished || p.is_published)).length,
           contacts: contacts.length,
@@ -37,7 +48,8 @@ export default function Dashboard() {
   }, []);
 
   const statCards = [
-    { label: 'Total Projects', value: stats.projects, icon: <FaProjectDiagram />, color: 'from-pn-purple to-blue-500' },
+    { label: 'Strategies', value: stats.strategies, icon: <FaBolt />, color: 'from-pink-500 to-rose-500' },
+    { label: 'Tools', value: stats.tools, icon: <FaWrench />, color: 'from-indigo-500 to-blue-500' },
     { label: 'Published', value: stats.published, icon: <FaEye />, color: 'from-green-500 to-emerald-500' },
     { label: 'Drafts', value: stats.drafts, icon: <FaEyeSlash />, color: 'from-yellow-500 to-orange-500' },
     { label: 'Contact Messages', value: stats.contacts, icon: <FaEnvelope />, color: 'from-pn-pink to-pn-magenta' },
@@ -62,7 +74,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 mb-8">
         {statCards.map((card, idx) => (
           <div
             key={idx}
@@ -89,16 +101,28 @@ export default function Dashboard() {
         <h2 className="text-lg font-bold text-white mb-4 font-poppins">Quick Actions</h2>
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
           <a
-            href="#/admin/projects/new"
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-pn-glow text-center"
+            href="#/admin/strategies/new"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-lg text-center"
           >
-            + New Project
+            + New Strategy
           </a>
           <a
-            href="#/admin/projects"
-            className="px-6 py-3 rounded-xl border border-pn-purple/30 text-pn-purple font-medium text-sm hover:bg-pn-purple/10 transition-all duration-200 text-center"
+            href="#/admin/tools/new"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-lg text-center"
           >
-            Manage Projects
+            + New Tool
+          </a>
+          <a
+            href="#/admin/strategies"
+            className="px-6 py-3 rounded-xl border border-pink-500/30 text-pink-400 font-medium text-sm hover:bg-pink-500/10 transition-all duration-200 text-center"
+          >
+            Manage Strategies
+          </a>
+          <a
+            href="#/admin/tools"
+            className="px-6 py-3 rounded-xl border border-indigo-500/30 text-indigo-400 font-medium text-sm hover:bg-indigo-500/10 transition-all duration-200 text-center"
+          >
+            Manage Tools
           </a>
           <a
             href="#/admin/contacts"

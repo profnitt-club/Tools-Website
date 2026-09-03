@@ -18,7 +18,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="contact-contents">
-          <span className="copyright">©2025 <strong>PROFNITT Tools</strong></span>
+          <span className="copyright">©2026 <strong>PROFNITT Tools</strong></span>
           <span className="copyright"><i><SiGmail/></i><strong>profnitt.club@gmail.com</strong></span>
           <span className="copyright"><i><IoMdCall/></i><strong>+91 87664 38933</strong></span>
         </div>

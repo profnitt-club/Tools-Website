@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api, { API_BASE } from '../../api';
 import { FaTimes, FaPlus } from 'react-icons/fa';
 
-export default function ProjectForm() {
+export default function ToolForm() {
   const { id } = useParams();
   const isEditing = !!id;
   const navigate = useNavigate();
@@ -88,10 +88,9 @@ export default function ProjectForm() {
             return [];
           };
 
-          const projectType = p.type || ((p.title || '').toLowerCase().includes('xauusd') || (p.title || '').toLowerCase().includes('ipo breakout') ? 'strategy' : 'tool');
           setForm({
             title: p.title || '',
-            type: projectType,
+            type: 'tool',
             description: p.description || '',
             createdTime: p.createdTime || p.created_time || '',
             tags: parseArray(p.tags),
@@ -111,9 +110,9 @@ export default function ProjectForm() {
           if (p.thumbnail) setPreviewUrl(p.thumbnail.startsWith('/') ? `${API_BASE}${p.thumbnail}` : p.thumbnail);
         })
         .catch((err) => {
-          console.error('Error loading project:', err);
-          alert(err.response?.data?.error || 'Failed to load project.');
-          navigate('/admin/projects');
+          console.error('Error loading tool:', err);
+          alert(err.response?.data?.error || 'Failed to load tool.');
+          navigate('/admin/tools');
         })
         .finally(() => setLoading(false));
     }
@@ -177,7 +176,7 @@ export default function ProjectForm() {
     try {
       const formData = new FormData();
       formData.append('title', form.title);
-      formData.append('type', form.type);
+      formData.append('type', 'tool');
       formData.append('description', form.description);
       formData.append('createdTime', form.createdTime);
       formData.append('tags', JSON.stringify(form.tags));
@@ -207,10 +206,10 @@ export default function ProjectForm() {
         await api.post('/projects', formData, config);
       }
 
-      navigate('/admin/projects');
+      navigate('/admin/tools');
     } catch (err) {
-      console.error('Error saving project:', err);
-      alert(err.response?.data?.error || 'Failed to save project.');
+      console.error('Error saving tool:', err);
+      alert(err.response?.data?.error || 'Failed to save tool.');
     } finally {
       setSaving(false);
     }
@@ -234,14 +233,14 @@ export default function ProjectForm() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white font-poppins">
-            {isEditing ? 'Edit Project' : 'New Project'}
+            {isEditing ? 'Edit Tool' : 'New Tool'}
           </h1>
           <p className="text-gray-400 text-sm sm:text-base mt-1">
-            {isEditing ? 'Update the strategy details below.' : 'Fill in the strategy details below.'}
+            {isEditing ? 'Update the tool details below.' : 'Fill in the tool details below.'}
           </p>
         </div>
         <button
-          onClick={() => navigate('/admin/projects')}
+          onClick={() => navigate('/admin/tools')}
           className="self-start sm:self-auto px-4 py-2 rounded-xl border border-pn-purple/30 text-gray-400 hover:text-white hover:border-pn-purple/60 transition-all duration-200 text-sm"
         >
           ← Back
@@ -249,45 +248,17 @@ export default function ProjectForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title */}
+        {/* Basic Info */}
         <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <h2 className="text-lg font-bold text-white mb-4">Basic Info</h2>
           <div className="space-y-4">
             <div>
-              <label className={labelClass}>Project Type *</label>
-
-              <div className="grid grid-cols-2 gap-3 mt-1">
-                <button
-                  type="button"
-                  onClick={() => setForm((prev) => ({ ...prev, type: 'strategy' }))}
-                  className={`py-3 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-                    form.type === 'strategy'
-                      ? 'bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest shadow-pn-glow ring-2 ring-pn-purple'
-                      : 'bg-pn-darkest border border-pn-purple/20 text-gray-400 hover:text-white'
-                  }`}
-                >
-                  ⚡ Strategy (Backtested)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setForm((prev) => ({ ...prev, type: 'tool' }))}
-                  className={`py-3 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-                    form.type === 'tool'
-                      ? 'bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest shadow-pn-glow ring-2 ring-pn-purple'
-                      : 'bg-pn-darkest border border-pn-purple/20 text-gray-400 hover:text-white'
-                  }`}
-                >
-                  🛠️ Tool (Analytics / Platform)
-                </button>
-              </div>
-            </div>
-            <div>
               <label className={labelClass}>Title *</label>
-              <input name="title" value={form.title} onChange={handleChange} className={inputClass} placeholder="e.g. 5 Minutes XAUUSD Strategy" required />
+              <input name="title" value={form.title} onChange={handleChange} className={inputClass} placeholder="e.g. Backtest Screener Tool" required />
             </div>
             <div>
               <label className={labelClass}>Description</label>
-              <textarea name="description" value={form.description} onChange={handleChange} className={`${inputClass} h-32 resize-none`} placeholder="Describe the strategy..." />
+              <textarea name="description" value={form.description} onChange={handleChange} className={`${inputClass} h-32 resize-none`} placeholder="Describe the tool..." />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -306,14 +277,12 @@ export default function ProjectForm() {
         <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-lg font-bold text-white">Performance Metrics</h2>
-            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${form.type === 'strategy' ? 'bg-pn-purple/20 text-pn-lavender border border-pn-purple/30' : 'bg-gray-800 text-gray-400'}`}>
-              {form.type === 'strategy' ? 'Active for Strategies' : 'Optional / Hidden on Tool Previews'}
+            <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-800 text-gray-400">
+              Optional / Hidden on Tool Previews
             </span>
           </div>
           <p className="text-gray-400 text-xs mb-4">
-            {form.type === 'strategy'
-              ? 'Win Rate, Drawdown, Min Capital, and Returns will be displayed on the strategy card preview.'
-              : 'Tool cards do not display trading performance metrics in previews.'}
+            Optional — Tool cards do not display trading performance metrics in previews.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div>
@@ -459,7 +428,7 @@ export default function ProjectForm() {
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <button
                 type="button"
-                onClick={() => navigate('/admin/projects')}
+                onClick={() => navigate('/admin/tools')}
                 className="flex-1 sm:flex-initial px-6 py-3 rounded-xl border border-pn-purple/30 text-gray-400 hover:text-white hover:border-pn-purple/60 transition-all duration-200 font-medium text-sm text-center"
               >
                 Cancel
@@ -469,7 +438,7 @@ export default function ProjectForm() {
                 disabled={saving}
                 className="flex-1 sm:flex-initial px-8 py-3 rounded-xl bg-gradient-to-r from-pn-purple to-pn-lavender text-pn-darkest font-bold text-sm hover:opacity-90 transition-all duration-200 disabled:opacity-50 shadow-pn-glow text-center"
               >
-                {saving ? 'Saving...' : (isEditing ? 'Update Project' : 'Create Project')}
+                {saving ? 'Saving...' : (isEditing ? 'Update Tool' : 'Create Tool')}
               </button>
             </div>
           </div>

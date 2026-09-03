@@ -54,7 +54,7 @@ const Intro = () => {
                   generation of finance and tech leaders."
                 </p>
                 <br></br>
-                <button className="about-cta-button" onClick={() => window.open("https://profnitt.in", "_blank")}>
+                <button className="about-cta-button" onClick={() => window.open("https://www.profnitt.co.in", "_blank")}>
                   LET’S GET IN TOUCH
                 </button>
               </div>
