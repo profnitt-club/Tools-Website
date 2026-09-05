@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Card from './Card';
+import StrategyCard from './StrategyCard';
+import ToolCard from './ToolCard';
 import "../styles/Strategies.css";
 import Footer from './Footer';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
+import { API_BASE } from '../api';
 
 // Helper to identify if an item is a strategy
 export const isStrategyProject = (project) => {
@@ -203,9 +204,14 @@ const Strategies = ({ defaultType }) => {
           </div>
         ) : (
           <div className="card-list">
-            {filteredCards.map((card, index) => (
-              <Card key={card.id || index} {...card} />
-            ))}
+            {filteredCards.map((card, index) => {
+              const isStrat = isStrategyProject(card);
+              return isStrat ? (
+                <StrategyCard key={card.id || index} {...card} />
+              ) : (
+                <ToolCard key={card.id || index} {...card} />
+              );
+            })}
           </div>
         )}
       </div>

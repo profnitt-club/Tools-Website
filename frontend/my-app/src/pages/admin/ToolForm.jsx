@@ -273,40 +273,6 @@ export default function ToolForm() {
           </div>
         </div>
 
-        {/* Performance Metrics */}
-        <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg font-bold text-white">Performance Metrics</h2>
-            <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-800 text-gray-400">
-              Optional / Hidden on Tool Previews
-            </span>
-          </div>
-          <p className="text-gray-400 text-xs mb-4">
-            Optional — Tool cards do not display trading performance metrics in previews.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div>
-              <label className={labelClass}>Win Rate</label>
-              <input name="winRate" value={form.winRate} onChange={handleChange} className={inputClass} placeholder="e.g. 51%" />
-            </div>
-            <div>
-              <label className={labelClass}>Returns</label>
-              <input name="returns" value={form.returns} onChange={handleChange} className={inputClass} placeholder="e.g. 708.77" />
-            </div>
-            <div>
-              <label className={labelClass}>Drawdown</label>
-              <input name="drawdown" value={form.drawdown} onChange={handleChange} className={inputClass} placeholder="e.g. -25%" />
-            </div>
-            <div>
-              <label className={labelClass}>Min Capital</label>
-              <input name="minCapital" value={form.minCapital} onChange={handleChange} className={inputClass} placeholder="e.g. ₹30K" />
-            </div>
-            <div>
-              <label className={labelClass}>Trades</label>
-              <input name="trades" value={form.trades} onChange={handleChange} className={inputClass} placeholder="e.g. 846" />
-            </div>
-          </div>
-        </div>
 
         {/* Tags */}
         <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
@@ -362,12 +328,36 @@ export default function ToolForm() {
           </div>
         </div>
 
-        {/* Performance Parameters */}
+        {/* Tool Technical Specifications */}
         <div className="bg-pn-card rounded-2xl border border-pn-purple/20 p-4 sm:p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Performance Parameters</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-bold text-white">Tool Technical Specifications</h2>
+            <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-pn-purple/20 text-pn-lavender border border-pn-purple/30">
+              Tool Specs
+            </span>
+          </div>
+          <p className="text-gray-400 text-xs mb-3">
+            Add technical parameters (e.g. Data Provider, Timeframes, Asset Coverage, Refresh Rate, Tech Stack).
+          </p>
+
+          {/* Quick-add preset chips for Tools */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="text-xs text-gray-400 self-center">Quick Presets:</span>
+            {['Data Provider', 'Timeframes Supported', 'Supported Asset Pairs', 'Refresh Rate', 'Tech Stack'].map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setParamKey(preset)}
+                className="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all"
+              >
+                + {preset}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-2 mb-3">
-            <input value={paramKey} onChange={(e) => setParamKey(e.target.value)} className={`${inputClass} flex-1`} placeholder="Key (e.g. Sharpe Ratio)" />
-            <input value={paramValue} onChange={(e) => setParamValue(e.target.value)} className={`${inputClass} flex-1`} placeholder="Value (e.g. 0.000469)"
+            <input value={paramKey} onChange={(e) => setParamKey(e.target.value)} className={`${inputClass} flex-1`} placeholder="Key (e.g. Data Provider)" />
+            <input value={paramValue} onChange={(e) => setParamValue(e.target.value)} className={`${inputClass} flex-1`} placeholder="Value (e.g. Yahoo Finance)"
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addParam(); } }}
             />
             <button type="button" onClick={addParam} className="px-4 py-3 rounded-xl bg-pn-purple/20 text-pn-purple hover:bg-pn-purple/30 transition-all duration-200 flex items-center justify-center">
@@ -377,7 +367,7 @@ export default function ToolForm() {
           <div className="flex flex-wrap gap-2">
             {form.params.map((p, idx) => (
               <span key={idx} className="flex items-center gap-1.5 bg-pn-tag text-gray-300 text-sm px-3 py-1.5 rounded-lg">
-                {p.key}: {p.value}
+                <strong>{p.key}:</strong> {p.value}
                 <button type="button" onClick={() => removeParam(idx)} className="text-gray-500 hover:text-red-400 transition-colors">
                   <FaTimes className="text-xs" />
                 </button>

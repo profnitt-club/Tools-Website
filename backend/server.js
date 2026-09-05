@@ -65,12 +65,11 @@ async function startServer() {
         } else {
             console.log("⚠️  External API URLs not configured — skipping news/insights/indices fetch.");
         }
-
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     } catch (err) {
-        console.error("Failed to start server:", err);
-        process.exit(1);
+        console.error("⚠️  Database initialization warning:", err.message || err);
     }
+
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
 // Vercel (and some other serverless platforms) expect the entry file to export

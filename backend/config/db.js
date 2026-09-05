@@ -2,11 +2,63 @@ const { neon } = require('@neondatabase/serverless');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
+const https = require('https');
+
 // Prefer the Neon connection string from .env, but keep DATABASE_URL compatibility.
 const connectionString = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/postgres';
 process.env.DATABASE_URL = connectionString;
 
-const hasLocalDatabaseUrl = /localhost|127\.0\.0\.1/.test(connectionString);
+// Ensure fetch falls back to IPv4 if native fetch fails/times out on IPv6 DNS routes
+if (typeof globalThis.fetch === 'function' && !globalThis._ipv4FetchApplied) {
+  globalThis._ipv4FetchApplied = true;
+  const nativeFetch = globalThis.fetch;
+  globalThis.fetch = function (url, options = {}) {
+    return nativeFetch(url, options).catch((err) => {
+      if (err && (err.name === 'TypeError' || err.message?.includes('fetch failed'))) {
+        return new Promise((resolve, reject) => {
+          try {
+            const u = new URL(url);
+            const headers = {};
+            if (options.headers) {
+              if (typeof options.headers.forEach === 'function') {
+                options.headers.forEach((v, k) => headers[k] = v);
+              } else {
+                Object.assign(headers, options.headers);
+              }
+            }
+            const req = https.request({
+              hostname: u.hostname,
+              port: u.port || (u.protocol === 'https:' ? 443 : 80),
+              path: u.pathname + u.search,
+              method: options.method || 'GET',
+              headers,
+              family: 4
+            }, (res) => {
+              let body = '';
+              res.on('data', chunk => body += chunk);
+              res.on('end', () => {
+                resolve({
+                  ok: res.statusCode >= 200 && res.statusCode < 300,
+                  status: res.statusCode,
+                  statusText: res.statusMessage,
+                  text: () => Promise.resolve(body),
+                  json: () => Promise.resolve(JSON.parse(body)),
+                  headers: new Map(Object.entries(res.headers))
+                });
+              });
+            });
+            req.on('error', reject);
+            if (options.body) req.write(options.body);
+            req.end();
+          } catch (fallbackErr) {
+            reject(err);
+          }
+        });
+      }
+      throw err;
+    });
+  };
+}
 
 // Initialize Neon serverless client
 const sql = neon(connectionString);
@@ -99,6 +151,7 @@ async function initDB() {
     // Ensure type column exists and categorize 5 Min XAUUSD and IPO Breakout as strategies
     await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS type VARCHAR(50) DEFAULT 'tool';`;
     await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS live_link TEXT;`;
+    await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS display_order INT DEFAULT 0;`;
     await sql`UPDATE projects SET type = 'strategy' WHERE title ILIKE '%strategy%' OR title ILIKE '%xauusd%' OR title ILIKE '%ipo breakout%';`;
     await sql`UPDATE projects SET type = 'tool' WHERE type IS NULL OR (type != 'strategy' AND title NOT ILIKE '%strategy%' AND title NOT ILIKE '%xauusd%' AND title NOT ILIKE '%ipo breakout%');`;
 
