@@ -5,6 +5,8 @@ import { FaSearchDollar } from "react-icons/fa";
 import Footer from './Footer';
 import { ArrowUp, ArrowDown } from "lucide-react";
 
+import { API_BASE } from '../api';
+
 const News = () => {
   const [newsData, setNewsData] = useState([]);
   const [insightData, setInsightData] = useState([]);
@@ -12,7 +14,6 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
   const NEWS_URL = `${API_BASE}/api/news`;
   const INSIGHT_URL = `${API_BASE}/api/insights`;
   const INDICES_URL = "https://news-insights-api-e9caasgqa7fje9ag.centralindia-01.azurewebsites.net/indices_price_data";

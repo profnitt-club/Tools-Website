@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
+const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+export const API_BASE = import.meta.env.VITE_API_BASE || (isLocalhost ? 'http://localhost:5001' : 'https://tools-website-m58b.vercel.app');
 
 const api = axios.create({
   baseURL: `${API_BASE}/api`,

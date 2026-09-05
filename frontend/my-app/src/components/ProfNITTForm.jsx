@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/ProfNITTForm.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://tools-website-m58b.vercel.app';
+import { API_BASE } from '../api';
 
 const ProfNITTForm = () => {
   const [formData, setFormData] = useState({
