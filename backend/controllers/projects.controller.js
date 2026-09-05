@@ -24,6 +24,37 @@ const resolveProjectType = (row) => {
   return 'tool';
 };
 
+const reorderProjects = async (req, res) => {
+  try {
+    const { items } = req.body;
+    if (!Array.isArray(items)) {
+      return res.status(400).json({ error: 'items array is required' });
+    }
+
+    // Ensure display_order column exists in projects table
+    try {
+      await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS display_order INT DEFAULT 0`;
+    } catch (e) {
+      // Ignore if column already exists
+    }
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const rawId = typeof item === 'object' ? item.id : item;
+      const orderIndex = typeof item === 'object' && item.displayOrder !== undefined ? item.displayOrder : i;
+      const numericId = Number(rawId);
+      if (rawId && !isNaN(numericId)) {
+        await sql`UPDATE projects SET display_order = ${orderIndex}, updated_at = NOW() WHERE id = ${numericId}`;
+      }
+    }
+
+    res.json({ message: 'Projects reordered successfully' });
+  } catch (err) {
+    console.error('Error reordering projects:', err);
+    res.status(500).json({ error: 'Failed to reorder projects: ' + err.message });
+  }
+};
+
 const getProjects = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
@@ -32,9 +63,9 @@ const getProjects = async (req, res) => {
 
     let rows;
     if (showAll) {
-      rows = await sql`SELECT * FROM projects ORDER BY created_at DESC`;
+      rows = await sql`SELECT * FROM projects ORDER BY display_order ASC, created_at DESC`;
     } else {
-      rows = await sql`SELECT * FROM projects WHERE is_published = ${true} ORDER BY created_at DESC`;
+      rows = await sql`SELECT * FROM projects WHERE is_published = ${true} ORDER BY display_order ASC, created_at DESC`;
     }
 
     let projects = rows.length ? rows.map((row) => ({
@@ -57,6 +88,7 @@ const getProjects = async (req, res) => {
       liveLink: row.live_link,
       thumbnail: row.thumbnail,
       isPublished: row.is_published,
+      displayOrder: row.display_order ?? 0,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     })) : [];
@@ -75,7 +107,10 @@ const getProjects = async (req, res) => {
 const getProjectById = async (req, res) => {
   try {
     const { id } = req.params;
-    const rows = await sql`SELECT * FROM projects WHERE id = ${id}`;
+    if (isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid project ID.' });
+    }
+    const rows = await sql`SELECT * FROM projects WHERE id = ${Number(id)}`;
 
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
@@ -150,13 +185,21 @@ const createProject = async (req, res) => {
 const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (id === 'reorder') {
+      return reorderProjects(req, res);
+    }
+    if (isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid project ID.' });
+    }
+
     const {
       title, type, description, createdTime, tags, trades, drawdown,
       minCapital, winRate, returns, monthlyFee, contributors,
       params, video, gitlink, liveLink, isPublished,
     } = req.body;
 
-    const existing = await sql`SELECT * FROM projects WHERE id = ${id}`;
+    const existing = await sql`SELECT * FROM projects WHERE id = ${Number(id)}`;
     if (existing.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
@@ -222,8 +265,11 @@ const updateProject = async (req, res) => {
 const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
+    if (isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid project ID.' });
+    }
 
-    const existing = await sql`SELECT thumbnail FROM projects WHERE id = ${id}`;
+    const existing = await sql`SELECT thumbnail FROM projects WHERE id = ${Number(id)}`;
     if (existing.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
     }
@@ -233,7 +279,7 @@ const deleteProject = async (req, res) => {
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     }
 
-    await sql`DELETE FROM projects WHERE id = ${id}`;
+    await sql`DELETE FROM projects WHERE id = ${Number(id)}`;
     res.json({ message: 'Project deleted successfully.' });
   } catch (err) {
     console.error('Error deleting project:', err);
@@ -244,7 +290,10 @@ const deleteProject = async (req, res) => {
 const togglePublish = async (req, res) => {
   try {
     const { id } = req.params;
-    const rows = await sql`UPDATE projects SET is_published = NOT is_published, updated_at = NOW() WHERE id = ${id} RETURNING *`;
+    if (isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid project ID.' });
+    }
+    const rows = await sql`UPDATE projects SET is_published = NOT is_published, updated_at = NOW() WHERE id = ${Number(id)} RETURNING *`;
 
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Project not found.' });
@@ -264,4 +313,5 @@ module.exports = {
   updateProject,
   deleteProject,
   togglePublish,
+  reorderProjects,
 };

@@ -45,6 +45,12 @@ const upload = multer({
 router.get('/', projectsController.getProjects);
 
 /**
+ * PUT /api/projects/reorder
+ * Admin — update project display order sequence.
+ */
+router.put('/reorder', authMiddleware, projectsController.reorderProjects);
+
+/**
  * GET /api/projects/:id
  * Public — get single project by ID.
  */

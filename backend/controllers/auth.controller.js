@@ -41,8 +41,11 @@ const login = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ error: 'Server error.' });
+    console.error('Login error:', err.message || err);
+    if (err.message && (err.message.includes('fetch failed') || err.message.includes('ETIMEDOUT') || err.message.includes('EAI_AGAIN'))) {
+      return res.status(503).json({ error: 'Database network error: Unable to reach Neon Cloud DB. Please check your internet connection or firewall.' });
+    }
+    res.status(500).json({ error: 'Server error: ' + (err.message || 'Login failed') });
   }
 };
 
