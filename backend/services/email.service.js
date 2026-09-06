@@ -1,4 +1,5 @@
 const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -82,6 +83,82 @@ async function sendPasswordResetEmail({ to, resetUrl }) {
   }
 }
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Assuming gmail, can be overridden by host
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: process.env.SMTP_PORT || 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+/**
+ * Send Welcome Email via Nodemailer
+ * @param {string} to - Recipient email address
+ * @param {string} name - Recipient's first name
+ */
+async function sendWelcomeEmail(to, name) {
+  if (!process.env.EMAIL_USER) {
+    console.warn('⚠️ EMAIL_USER is not set. Skipping welcome email dispatch.');
+    return { success: false, error: 'Email service disabled' };
+  }
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Welcome to ProfNITT Tools!</title>
+      <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 40px 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 10px; padding: 40px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #a855f7; font-size: 24px; margin: 0; }
+        .content { font-size: 16px; line-height: 1.6; color: #555; }
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 20px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>Welcome to ProfNITT Tools! 🚀</h1>
+        </div>
+        <div class="content">
+          <p>Hi ${name},</p>
+          <p>Thank you for subscribing to ProfNITT Tools!</p>
+          <p>You will get regular updates regarding our trading tools, strategies, and new features straight to your inbox.</p>
+          <p>We're thrilled to have you on board. Stay tuned for some exciting updates!</p>
+          <br/>
+          <p>Best Regards,</p>
+          <p><strong>The ProfNITT Tools Team</strong></p>
+        </div>
+        <div class="footer">
+          &copy; ${new Date().getFullYear()} ProfNITT Tools. All rights reserved.
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"ProfNITT Tools" <${process.env.EMAIL_USER}>`,
+      to,
+      subject: 'Welcome to ProfNITT Tools! 🎉',
+      html: htmlContent,
+    });
+
+    console.log('✅ Welcome email dispatched via Nodemailer:', info.messageId);
+    return { success: true, info };
+  } catch (err) {
+    console.error('❌ Exception sending welcome email via Nodemailer:', err.message);
+    return { success: false, error: err.message };
+  }
+}
+
 module.exports = {
   sendPasswordResetEmail,
+  sendWelcomeEmail,
 };

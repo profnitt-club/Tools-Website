@@ -1,17 +1,27 @@
 const { sql } = require('../config/db');
+const { sendWelcomeEmail } = require('../services/email.service');
 
 const createContact = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone, subject, message } = req.body;
+    const { firstName, lastName, email, phone, message } = req.body;
 
     if (!firstName || !email || !message) {
       return res.status(400).json({ error: 'First name, email, and message are required.' });
     }
 
-    await sql`
-      INSERT INTO contacts (first_name, last_name, email, phone, subject, message)
-      VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${subject}, ${message})
-    `;
+    // If using the local dummy URL, skip DB insertion to allow local email testing
+    if (process.env.NEON_DATABASE_URL && !process.env.NEON_DATABASE_URL.includes('host/neondb')) {
+      await sql`
+        INSERT INTO contacts (first_name, last_name, email, phone, message)
+        VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${message})
+        RETURNING *;
+      `;
+    } else {
+      console.warn("⚠️ Skipping DB insertion because NEON_DATABASE_URL is a dummy template.");
+    }
+
+    // Send welcome email asynchronously (fire-and-forget)
+    sendWelcomeEmail(email, firstName).catch(err => console.error('Failed to send welcome email:', err));
 
     res.status(201).json({ message: 'Message sent successfully!' });
   } catch (err) {
