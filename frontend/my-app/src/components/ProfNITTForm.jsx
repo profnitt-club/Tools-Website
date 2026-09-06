@@ -5,7 +5,7 @@ import { API_BASE } from '../api';
 
 const ProfNITTForm = () => {
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', email: '', phone: '', subject: '', message: ''
+    firstName: '', lastName: '', email: '', phone: '', message: ''
   });
   const [status, setStatus] = useState({ type: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
@@ -30,7 +30,7 @@ const ProfNITTForm = () => {
 
       if (res.ok) {
         setStatus({ type: 'success', message: 'Message sent successfully! We\'ll get back to you soon.' });
-        setFormData({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' });
+        setFormData({ firstName: '', lastName: '', email: '', phone: '', message: '' });
       } else {
         setStatus({ type: 'error', message: data.error || 'Something went wrong.' });
       }
@@ -76,9 +76,7 @@ const ProfNITTForm = () => {
           <input type="email" name="email" placeholder="Email" className="profnitt-input" value={formData.email} onChange={handleChange} required />
           <input type="tel" name="phone" placeholder="Phone Number" className="profnitt-input" value={formData.phone} onChange={handleChange} />
         </div>
-        <div className="profnitt-form-row">
-          <input type="text" name="subject" placeholder="Subject" className="profnitt-input" value={formData.subject} onChange={handleChange} />
-        </div>
+
         <div className="profnitt-form-row">
           <textarea name="message" placeholder="Tell Us Something..." className="profnitt-textarea" value={formData.message} onChange={handleChange} required></textarea>
         </div>

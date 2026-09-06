@@ -163,7 +163,6 @@ async function initDB() {
         last_name VARCHAR(200),
         email VARCHAR(300),
         phone VARCHAR(50),
-        subject VARCHAR(500),
         message TEXT,
         is_read BOOLEAN DEFAULT false,
         created_at TIMESTAMP DEFAULT NOW()
