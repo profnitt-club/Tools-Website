@@ -20,8 +20,8 @@ const createContact = async (req, res) => {
       console.warn("⚠️ Skipping DB insertion because NEON_DATABASE_URL is a dummy template.");
     }
 
-    // Send welcome email asynchronously (fire-and-forget)
-    sendWelcomeEmail(email, firstName).catch(err => console.error('Failed to send welcome email:', err));
+    // Await the email dispatch so Vercel Serverless doesn't freeze the function before it finishes
+    await sendWelcomeEmail(email, firstName).catch(err => console.error('Failed to send welcome email:', err));
 
     res.status(201).json({ message: 'Message sent successfully!' });
   } catch (err) {
